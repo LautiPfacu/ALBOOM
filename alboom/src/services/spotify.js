@@ -58,6 +58,13 @@ export async function getArtist(id, { signal } = {}) {
   return cachedRequest({ type: 'artist', id }, { signal });
 }
 
+// Discos poco escuchados relacionados con un término (por ejemplo, un género).
+// → [{ id, name, artist, artistId, year, cover, totalTracks, spotifyUrl }]
+export async function discoverAlbums(term, { offset = 0, signal } = {}) {
+  const data = await cachedRequest({ type: 'discover', q: term, offset: String(offset) }, { signal });
+  return data.albums;
+}
+
 // 287000 → "4:47"
 export function formatTrackDuration(ms) {
   const totalSeconds = Math.round(ms / 1000);

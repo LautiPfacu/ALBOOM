@@ -1,0 +1,7 @@
+# Archivos que crea macOS en cada carpeta (no son parte del proyecto)
+.DS_Store
+
+# Variables de entorno: nunca se suben (la app tiene su propio .gitignore en alboom/)
+.env
+.env.*
+!.env.example

@@ -74,6 +74,7 @@ function newLibraryItem(album, status, isPublic) {
   return {
     name: album.name,
     artist: album.artist,
+    artistId: album.artistId ?? null, // sirve para recomendar más discos del mismo artista
     cover: album.cover ?? null,
     year: album.year ?? null,
     spotifyUrl: album.spotifyUrl ?? null,

@@ -5,6 +5,7 @@
 //   /api/spotify?type=album&id=SPOTIFY_ALBUM_ID  → { album: {..., tracks: [...] } }
 //   /api/spotify?type=genre&genre=tango&from=1980&to=1989&offset=0 → { albums: [...], nextOffset, hasMore }
 //   /api/spotify?type=artist&id=SPOTIFY_ARTIST_ID → { artist: { id, name, image, genres }, albums: [...] }
+//   /api/spotify?type=discover&q=tango&offset=0   → { albums: [...] }  (discos poco escuchados)
 //
 // En desarrollo la sirve vite.config.js con este mismo archivo (alcanza con `npm run dev`).
 
@@ -96,6 +97,18 @@ function toAlbumDetail(album) {
     tracks,
     durationMs: tracks.reduce((total, track) => total + (track.durationMs ?? 0), 0),
   };
+}
+
+// Palabras que delatan discos de relleno o hechos en serie (no artistas emergentes de verdad).
+const FILLER =
+  /relax|sleep|dormir|meditat|spa\b|yoga|lullab|cuna|karaoke|instrumental|piano cover|covers?\b|tribut|homenaje|chill mix|study|focus|beats\b|babies|kids|niños|ringtone|workout|entrenamiento|8-bit|colecci|lounge|cocktail|party|fiesta|birthday|la mejor|lo mejor|best of|greatest|hits\b|éxitos|exitos|vibes|energy/i;
+
+// ¿Es un disco "de verdad"? Álbum o EP (4+ temas), no compilado, no relleno, no "Various Artists".
+function isRealRelease(album) {
+  if (!album) return false;
+  const isAlbumOrEp = album.album_type === 'album' || (album.album_type === 'single' && album.total_tracks >= 4);
+  const artist = album.artists?.[0]?.name ?? '';
+  return isAlbumOrEp && !/various artists/i.test(artist) && !FILLER.test(`${album.name} ${artist}`);
 }
 
 function sendJson(res, status, body) {
@@ -197,7 +210,30 @@ export default async function handler(req, res) {
       });
     }
 
-    return sendJson(res, 400, { error: 'Falta el parámetro type (search, album, genre o artist).' });
+    // Descubrimiento: tag:hipster trae el 10 % de discos MENOS escuchados de Spotify.
+    // Lo combinamos con una palabra del gusto de la persona (un género) para que tenga relación,
+    // y sacamos singles, compilados y "relleno" (música para dormir, covers en piano, etc.).
+    if (type === 'discover') {
+      const term = (searchParams.get('q') ?? '').trim();
+      if (term.length < 2) return sendJson(res, 400, { error: 'Falta el término de búsqueda.' });
+
+      const offset = Math.max(0, Number.parseInt(searchParams.get('offset') ?? '0', 10) || 0);
+      const albums = [];
+      for (const pageOffset of [offset, offset + SEARCH_LIMIT]) {
+        const params = new URLSearchParams({
+          q: `tag:hipster ${term}`,
+          type: 'album',
+          limit: String(SEARCH_LIMIT),
+          offset: String(pageOffset),
+          market: MARKET,
+        });
+        const data = await spotifyGet(`/search?${params}`);
+        albums.push(...(data.albums?.items ?? []).filter(isRealRelease).map(toAlbumSummary));
+      }
+      return sendJson(res, 200, { albums });
+    }
+
+    return sendJson(res, 400, { error: 'Falta el parámetro type (search, album, genre, artist o discover).' });
   } catch (error) {
     const status = error instanceof HttpError ? error.status : 500;
     if (status === 500) console.error(error);

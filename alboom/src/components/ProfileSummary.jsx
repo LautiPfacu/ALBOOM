@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLibrary } from '../context/LibraryContext';
 import { isPublishable } from '../services/library';
 import { formatMonthYear } from '../utils/text';
+import { photoFor } from '../services/profile';
 import { formatRating } from './VinylRating';
 import Avatar from './Avatar';
 import './ProfileSummary.css';
@@ -25,7 +26,7 @@ export default function ProfileSummary({ compact = false }) {
   }, [items]);
 
   const since = profile?.createdAt ? formatMonthYear(profile.createdAt) : '';
-  const photoURL = profile?.photoURL ?? user.photoURL;
+  const photoURL = photoFor(profile, user);
 
   if (compact) {
     return (

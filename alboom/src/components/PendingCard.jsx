@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useAsyncAction } from '../hooks/useAsyncAction';
 import { libraryErrorMessage, saveListening, STATUS } from '../services/library';
+import { photoFor } from '../services/profile';
 import AlbumCover from './AlbumCover';
 import Button from './Button';
 import './PendingCard.css';
@@ -13,7 +14,7 @@ import './PendingCard.css';
 export default function PendingCard({ item }) {
   const { user, profile, displayName } = useAuth();
   const { showToast } = useToast();
-  const author = { username: profile?.username, displayName, photoURL: profile?.photoURL ?? null };
+  const author = { username: profile?.username, displayName, photoURL: photoFor(profile, user) };
   const { run, pending } = useAsyncAction(() =>
     saveListening(user.uid, item, { status: STATUS.LISTENED }, author),
   );

@@ -34,44 +34,6 @@
   color: var(--ink-soft);
 }
 
-/* "Probá con" + chips torcidos */
-.home__suggestions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  color: var(--ink-soft);
-}
-
-.home__chip {
-  min-height: 36px;
-  padding: 6px 12px;
-  border: var(--border);
-  border-radius: var(--radius-pill);
-  background: var(--card);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--ink);
-  transform: rotate(-2deg);
-  transition: transform 80ms ease;
-}
-
-.home__chip:nth-of-type(2) {
-  background: var(--yellow);
-  transform: rotate(1.5deg);
-}
-
-.home__chip:nth-of-type(3) {
-  transform: rotate(-1deg);
-}
-
-@media (hover: hover) {
-  .home__chip:hover {
-    transform: rotate(0deg) translateY(-1px);
-  }
-}
-
 /* Secciones */
 .home__section {
   display: flex;

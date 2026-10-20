@@ -32,8 +32,13 @@ const DECADES = [
 const ORDERS = {
   resenados: 'Más reseñados',
   puntaje: 'Mejor puntaje',
+  joyas: 'Joyas escondidas',
   recientes: 'Recientes',
 };
+
+// Joya escondida: pocas reseñas en ALBOOM (1 a 5) pero muy bien puntuada (4 o más).
+// Así le damos visibilidad a discos que todavía casi nadie conoce.
+const isHiddenGem = (stat) => stat && stat.count <= 5 && stat.average >= 4;
 
 export default function ExplorePage() {
   const { profile } = useAuth();
@@ -58,6 +63,15 @@ export default function ExplorePage() {
     if (order === 'resenados') list.sort((a, b) => count(b) - count(a));
     if (order === 'puntaje') list.sort((a, b) => average(b) - average(a) || count(b) - count(a));
     if (order === 'recientes') list.sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
+    if (order === 'joyas') {
+      // Primero las joyas; después lo que nadie reseñó todavía; al final lo más reseñado.
+      const rank = (album) => {
+        const stat = stats.get(album.id);
+        if (isHiddenGem(stat)) return 0;
+        return stat ? 2 : 1;
+      };
+      list.sort((a, b) => rank(a) - rank(b) || average(b) - average(a) || count(a) - count(b));
+    }
     return list;
   }, [albums, stats, order]);
 

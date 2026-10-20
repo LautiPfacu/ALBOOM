@@ -1,16 +1,18 @@
 // Inicio: saludo, búsqueda en Spotify, "Para vos", "Tendencias" y "Lo último en tu biblioteca".
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLibrary } from '../context/LibraryContext';
-import { genreName } from '../data/genres';
+import { useToast } from '../context/ToastContext';
 import { useAlbumSearch } from '../hooks/useAlbumSearch';
 import { useAlbumStats } from '../hooks/useAlbumStats';
-import { useForYou } from '../hooks/useForYou';
+import { useAsyncAction } from '../hooks/useAsyncAction';
+import { useRecommendations } from '../hooks/useRecommendations';
 import { useTrends } from '../hooks/useTrends';
 import { STATUS } from '../services/library';
-import { joinList, plural } from '../utils/text';
+import { dismissAlbum, profileErrorMessage, undismissAlbum } from '../services/profile';
+import { plural } from '../utils/text';
 import AlbumTile from '../components/AlbumTile';
 import Button from '../components/Button';
 import EmptyState from '../components/EmptyState';
@@ -23,30 +25,49 @@ import SearchResultCard from '../components/SearchResultCard';
 import SkeletonCard from '../components/SkeletonCard';
 import './HomePage.css';
 
-const SUGGESTIONS = ['Gustavo Cerati', 'Rosalía', 'Tame Impala'];
+const PAGE_SIZE = 5; // recomendaciones visibles por vez
 const FIVE = [1, 2, 3, 4, 5];
 const THREE = [1, 2, 3];
 
 export default function HomePage() {
-  const { displayName, profile } = useAuth();
+  const { user, displayName } = useAuth();
+  const { showToast } = useToast();
   const { items, loading: libraryLoading, getItem } = useLibrary();
   const { query, results, status, error, hasMore, search, loadMore, reset } = useAlbumSearch();
   const [text, setText] = useState('');
 
-  const genres = useMemo(() => profile?.genres ?? [], [profile?.genres]);
-  const forYou = useForYou(genres, 5);
+  const { picks, loading: picksLoading } = useRecommendations(10);
+  const [page, setPage] = useState(0);
   const { trends } = useTrends();
-  const forYouStats = useAlbumStats(forYou.albums.map((album) => album.id));
+
+  // Las recomendaciones se ven de a 5; "Mostrar otras" pasa a las siguientes.
+  const pageCount = Math.max(1, Math.ceil(picks.length / PAGE_SIZE));
+  const currentPage = page % pageCount;
+  const visiblePicks = picks.slice(currentPage * PAGE_SIZE, currentPage * PAGE_SIZE + PAGE_SIZE);
+  const pickStats = useAlbumStats(visiblePicks.map((pick) => pick.album.id));
+  const dismissAction = useAsyncAction((albumId) => dismissAlbum(user.uid, albumId));
 
   const firstName = displayName.split(' ')[0];
   // items ya viene ordenado por addedAt desc: los primeros son los más recientes.
   const recentItems = items.slice(0, 3);
   const pendingItem = items.find((item) => item.status === STATUS.PENDING);
-  const forYouReason = joinList(genres.slice(0, 3).map((id) => `el ${genreName(id).toLowerCase()}`));
 
-  function handleSuggestion(name) {
-    setText(name);
-    search(name);
+  // "No me interesa": se guarda en users/{uid}/dismissed y no se vuelve a recomendar.
+  async function handleDismiss(album) {
+    try {
+      await dismissAction.run(album.id);
+      showToast({
+        type: 'success',
+        message: (
+          <>
+            Listo, no te vamos a recomendar <strong>{album.name}</strong>.
+          </>
+        ),
+        action: { label: 'Deshacer', onClick: () => undismissAlbum(user.uid, album.id).catch(() => {}) },
+      });
+    } catch (error) {
+      showToast({ type: 'error', message: profileErrorMessage(error) });
+    }
   }
 
   function handleClear() {
@@ -71,17 +92,6 @@ export default function HomePage() {
           </div>
 
           <SearchBar value={text} onChange={setText} onSearch={search} onClear={handleClear} />
-
-          {!searching && (
-            <div className="home__suggestions">
-              <span>Probá con</span>
-              {SUGGESTIONS.map((name) => (
-                <button key={name} type="button" className="home__chip" onClick={() => handleSuggestion(name)}>
-                  {name}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
 
         {pendingItem && !searching && (
@@ -145,29 +155,33 @@ export default function HomePage() {
         </section>
       )}
 
-      {!searching && genres.length > 0 && (forYou.loading || forYou.albums.length > 0) && (
+      {!searching && (picksLoading || picks.length > 0) && (
         <section className="home__section" aria-labelledby="for-you-title">
           <div className="home__section-header">
             <div className="home__section-heading">
               <h2 id="for-you-title" className="home__section-title">
                 Para vos
               </h2>
-              {forYouReason && <p className="home__section-subtitle">Porque te gusta {forYouReason}</p>}
+              <p className="home__section-subtitle">
+                Lo que te gusta, lo que recomienda la comunidad y joyas escondidas para descubrir.
+              </p>
             </div>
-            <Link to={`/explorar?genero=${genres[0]}`} className="text-link home__see-more">
-              <span className="home__see-more-long">Ver más en Explorar</span>
-              <span className="home__see-more-short">Ver más</span>
-            </Link>
+            {pageCount > 1 && (
+              <button type="button" className="text-link home__see-more" onClick={() => setPage((p) => p + 1)}>
+                Mostrar otras
+              </button>
+            )}
           </div>
           <div className="home__tiles">
-            {forYou.loading
+            {picksLoading
               ? FIVE.map((n) => <SkeletonCard key={n} />)
-              : forYou.albums.map((album) => (
+              : visiblePicks.map((pick) => (
                   <AlbumTile
-                    key={album.id}
-                    album={album}
-                    stats={forYouStats.get(album.id)}
-                    listened={getItem(album.id)?.status === STATUS.LISTENED}
+                    key={pick.album.id}
+                    album={pick.album}
+                    reason={pick.reason}
+                    stats={pickStats.get(pick.album.id)}
+                    onDismiss={handleDismiss}
                   />
                 ))}
           </div>

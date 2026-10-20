@@ -15,6 +15,12 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == uid;
     }
 
+    // Foto de perfil: link (Google) o imagen achicada en el navegador (data URL). Máx. ~100 KB.
+    function isValidPhoto(data) {
+      return !('photoURL' in data) || data.photoURL == null
+        || (data.photoURL is string && data.photoURL.size() <= 100000);
+    }
+
     function isValidLibraryItem(data) {
       return data.name is string
         && data.artist is string
@@ -38,12 +44,19 @@ service cloud.firestore {
         && data.text is string
         && data.text.size() <= 500
         && data.username is string
-        && data.displayName is string;
+        && data.displayName is string
+        && isValidPhoto(data);
     }
 
     // Perfil: solo lo lee y lo escribe su dueño.
     match /users/{uid} {
-      allow read, write: if isOwner(uid);
+      allow read, delete: if isOwner(uid);
+      allow create, update: if isOwner(uid) && isValidPhoto(request.resource.data);
+
+      // Recomendaciones descartadas ("No me interesa"): users/{uid}/dismissed/{albumId}
+      match /dismissed/{albumId} {
+        allow read, write: if isOwner(uid);
+      }
 
       // Biblioteca personal: users/{uid}/library/{albumId}
       match /library/{albumId} {

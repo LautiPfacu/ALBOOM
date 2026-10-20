@@ -16,12 +16,15 @@ import {
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
+  onSnapshot,
   query,
   runTransaction,
   serverTimestamp,
+  setDoc,
   updateDoc,
   where,
   writeBatch,
@@ -97,6 +100,47 @@ export function updateSettings(uid, settings) {
   return withTimeout(updateDoc(profileRef(uid), { settings }));
 }
 
+// ---------- Foto de perfil ----------
+
+// photoURL: data URL ya achicada (utils/image.js) o null para quitarla.
+// Se guarda en el perfil y se copia en las reseñas públicas, todo en un mismo lote.
+export async function updatePhoto(uid, photoURL) {
+  const reviewsSnapshot = await getDocs(query(collection(db, 'reviews'), where('uid', '==', uid)));
+  const batch = writeBatch(db);
+  batch.update(profileRef(uid), { photoURL });
+  reviewsSnapshot.docs.forEach((review) => batch.update(review.ref, { photoURL }));
+  await withTimeout(batch.commit());
+}
+
+// La foto que se muestra: la del perfil de ALBOOM. Si el perfil todavía no tiene el campo,
+// la de la cuenta de Google. Si la persona la quitó (null), ninguna: se ve la inicial.
+export function photoFor(profile, user) {
+  if (profile && 'photoURL' in profile) return profile.photoURL;
+  return user?.photoURL ?? null;
+}
+
+// ---------- Recomendaciones descartadas ("No me interesa") ----------
+//   users/{uid}/dismissed/{albumId} → { createdAt }
+
+const dismissedCollection = (uid) => collection(db, 'users', uid, 'dismissed');
+
+// Escucha la lista de discos descartados. Devuelve la función para dejar de escuchar.
+export function subscribeToDismissed(uid, onData, onError) {
+  return onSnapshot(
+    dismissedCollection(uid),
+    (snapshot) => onData(snapshot.docs.map((d) => d.id)),
+    onError,
+  );
+}
+
+export function dismissAlbum(uid, albumId) {
+  return withTimeout(setDoc(doc(dismissedCollection(uid), albumId), { createdAt: serverTimestamp() }));
+}
+
+export function undismissAlbum(uid, albumId) {
+  return withTimeout(deleteDoc(doc(dismissedCollection(uid), albumId)));
+}
+
 // ---------- Tu cuenta ----------
 
 // ¿Está libre este nombre de usuario? (el propio cuenta como libre)
@@ -161,12 +205,13 @@ export function disconnectGoogle() {
 // ---------- Tus datos ----------
 
 async function getUserData(uid) {
-  const [profileSnapshot, librarySnapshot, reviewsSnapshot] = await Promise.all([
+  const [profileSnapshot, librarySnapshot, reviewsSnapshot, dismissedSnapshot] = await Promise.all([
     getDoc(profileRef(uid)),
     getDocs(collection(db, 'users', uid, 'library')),
     getDocs(query(collection(db, 'reviews'), where('uid', '==', uid))),
+    getDocs(collection(db, 'users', uid, 'dismissed')),
   ]);
-  return { profileSnapshot, librarySnapshot, reviewsSnapshot };
+  return { profileSnapshot, librarySnapshot, reviewsSnapshot, dismissedSnapshot };
 }
 
 // Arma un JSON con perfil, biblioteca y reseñas. Las fechas pasan a texto ISO.
@@ -186,10 +231,11 @@ export async function exportUserData(uid) {
 // Eliminar cuenta: reautenticación → borrado de documentos en lotes → deleteUser.
 export async function deleteAccount(uid, password) {
   await reauthenticate(password);
-  const { profileSnapshot, librarySnapshot, reviewsSnapshot } = await getUserData(uid);
+  const { profileSnapshot, librarySnapshot, reviewsSnapshot, dismissedSnapshot } = await getUserData(uid);
   const refs = [
     ...librarySnapshot.docs.map((d) => d.ref),
     ...reviewsSnapshot.docs.map((d) => d.ref),
+    ...dismissedSnapshot.docs.map((d) => d.ref),
   ];
   const username = profileSnapshot.data()?.username;
   if (username) refs.push(usernameRef(username));

@@ -9,6 +9,7 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useAsyncAction } from '../hooks/useAsyncAction';
 import { addToLibrary, isPublishable, libraryErrorMessage, saveListening, STATUS } from '../services/library';
+import { photoFor } from '../services/profile';
 import Button from './Button';
 import ReviewForm from './ReviewForm';
 import StatusToggle from './StatusToggle';
@@ -19,7 +20,7 @@ export default function ListeningCard({ album, item, onRemove }) {
   const { user, profile, displayName } = useAuth();
   const { showToast } = useToast();
   const uid = user.uid;
-  const author = { username: profile?.username ?? '', displayName, photoURL: profile?.photoURL ?? null };
+  const author = { username: profile?.username ?? '', displayName, photoURL: photoFor(profile, user) };
   const defaultPublic = profile?.settings?.publicReviewsDefault ?? true;
 
   // Una acción por cada cosa que se guarda, así cada una tiene su propio "Guardando…".

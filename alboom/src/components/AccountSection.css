@@ -1,14 +1,3 @@
-.account-section__photo {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.account-section__photo-text {
-  font-size: 14px;
-  color: var(--ink-soft);
-}
-
 .account-section__form {
   display: flex;
   flex-direction: column;

@@ -10,6 +10,7 @@ import { themeName } from '../data/themes';
 import { logout } from '../services/auth';
 import { useAsyncAction } from '../hooks/useAsyncAction';
 import { useDismiss } from '../hooks/useDismiss';
+import { photoFor } from '../services/profile';
 import Avatar from './Avatar';
 import './UserMenu.css';
 
@@ -24,7 +25,7 @@ export default function UserMenu() {
   const { run: runLogout, pending } = useAsyncAction(logout);
 
   const firstName = displayName.split(' ')[0];
-  const photoURL = profile?.photoURL ?? user.photoURL;
+  const photoURL = photoFor(profile, user);
 
   const close = useCallback(() => setOpen(false), []);
   // Con el menú abierto, Escape o un clic afuera lo cierran.

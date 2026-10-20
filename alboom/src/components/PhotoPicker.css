@@ -1,0 +1,46 @@
+.photo-picker {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.photo-picker__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.photo-picker__buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.photo-picker__change {
+  cursor: pointer;
+}
+
+/* El input real está oculto: el foco se muestra en el label que hace de botón */
+.photo-picker__buttons:has(input:focus-visible) .photo-picker__change {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.photo-picker__change--busy {
+  cursor: progress;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.photo-picker__hint {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.photo-picker__error {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--error);
+}

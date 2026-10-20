@@ -1,4 +1,4 @@
-// Perfil → Tu cuenta: nombre, nombre de usuario (con chequeo de disponibilidad) y email.
+// Perfil → Tu cuenta: foto, nombre, nombre de usuario (con chequeo de disponibilidad) y email.
 
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -12,8 +12,8 @@ import {
   updateAccount,
   USERNAME_PATTERN,
 } from '../services/profile';
-import Avatar from './Avatar';
 import Button from './Button';
+import PhotoPicker from './PhotoPicker';
 import ProfileSection from './ProfileSection';
 import TextField from './TextField';
 import './AccountSection.css';
@@ -105,12 +105,7 @@ export default function AccountSection() {
 
   return (
     <ProfileSection id="cuenta" title="Tu cuenta">
-      <div className="account-section__photo">
-        <Avatar name={displayName} photoURL={profile?.photoURL ?? user.photoURL} size={72} display />
-        <p className="account-section__photo-text">
-          {user.photoURL ? 'Usamos la foto de tu cuenta de Google.' : 'Tu avatar es la inicial de tu nombre.'}
-        </p>
-      </div>
+      <PhotoPicker />
 
       <form className="account-section__form" onSubmit={handleSubmit} noValidate>
         <div className="account-section__grid">
