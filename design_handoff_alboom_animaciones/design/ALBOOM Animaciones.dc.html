@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Barriecito&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
+<script src="./alboom-motion.js"></script>
+<script>document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-speed]');if(!b)return;var s=b.getAttribute('data-speed');document.querySelectorAll('alboom-explosion,alboom-burst').forEach(function(n){n.setAttribute('speed',s)});document.querySelectorAll('[data-speed]').forEach(function(x){var on=x===b;x.style.background=on?'#1F1E2B':'#FFFDF7';x.style.color=on?'#F5F1E6':'#1F1E2B'})});</script>
+<style>body{margin:0;background:#E4E0D6;font-family:'DM Sans',system-ui,sans-serif;color:#1F1E2B;-webkit-font-smoothing:antialiased}a{color:#2F5FD0}a:hover{color:#1F1E2B}</style>
+</helmet>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<polygon id="burst" points="85.4,24.0 111.3,49.0 131.7,23.1 132.8,66.2 174.4,52.6 147.0,80.9 176.9,91.3 165.3,96.1 181.4,99.4 143.3,108.7 167.4,156.3 130.2,132.3 149.5,181.4 116.3,141.5 120.8,171.1 109.7,148.8 90.4,181.1 87.7,142.5 44.3,175.0 67.6,135.4 20.1,139.6 29.1,130.6 12.6,132.4 47.5,113.6 7.1,108.2 53.3,90.8 47.5,67.0 59.5,61.9 46.7,21.4 85.3,48.7"></polygon>
+<g id="logo"><use href="#burst" fill="#FF5C8A" transform="translate(8 6) rotate(9 100 100)"></use><use href="#burst" fill="#1F1E2B"></use><circle cx="100" cy="100" r="8" fill="#F5F1E6"></circle></g>
+<g id="logoDark"><use href="#burst" fill="#FF5C8A" transform="translate(8 6) rotate(9 100 100)"></use><use href="#burst" fill="#F5F1E6"></use><circle cx="100" cy="100" r="8" fill="#1F1E2B"></circle></g>
+<g id="pvHist"><use href="#burst" fill="#ff5c8a" transform="translate(8 6) rotate(9 100 100)"></use><use href="#burst" fill="#1f1e2b"></use><circle cx="100" cy="100" r="8" fill="#f5f1e6"></circle></g>
+<g id="pvGarage"><use href="#burst" fill="#e3261f" transform="translate(8 6) rotate(9 100 100)"></use><use href="#burst" fill="#141414"></use><circle cx="100" cy="100" r="8" fill="#f2f0eb"></circle></g>
+<g id="pvPsico"><use href="#burst" fill="#f2e33a" transform="translate(8 6) rotate(9 100 100)"></use><use href="#burst" fill="#24163d"></use><circle cx="100" cy="100" r="8" fill="#b39ad8"></circle></g>
+<g id="pvNoche"><use href="#burst" fill="#ff5c8a" transform="translate(8 6) rotate(9 100 100)"></use><use href="#burst" fill="#f5f1e6"></use><circle cx="100" cy="100" r="8" fill="#121117"></circle></g>
+<g id="logoGarage"><use href="#burst" fill="#1F1E2B" transform="translate(8 6) rotate(9 100 100)"></use><use href="#burst" fill="#E3261F"></use><circle cx="100" cy="100" r="8" fill="#F2F0EB"></circle></g>
+<g id="logoPsico"><use href="#burst" fill="#F2E33A" transform="translate(8 6) rotate(9 100 100)"></use><use href="#burst" fill="#F7A497"></use><circle cx="100" cy="100" r="8" fill="#6E4C9A"></circle></g>
+<g id="logoClasico"><use href="#burst" fill="#CFC6B6" transform="translate(8 6) rotate(9 100 100)"></use><use href="#burst" fill="#1F1E2B"></use><circle cx="100" cy="100" r="8" fill="#F4EFE6"></circle></g>
+</defs>
+</svg>
+<section id="animaciones" data-screen-label="ALBOOM animaciones" style="padding:64px;display:flex;flex-direction:column;gap:64px">
+<header style="display:flex;flex-direction:column;gap:16px;max-width:960px">
+<div style="display:flex;align-items:center;font-family:'Barriecito',cursive;font-size:72px;line-height:1;color:#1F1E2B;text-shadow:6px 4px 0 #FF5C8A"><span>ALBO</span><alboom-burst size="82" style="margin:0 2px 0 5px"></alboom-burst><span>M</span></div>
+<h1 style="margin:0;font-family:'Barriecito',cursive;font-weight:400;font-size:56px;line-height:1">Animaciones de marca</h1>
+<p style="margin:0;font-size:18px;line-height:1.55;color:#55536A;text-wrap:pretty">Dos animaciones nuevas con la misma idea que el logo de carga: picos que cambian al azar y llegan con rebote. La explosión de la entrada estalla cada 1,8 a 2,6 segundos, y el isotipo de la barra se carga, explota y se acomoda en un loop de 2,6 segundos. Las dos están en <strong style="color:#1F1E2B">alboom-motion.js</strong>, listas para que Claude Code las integre.</p>
+<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#55536A;margin-right:4px">Velocidad para revisar</span><span data-speed="0.25" role="button" tabindex="0" style="cursor:pointer;padding:9px 16px;box-sizing:border-box;border:2px solid #1F1E2B;border-radius:999px;background:#FFFDF7;color:#1F1E2B;font-size:15px;font-weight:700">Cámara lenta · 0,25×</span><span data-speed="0.5" role="button" tabindex="0" style="cursor:pointer;padding:9px 16px;box-sizing:border-box;border:2px solid #1F1E2B;border-radius:999px;background:#FFFDF7;color:#1F1E2B;font-size:15px;font-weight:700">0,5×</span><span data-speed="1" role="button" tabindex="0" style="cursor:pointer;padding:9px 16px;box-sizing:border-box;border:2px solid #1F1E2B;border-radius:999px;background:#1F1E2B;color:#F5F1E6;font-size:15px;font-weight:700">Normal · 1×</span></div>
+</header>
+
+<div style="display:flex;flex-direction:column;gap:28px">
+<h2 style="margin:0;font-family:'Barriecito',cursive;font-weight:400;font-size:48px;line-height:1">1 · La explosión de la entrada</h2>
+<div style="display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#55536A">Entrada · escritorio</div>
+<div data-screen-label="Animación login escritorio" style="width:1280px;height:800px;box-sizing:border-box;background:#F5F1E6;border:2px solid #1F1E2B;border-radius:20px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 520px">
+<div style="position:relative;border-right:2px solid #1F1E2B;overflow:hidden;background:#F3E35A">
+<alboom-explosion aria-hidden="true" style="position:absolute;inset:0"></alboom-explosion>
+<div aria-hidden="true" style="position:absolute;left:0;bottom:0;width:60%;height:55%;background-image:radial-gradient(#1F1E2B 1.7px,transparent 2px);background-size:10px 10px;mask-image:linear-gradient(35deg,#000 10%,transparent 60%);opacity:.5"></div>
+<div aria-hidden="true" style="position:absolute;left:56px;bottom:56px;font-family:'Barriecito',cursive;font-size:68px;line-height:1.02;display:flex;flex-direction:column;align-items:flex-start"><span style="background:#F5F1E6;padding:0 8px;border:2px solid #1F1E2B">Escuchá.</span><span style="background:#F3E35A;padding:0 8px;border:2px solid #1F1E2B;border-top:0">Puntuá.</span><span style="background:#F5F1E6;padding:0 8px;border:2px solid #1F1E2B;border-top:0">Descubrí.</span></div>
+</div>
+<div style="display:flex;flex-direction:column;justify-content:center;padding:48px 64px;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-family:'Barriecito',cursive;font-size:64px;line-height:1;text-shadow:4px 3px 0 #FF5C8A">ALBOOM</span>
+<p style="margin:0;font-size:16px;color:#55536A">Tu diario de discos.</p>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;box-sizing:border-box;border:2px solid #1F1E2B;border-radius:12px;padding:4px;background:#FFFDF7"><span style="padding:10px 0;text-align:center;border-radius:8px;background:#1F1E2B;color:#F5F1E6;font-weight:700;font-size:15px">Entrar</span><span style="padding:10px 0;text-align:center;font-weight:700;font-size:15px">Crear cuenta</span></div>
+<div style="height:52px;box-sizing:border-box;border-radius:12px;border:2px solid #1F1E2B;background:#FFFDF7;box-shadow:3px 3px 0 #1F1E2B;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:700"><span style="width:22px;height:22px;border-radius:50%;background:#1F1E2B;color:#F5F1E6;font-size:13px;display:flex;align-items:center;justify-content:center">G</span>Continuar con Google</div>
+<div style="display:flex;align-items:center;gap:12px;font-size:13px;color:#55536A"><div style="flex:1;border-top:2px dashed #A9A6B5"></div>o con tu email<div style="flex:1;border-top:2px dashed #A9A6B5"></div></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:14px;font-weight:700">Email</span><div style="height:50px;box-sizing:border-box;border-radius:12px;border:2px solid #1F1E2B;background:#FFFDF7;padding:0 16px;display:flex;align-items:center;font-size:16px">sofi@mail.com</div></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:14px;font-weight:700">Contraseña</span><div style="height:50px;box-sizing:border-box;border-radius:12px;border:2px solid #1F1E2B;background:#FFFDF7;padding:0 16px;display:flex;align-items:center;justify-content:space-between;font-size:16px"><span style="letter-spacing:.2em">••••••••</span><span style="font-size:14px;font-weight:700;text-decoration:underline;text-underline-offset:3px">Mostrar</span></div></div>
+<div style="height:54px;box-sizing:border-box;border-radius:12px;border:2px solid #1F1E2B;background:#FF5C8A;box-shadow:4px 4px 0 #1F1E2B;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700">Entrar</div>
+</div>
+</div>
+</div>
+
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#55536A">Entrada · celular</div>
+<div data-screen-label="Animación login móvil" style="width:390px;height:844px;box-sizing:border-box;background:#F5F1E6;border:2px solid #1F1E2B;border-radius:28px;overflow:hidden;display:flex;flex-direction:column">
+<div aria-hidden="true" style="position:relative;height:250px;flex-shrink:0;border-bottom:2px solid #1F1E2B;background:#F3E35A;overflow:hidden"><alboom-explosion viewbox="68 140 624 400" style="position:absolute;inset:0"></alboom-explosion></div>
+<div style="flex:1;padding:20px 28px 28px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-family:'Barriecito',cursive;font-size:56px;line-height:1;text-shadow:3px 3px 0 #FF5C8A">ALBOOM</span><p style="margin:0;font-size:15px;color:#55536A">Tu diario de discos.</p></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;box-sizing:border-box;border:2px solid #1F1E2B;border-radius:12px;padding:4px;background:#FFFDF7"><span style="padding:10px 0;text-align:center;border-radius:8px;background:#1F1E2B;color:#F5F1E6;font-weight:700;font-size:15px">Entrar</span><span style="padding:10px 0;text-align:center;font-weight:700;font-size:15px">Crear cuenta</span></div>
+<div style="height:50px;box-sizing:border-box;border-radius:12px;border:2px solid #1F1E2B;background:#FFFDF7;box-shadow:3px 3px 0 #1F1E2B;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:700"><span style="width:22px;height:22px;border-radius:50%;background:#1F1E2B;color:#F5F1E6;font-size:13px;display:flex;align-items:center;justify-content:center">G</span>Continuar con Google</div>
+<div style="display:flex;align-items:center;gap:12px;font-size:13px;color:#55536A"><div style="flex:1;border-top:2px dashed #A9A6B5"></div>o con tu email<div style="flex:1;border-top:2px dashed #A9A6B5"></div></div>
+<div style="height:50px;box-sizing:border-box;border-radius:12px;border:2px solid #1F1E2B;background:#FFFDF7;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#6A6880">Email</div>
+<div style="height:50px;box-sizing:border-box;border-radius:12px;border:2px solid #1F1E2B;background:#FFFDF7;padding:0 16px;display:flex;align-items:center;font-size:16px;color:#6A6880">Contraseña</div>
+<div style="height:54px;box-sizing:border-box;border-radius:12px;border:2px solid #1F1E2B;background:#FF5C8A;box-shadow:4px 4px 0 #1F1E2B;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700">Entrar</div>
+</div>
+</div>
+</div>
+
+
+</div>
+<div style="max-width:1280px;box-sizing:border-box;background:#FFFDF7;border:2px solid #1F1E2B;border-radius:16px;padding:28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px"><span style="font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#55536A">Qué se mueve</span><ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:16px;line-height:1.55"><li>Los 22 rayos rosa giran despacio, 6° por segundo.</li><li>Los cuatro estallidos encimados (azul, rosa, amarillo y blanco) cambian el largo y el ángulo de sus picos al azar cada 0,35 a 0,9 s, con algunos picos muy largos y otros muy cortos, con rebote, y giran en sentidos alternados.</li><li>Las 34 líneas de acción laten y salen disparadas en cada explosión.</li><li>Los fragmentos vuelan hacia afuera girando y vuelven a salir del centro; los destellos titilan.</li></ul></div>
+<div style="display:flex;flex-direction:column;gap:12px"><span style="font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#55536A">La explosión</span><ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:16px;line-height:1.55"><li>Cada 1,8 a 2,6 s (al azar) el estallido del centro se carga durante 1,2 s: crece hasta un 28 % y tiembla cada vez más.</li><li>Después explota: sale un destello blanco del centro, toda la escena se sacude, las capas se agrandan hasta un 30 % con rebote, salen tres ondas de puntos, las líneas de acción se disparan, los rayos aceleran el giro y los fragmentos salen volando.</li><li>Nunca se repite igual, porque cada pico elige su forma nueva al azar.</li><li>Con «reducir movimiento» queda una imagen fija. Se pausa fuera de pantalla o con la pestaña oculta.</li></ul></div>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:28px">
+<h2 style="margin:0;font-family:'Barriecito',cursive;font-weight:400;font-size:48px;line-height:1">2 · El logo de la barra</h2>
+<div style="display:flex;flex-direction:column;gap:12px"><div style="font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#55536A">Barra de escritorio</div><div style="width:1280px;box-sizing:border-box;background:#F5F1E6;border:2px solid #1F1E2B;border-radius:20px;overflow:hidden"><div style="display:flex;align-items:center;justify-content:space-between;padding:18px 48px;border-bottom:2px solid #1F1E2B">
+<div style="display:flex;align-items:center;font-family:'Barriecito',cursive;font-size:40px;line-height:1;text-shadow:3px 2px 0 #FF5C8A"><span>ALBO</span><alboom-burst size="46" style="margin:0 1px 0 3px"></alboom-burst><span>M</span></div>
+<div style="display:flex;gap:32px;font-size:16px;font-weight:700"><span style="background:linear-gradient(transparent 50%,#F3E35A 50%);padding:0 2px">Inicio</span><span>Explorar</span><span>Biblioteca</span></div>
+<div style="display:flex;align-items:center;gap:10px"><span style="font-size:15px;font-weight:600">Sofi</span><div style="width:44px;height:44px;box-sizing:border-box;border-radius:50%;border:2px solid #1F1E2B;background:#2F5FD0;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px">S</div></div>
+</div></div></div>
+<div style="display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap">
+<div style="display:flex;flex-direction:column;gap:12px"><div style="font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#55536A">Barra de celular</div><div style="width:390px;box-sizing:border-box;background:#F5F1E6;border:2px solid #1F1E2B;border-radius:20px;overflow:hidden"><div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:2px solid #1F1E2B"><div style="display:flex;align-items:center;font-family:'Barriecito',cursive;font-size:30px;line-height:1;text-shadow:2px 2px 0 #FF5C8A"><span>ALBO</span><alboom-burst size="34" style="margin:0 1px 0 2px"></alboom-burst><span>M</span></div><div style="width:40px;height:40px;box-sizing:border-box;border-radius:50%;border:2px solid #1F1E2B;background:#2F5FD0;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">S</div></div></div></div>
+<div style="display:flex;flex-direction:column;gap:12px"><div style="font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#55536A">En grande, para ver el detalle</div><div style="width:834px;height:260px;box-sizing:border-box;background:#F5F1E6;border:2px solid #1F1E2B;border-radius:20px;display:flex;align-items:center;justify-content:center"><div style="display:flex;align-items:center;font-family:'Barriecito',cursive;font-size:130px;line-height:1;color:#1F1E2B;text-shadow:10px 7px 0 #FF5C8A"><span>ALBO</span><alboom-burst size="148" style="margin:0 4px 0 10px"></alboom-burst><span>M</span></div></div></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px"><div style="font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#55536A">Sigue al tema</div><div style="width:1280px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px"><div style="--ink:#1F1E2B;--pink:#FF5C8A;--paper:#F5F1E6;height:150px;box-sizing:border-box;background:#F5F1E6;border:2px solid #1F1E2B;border-radius:16px;padding:18px;display:flex;flex-direction:column;justify-content:space-between"><span style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#1F1E2B">Historieta</span><div style="display:flex;align-items:center;font-family:'Barriecito',cursive;font-size:40px;line-height:1;color:#1F1E2B;text-shadow:3px 2px 0 #FF5C8A"><span>ALBO</span><alboom-burst size="46" style="margin:0 1px 0 3px"></alboom-burst><span>M</span></div></div><div style="--ink:#141414;--pink:#E3261F;--paper:#F2F0EB;height:150px;box-sizing:border-box;background:#F2F0EB;border:2px solid #1F1E2B;border-radius:16px;padding:18px;display:flex;flex-direction:column;justify-content:space-between"><span style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#141414">Garage</span><div style="display:flex;align-items:center;font-family:'Barriecito',cursive;font-size:40px;line-height:1;color:#141414;text-shadow:3px 2px 0 #E3261F"><span>ALBO</span><alboom-burst size="46" style="margin:0 1px 0 3px"></alboom-burst><span>M</span></div></div><div style="--ink:#24163D;--pink:#F2E33A;--paper:#B39AD8;height:150px;box-sizing:border-box;background:#B39AD8;border:2px solid #1F1E2B;border-radius:16px;padding:18px;display:flex;flex-direction:column;justify-content:space-between"><span style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#24163D">Psicodelia</span><div style="display:flex;align-items:center;font-family:'Barriecito',cursive;font-size:40px;line-height:1;color:#24163D;text-shadow:3px 2px 0 #F2E33A"><span>ALBO</span><alboom-burst size="46" style="margin:0 1px 0 3px"></alboom-burst><span>M</span></div></div><div style="--ink:#F5F1E6;--pink:#FF5C8A;--paper:#121117;height:150px;box-sizing:border-box;background:#121117;border:2px solid #1F1E2B;border-radius:16px;padding:18px;display:flex;flex-direction:column;justify-content:space-between"><span style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#F5F1E6">Medianoche</span><div style="display:flex;align-items:center;font-family:'Barriecito',cursive;font-size:40px;line-height:1;color:#F5F1E6;text-shadow:3px 2px 0 #FF5C8A"><span>ALBO</span><alboom-burst size="46" style="margin:0 1px 0 3px"></alboom-burst><span>M</span></div></div></div></div>
+<div style="width:1280px;box-sizing:border-box;background:#FFFDF7;border:2px solid #1F1E2B;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:18px">
+<span style="font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#55536A">Un ciclo de 2,6 segundos, en loop</span>
+<div style="display:flex;height:56px;box-sizing:border-box;border:2px solid #1F1E2B;border-radius:12px;overflow:hidden;font-size:15px;font-weight:700"><div style="flex:72;background:#F3E35A;display:flex;align-items:center;padding:0 16px;border-right:2px solid #1F1E2B">Se carga · 1,9 s: crece hasta 8 % y tiembla cada vez más</div><div style="flex:8;background:#FF5C8A;display:flex;align-items:center;justify-content:center;border-right:2px solid #1F1E2B">¡Pop!</div><div style="flex:20;background:#DCE5FA;display:flex;align-items:center;padding:0 16px">Se acomoda · 0,7 s</div></div>
+<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:16px;line-height:1.55"><li>En el pop los picos se estiran, la sombra rosa se separa y el agujero del centro se agranda; todo vuelve con rebote a la forma original del logo.</li><li>Al pasar el mouse por el logo, explota en el momento.</li><li>Toma los colores del tema activo (tinta, rosa y fondo), así que funciona en los cuatro temas.</li><li>En la entrada el nombre sigue siendo solo tipografía: esta animación es para las barras.</li></ul>
+</div>
+</div>
+</section>
+</x-dc>
+</body>
+</html>

@@ -10,7 +10,7 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <div className="page navbar__inner">
-        <Link to="/" className="navbar__logo">
+        <Link to="/" className="navbar__logo" aria-label="ALBOOM, ir al inicio">
           <Logo />
         </Link>
         <nav className="navbar__nav" aria-label="Principal">

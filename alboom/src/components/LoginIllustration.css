@@ -5,14 +5,10 @@
   border-right: var(--border);
 }
 
-/* La explosión cubre todo el panel; el centro del estallido queda a la vista */
+/* La explosión animada cubre todo el panel (<alboom-explosion> ya hace el recorte tipo cover) */
 .login-illustration__art {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 45%;
 }
 
 /* Trama de puntos que se desvanece desde la esquina inferior izquierda */
@@ -64,24 +60,13 @@
   }
 }
 
-/* Celular: franja de 250 px arriba del formulario, con el mismo recorte que el diseño */
+/* Celular: franja de 250 px arriba del formulario (el encuadre lo da el viewbox, en el .jsx) */
 @media (max-width: 767px) {
   .login-illustration {
     height: 250px;
     flex-shrink: 0;
     border-right: 0;
     border-bottom: var(--border);
-  }
-
-  /* Escala 0,625 (475 px de ancho) con el centro del estallido en el medio de la franja */
-  .login-illustration__art {
-    inset: auto;
-    top: -88px;
-    left: calc(50% - 238px);
-    width: 475px;
-    max-width: none; /* anula img { max-width: 100% } de global.css: la imagen es más ancha que la franja a propósito */
-    height: 500px;
-    object-fit: fill;
   }
 
   .login-illustration__dots,

@@ -8,9 +8,9 @@
   text-shadow: 3px 2px 0 var(--pink);
 }
 
+/* El tamaño del estallido lo da el atributo size de <alboom-burst> (46 o 34 px) */
 .logo__burst {
-  width: 46px;
-  height: 46px;
+  display: inline-flex;
   margin: 0 1px 0 3px;
 }
 
@@ -21,7 +21,6 @@
   }
 
   .logo__burst {
-    width: 34px;
-    height: 34px;
+    margin: 0 1px 0 2px;
   }
 }
