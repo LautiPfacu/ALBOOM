@@ -1,0 +1,73 @@
+/* Tokens de diseño de ALBOOM · estética Fanzine (V1). Importar una sola vez en main.jsx. */
+
+:root {
+  /* Color */
+  --paper: #f5f1e6;
+  --card: #fffdf7;
+  --ink: #1f1e2b;
+  --ink-soft: #55536a;
+  --placeholder: #6a6880;
+  --pink: #ff5c8a;
+  --pink-pressed: #ffc7d6;
+  --blue: #2f5fd0;
+  --blue-dark: #24489e;
+  --blue-light: #dce5fa;
+  --yellow: #f3e35a;
+  --tape: rgba(243, 227, 90, 0.88);
+  --error: #c21f3a;
+  --error-bg: #ffe3e8;
+  --line: #c9c5d2;
+  --line-strong: #a9a6b5;
+  --vinyl-empty: #8a879a;
+  --skeleton: #ece8dd;
+  --skeleton-dot: #d8d3c6;
+  --skeleton-bar: #e2ddd1;
+
+  /* Tipografía */
+  --font-display: 'Barriecito', cursive;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+
+  /* Bordes, radios y sombras duras */
+  --border: 2px solid var(--ink);
+  --border-thick: 2.5px solid var(--ink);
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+  --shadow-sm: 3px 3px 0 var(--ink);
+  --shadow: 4px 4px 0 var(--ink);
+  --shadow-md: 5px 5px 0 var(--ink);
+  --shadow-lg: 6px 6px 0 var(--ink);
+  --shadow-xl: 8px 8px 0 var(--ink);
+
+  /* Tramas de puntos (risografía) */
+  --halftone-paper: radial-gradient(var(--paper) 1.5px, transparent 1.8px) 0 0 / 10px 10px;
+  --halftone-ink: radial-gradient(var(--ink) 1.2px, transparent 1.5px) 0 0 / 10px 10px;
+
+  /* Espaciado (múltiplos de 4) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+
+  /* Layout */
+  --page-max: 1280px;
+  --page-pad: 48px;
+  --nav-height: 84px;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --page-pad: 20px;
+    --nav-height: 72px;
+  }
+}

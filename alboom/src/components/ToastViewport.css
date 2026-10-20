@@ -1,0 +1,119 @@
+.toast-viewport {
+  position: fixed;
+  right: 32px;
+  bottom: 28px;
+  z-index: 30;
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-size: 15px;
+  font-weight: 600;
+  animation: toast-in 160ms ease-out;
+}
+
+.toast--success {
+  background: var(--yellow);
+}
+
+.toast--error {
+  background: var(--error-bg);
+}
+
+.toast__icon {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.toast--success .toast__icon {
+  background: var(--ink);
+  color: var(--yellow);
+}
+
+.toast--error .toast__icon {
+  background: var(--error);
+  color: #fff;
+  font-size: 15px;
+}
+
+.toast__message {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast__action {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.toast__close {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  margin: -6px -6px -6px 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--ink-soft);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+  }
+}
+
+/* Celular: ancho completo, arriba de la TabBar */
+@media (max-width: 767px) {
+  .toast-viewport {
+    left: 16px;
+    right: 16px;
+    bottom: calc(96px + env(safe-area-inset-bottom));
+    width: auto;
+    max-width: none;
+  }
+
+  .toast__close {
+    width: 44px;
+    height: 44px;
+    margin: -12px -12px -12px 0;
+  }
+}

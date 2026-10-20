@@ -1,0 +1,13 @@
+.mini-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.mini-rating__vinyl {
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--paper) 0 10%, var(--pink) 11% 34%, var(--vinyl-body) 36%);
+}

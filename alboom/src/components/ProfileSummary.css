@@ -1,0 +1,84 @@
+.profile-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 22px;
+  background: var(--card);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.profile-summary__name {
+  font-family: var(--font-display);
+  font-size: 34px;
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+
+.profile-summary__handle {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.profile-summary__stats {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 6px 0 0;
+  padding-top: 14px;
+  border-top: 2px dashed var(--line);
+}
+
+/* El número va arriba y la etiqueta abajo, aunque en el HTML la etiqueta (dt) va primero */
+.profile-summary__stats div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2px;
+}
+
+.profile-summary__stats dt {
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.profile-summary__stats dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 1;
+}
+
+/* Versión de celular: avatar a la izquierda y todo en una línea */
+.profile-summary--compact {
+  flex-direction: row;
+  gap: 14px;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  text-align: left;
+}
+
+.profile-summary__who {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.profile-summary--compact .profile-summary__name {
+  font-size: 30px;
+}
+
+.profile-summary--compact .profile-summary__handle {
+  font-size: 13px;
+}
+
+.profile-summary__inline-stats {
+  font-size: 13px;
+  font-weight: 700;
+}

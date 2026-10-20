@@ -1,0 +1,91 @@
+.login-illustration {
+  position: relative;
+  overflow: hidden;
+  background: var(--yellow);
+  border-right: var(--border);
+}
+
+/* La explosión cubre todo el panel; el centro del estallido queda a la vista */
+.login-illustration__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+
+/* Trama de puntos que se desvanece desde la esquina inferior izquierda */
+.login-illustration__dots {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 60%;
+  height: 55%;
+  background-image: radial-gradient(var(--ink) 1.7px, transparent 2px);
+  background-size: 10px 10px;
+  mask-image: linear-gradient(35deg, #000 10%, transparent 60%);
+  opacity: 0.5;
+}
+
+.login-illustration__motto {
+  position: absolute;
+  left: 56px;
+  bottom: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: var(--font-display);
+  font-size: 68px;
+  line-height: 1.02;
+}
+
+.login-illustration__motto span {
+  padding: 0 8px;
+  background: var(--paper);
+  border: var(--border);
+}
+
+/* Sin borde superior entre renglones, para que parezcan un solo cartel */
+.login-illustration__motto span + span {
+  border-top: 0;
+}
+
+.login-illustration__motto .login-illustration__motto-line--yellow {
+  background: var(--yellow);
+}
+
+/* Tablet: el panel es más angosto, achicamos el cartel */
+@media (max-width: 1023px) {
+  .login-illustration__motto {
+    left: 32px;
+    bottom: 40px;
+    font-size: 52px;
+  }
+}
+
+/* Celular: franja de 250 px arriba del formulario, con el mismo recorte que el diseño */
+@media (max-width: 767px) {
+  .login-illustration {
+    height: 250px;
+    flex-shrink: 0;
+    border-right: 0;
+    border-bottom: var(--border);
+  }
+
+  /* Escala 0,625 (475 px de ancho) con el centro del estallido en el medio de la franja */
+  .login-illustration__art {
+    inset: auto;
+    top: -88px;
+    left: calc(50% - 238px);
+    width: 475px;
+    max-width: none; /* anula img { max-width: 100% } de global.css: la imagen es más ancha que la franja a propósito */
+    height: 500px;
+    object-fit: fill;
+  }
+
+  .login-illustration__dots,
+  .login-illustration__motto {
+    display: none;
+  }
+}

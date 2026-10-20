@@ -1,0 +1,25 @@
+.profile-section-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 960px;
+  padding-top: 28px;
+}
+
+.profile-section-page__back {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  .profile-section-page {
+    gap: 12px;
+    padding-top: 12px;
+  }
+}

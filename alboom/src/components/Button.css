@@ -1,0 +1,106 @@
+.btn {
+  /* Largo de la sombra dura; en hover crece 1 px */
+  --btn-offset: 3px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 22px;
+  border: var(--border);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  color: var(--ink);
+  box-shadow: var(--btn-offset) var(--btn-offset) 0 var(--shadow-color);
+  transition:
+    transform 80ms ease,
+    box-shadow 80ms ease;
+}
+
+@media (hover: hover) {
+  .btn:not(:disabled):hover {
+    box-shadow: calc(var(--btn-offset) + 1px) calc(var(--btn-offset) + 1px) 0 var(--shadow-color);
+    transform: translate(-1px, -1px);
+  }
+
+  .btn.btn--done:hover,
+  .btn.btn--listened:hover {
+    box-shadow: none;
+  }
+}
+
+/* Efecto "sello" al apretar */
+.btn:not(:disabled):active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Variantes */
+.btn--primary {
+  background: var(--pink);
+  color: var(--on-accent);
+}
+
+.btn--secondary {
+  background: var(--card);
+}
+
+.btn--danger {
+  background: var(--error);
+  color: #fff;
+}
+
+.btn--done {
+  background: var(--yellow);
+  box-shadow: none;
+}
+
+.btn--listened {
+  background: var(--listened);
+  box-shadow: none;
+}
+
+/* Esperando la respuesta: botón "hundido" y sin sombra */
+.btn.btn--pending {
+  background: var(--pink-pressed);
+  color: var(--ink-soft);
+  box-shadow: none;
+  transform: translate(2px, 2px);
+  cursor: progress;
+  opacity: 1;
+}
+
+/* Tamaños */
+.btn--sm {
+  min-height: 40px;
+  padding: 0 14px;
+}
+
+.btn--md {
+  min-height: 46px;
+}
+
+.btn--lg {
+  --btn-offset: 4px;
+  min-height: 54px;
+  border-radius: var(--radius);
+  font-size: 17px;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+/* Medianoche: el rojo es claro, así que el texto va oscuro */
+[data-theme='medianoche'] .btn--danger {
+  color: var(--on-accent);
+}

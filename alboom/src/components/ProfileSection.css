@@ -1,0 +1,87 @@
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px;
+  background: var(--card);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  scroll-margin-top: 24px;
+}
+
+.profile-section__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.profile-section__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-section__title {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.profile-section__subtitle {
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+/* Fila de ajuste: texto a la izquierda, control a la derecha */
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 0;
+  border-bottom: 2px dashed var(--line);
+}
+
+.setting-row:last-of-type {
+  border-bottom: 0;
+}
+
+.setting-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.setting-row__title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.setting-row__description {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 767px) {
+  .profile-section {
+    gap: 16px;
+    padding: 18px;
+  }
+
+  .profile-section__header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .profile-section__title {
+    font-size: 30px;
+  }
+
+  .setting-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}

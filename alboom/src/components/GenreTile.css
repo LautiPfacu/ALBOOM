@@ -1,0 +1,91 @@
+.genre-tile {
+  position: relative;
+  height: 100px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  padding: 16px 18px;
+  background: var(--card);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  text-align: left;
+  color: var(--ink);
+  transition:
+    transform 80ms ease,
+    box-shadow 80ms ease;
+}
+
+.genre-tile[aria-pressed='true'] {
+  background: var(--pink);
+  box-shadow: var(--shadow);
+}
+
+.genre-tile:active {
+  transform: translate(2px, 2px);
+}
+
+.genre-tile__label {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 34px;
+  line-height: 1;
+}
+
+/* No elegida: círculo punteado arriba a la derecha */
+.genre-tile__circle {
+  position: absolute;
+  right: 18px;
+  top: 16px;
+  width: 34px;
+  height: 34px;
+  border: 2px dashed var(--vinyl-empty);
+  border-radius: 50%;
+}
+
+/* Elegida: trama de puntos que se desvanece y el estallido */
+.genre-tile__dots {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 65%;
+  height: 100%;
+  background-image: radial-gradient(var(--ink) 1.5px, transparent 1.8px);
+  background-size: 9px 9px;
+  mask-image: linear-gradient(225deg, #000 10%, transparent 65%);
+  opacity: 0.45;
+}
+
+.genre-tile__burst {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  width: 44px;
+  height: 44px;
+}
+
+/* El estallido sobre el acento: la sombra va en blanco para que se vea */
+.genre-tile .burst-mark__shadow {
+  fill: var(--card);
+}
+
+@media (max-width: 767px) {
+  .genre-tile {
+    height: 88px;
+    padding: 12px;
+    border-radius: var(--radius);
+  }
+
+  .genre-tile__label {
+    font-size: 24px;
+  }
+
+  .genre-tile__circle {
+    width: 24px;
+    height: 24px;
+  }
+
+  .genre-tile__burst {
+    width: 30px;
+    height: 30px;
+  }
+}

@@ -1,0 +1,62 @@
+.rating-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 16px;
+  background: var(--card);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.rating-chart__label {
+  font-family: var(--font-label);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.rating-chart__bars {
+  height: 92px;
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  border-bottom: var(--border);
+}
+
+.rating-chart__bar {
+  flex: 1;
+  border: var(--border);
+  border-bottom: 0;
+  border-radius: 4px 4px 0 0;
+  background: var(--chart);
+}
+
+.rating-chart__axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.rating-chart__text {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 767px) {
+  .rating-chart {
+    padding: 12px 14px;
+  }
+
+  .rating-chart__bars {
+    height: 56px;
+  }
+
+  .rating-chart__bar {
+    max-height: 52px;
+  }
+}

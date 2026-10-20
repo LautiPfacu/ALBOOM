@@ -1,0 +1,137 @@
+/* Temas de ALBOOM. Importar en main.jsx DESPUÉS de tokens.css.
+   El tema se aplica con <html data-theme="garage|psicodelia|medianoche">. Sin atributo = Historieta.
+   Login y primera vez fuerzan Historieta (ver README, fase 4). */
+
+/* Tokens nuevos de V2 y tokens compuestos que ahora dependen de ellos */
+:root {
+  --on-accent: var(--ink);          /* texto sobre botones --pink */
+  --border-color: var(--ink);
+  --border-width: 2px;
+  --shadow-color: var(--ink);
+  --outline: var(--ink);            /* contorno de números grandes (Tendencias) */
+  --vinyl-body: var(--ink);
+  --chart: var(--blue);             /* barras del gráfico de puntajes */
+  --rank: var(--yellow);            /* relleno de números de Tendencias */
+  --listened: #8edb9e;              /* "✓ Escuchado" en búsqueda y Explorar */
+  --link: var(--blue);
+  --highlight: linear-gradient(transparent 58%, var(--yellow) 58%);
+  --texture: none;                  /* textura de fondo de página */
+  --font-label: var(--font-body);   /* etiquetas chicas en mayúsculas */
+
+  --border: var(--border-width) solid var(--border-color);
+  --border-thick: calc(var(--border-width) + 0.5px) solid var(--border-color);
+  --shadow-sm: 3px 3px 0 var(--shadow-color);
+  --shadow: 4px 4px 0 var(--shadow-color);
+  --shadow-md: 5px 5px 0 var(--shadow-color);
+  --shadow-lg: 6px 6px 0 var(--shadow-color);
+  --shadow-xl: 8px 8px 0 var(--shadow-color);
+}
+
+[data-theme='garage'] {
+  --paper: #f2f0eb;
+  --card: #ffffff;
+  --ink: #141414;
+  --ink-soft: #4a4a4a;
+  --placeholder: #6b6b6b;
+  --pink: #e3261f;
+  --pink-pressed: #f4b3af;
+  --blue: #141414;
+  --blue-dark: #b51d17;
+  --blue-light: #e4e1da;
+  --yellow: #ffffff;
+  --tape: rgba(255, 255, 255, 0.85);
+  --error: #c21f3a;
+  --error-bg: #ffe3e1;
+  --line: #bdbab3;
+  --line-strong: #8e8b85;
+  --vinyl-empty: #6b6b6b;
+  --skeleton: #e4e1da;
+  --on-accent: #ffffff;
+  --border-color: #141414;
+  --shadow-color: #141414;
+  --outline: #141414;
+  --vinyl-body: #141414;
+  --chart: #e3261f;
+  --rank: #ffffff;
+  --listened: #9fd4ae;
+  --link: #b51d17;
+  --highlight: linear-gradient(transparent 78%, #e3261f 78%);
+  --texture: radial-gradient(rgba(20, 20, 20, 0.1) 1px, transparent 1.3px) 0 0 / 5px 5px;
+  --radius-sm: 2px;
+  --radius: 2px;
+  --radius-lg: 2px;
+  --radius-pill: 2px;
+  --font-label: ui-monospace, Menlo, monospace;
+}
+
+[data-theme='psicodelia'] {
+  --paper: #b39ad8;
+  --card: #fbd3cb;
+  --ink: #24163d;
+  --ink-soft: #3a2c55;
+  --placeholder: #5b4a78;
+  --pink: #f2e33a;
+  --pink-pressed: #f8ee9a;
+  --blue: #6e4c9a;
+  --blue-dark: #4b2f78;
+  --blue-light: #e4d8f5;
+  --yellow: #f7a497;
+  --tape: rgba(247, 164, 151, 0.85);
+  --error: #b0182f;
+  --error-bg: #ffe0e3;
+  --line: #8b74b2;
+  --line-strong: #6e5a92;
+  --vinyl-empty: #5b4a78;
+  --skeleton: #c7b5e3;
+  --on-accent: #24163d;
+  --border-color: #24163d;
+  --shadow-color: #24163d;
+  --outline: #24163d;
+  --vinyl-body: #24163d;
+  --chart: #6e4c9a;
+  --rank: #f2e33a;
+  --listened: #a6e3b4;
+  --link: #4b2f78;
+  --highlight: linear-gradient(transparent 55%, #f7a497 55%);
+  --texture: repeating-radial-gradient(circle at 100% 0%, rgba(242, 227, 58, 0.24) 0 22px, transparent 22px 56px);
+  --radius-sm: 13px;
+  --radius: 19px;
+  --radius-lg: 22px;
+}
+
+[data-theme='medianoche'] {
+  --paper: #121117;
+  --card: #1e1d26;
+  --ink: #f5f1e6;
+  --ink-soft: #b9b6c6;
+  --placeholder: #8c899c;
+  --pink: #ff5c8a;
+  --pink-pressed: #5a2a3c;
+  --blue: #3b3550;
+  --blue-dark: #ff8fb0;
+  --blue-light: #2b2a36;
+  --yellow: #3a1f2b;
+  --tape: rgba(255, 92, 138, 0.35);
+  --error: #ff6b7d;
+  --error-bg: #3a1820;
+  --line: #34323f;
+  --line-strong: #4a4858;
+  --vinyl-empty: #6e6b7e;
+  --skeleton: #24232d;
+  --on-accent: #121117;
+  --border-color: #3e3c4c;
+  --shadow-color: rgba(0, 0, 0, 0.6);
+  --outline: #000000;
+  --vinyl-body: #e8e4ee;
+  --chart: #ff5c8a;
+  --rank: #ff5c8a;
+  --listened: #1e5a3a;
+  --link: #ff8fb0;
+  --highlight: linear-gradient(transparent 84%, #ff5c8a 84%);
+  --texture: radial-gradient(circle at 92% 0%, rgba(255, 92, 138, 0.16), transparent 45%);
+  --border-width: 1.5px;
+}
+
+body {
+  background: var(--texture), var(--paper);
+}

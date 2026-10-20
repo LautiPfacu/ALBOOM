@@ -1,0 +1,15 @@
+.burst-mark {
+  overflow: visible;
+}
+
+.burst-mark__shadow {
+  fill: var(--pink);
+}
+
+.burst-mark__body {
+  fill: var(--ink);
+}
+
+.burst-mark__hole {
+  fill: var(--paper);
+}

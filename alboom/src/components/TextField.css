@@ -1,0 +1,61 @@
+.text-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.text-field__label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.text-field__box {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  background: var(--card);
+  border: var(--border);
+  border-radius: var(--radius);
+}
+
+/* El foco se marca en la caja completa, porque el input no tiene borde propio */
+.text-field__box:focus-within {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.text-field__box--error {
+  border: 2.5px solid var(--error);
+}
+
+.text-field__input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 16px;
+}
+
+.text-field__input::placeholder {
+  color: var(--placeholder);
+}
+
+.text-field__input:focus-visible {
+  outline: none;
+}
+
+.text-field__error {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--error);
+}
+
+@media (max-width: 767px) {
+  .text-field__box {
+    height: 52px;
+  }
+}

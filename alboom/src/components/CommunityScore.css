@@ -1,0 +1,109 @@
+.community-score {
+  flex-shrink: 0;
+  width: 224px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 20px 18px;
+  background: var(--yellow);
+  border: var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  transform: rotate(2deg);
+}
+
+.community-score__label {
+  font-family: var(--font-label);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.community-score__value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.community-score__number {
+  font-family: var(--font-display);
+  font-size: 88px;
+  line-height: 0.85;
+}
+
+.community-score__max {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.community-score__details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.community-score__count {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.community-score__empty {
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 1;
+}
+
+/* Celular: cartel horizontal a lo ancho, inclinado al revés */
+@media (max-width: 767px) {
+  .community-score {
+    width: auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'number label'
+      'number details';
+    align-items: center;
+    column-gap: 16px;
+    row-gap: 6px;
+    padding: 14px 18px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    transform: rotate(-1deg);
+  }
+
+  .community-score__label {
+    grid-area: label;
+  }
+
+  .community-score__value {
+    grid-area: number;
+  }
+
+  .community-score__number {
+    font-size: 64px;
+  }
+
+  .community-score__max {
+    display: none;
+  }
+
+  .community-score__details {
+    grid-area: details;
+    gap: 6px;
+  }
+
+  /* VinylRating pone --vinyl-size en línea (style); !important es la forma de achicarlo solo en celular */
+  .community-score__details .vinyl-rating {
+    --vinyl-size: 18px !important;
+  }
+
+  .community-score__count {
+    font-size: 13px;
+  }
+
+  .community-score__empty {
+    grid-area: details;
+    font-size: 26px;
+  }
+}

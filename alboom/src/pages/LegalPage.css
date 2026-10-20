@@ -1,0 +1,51 @@
+.legal__bar {
+  border-bottom: var(--border);
+}
+
+.legal__bar .page {
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+}
+
+.legal__logo {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.legal__content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 760px;
+  padding-top: 40px;
+  padding-bottom: 64px;
+}
+
+.legal__title {
+  font-size: 64px;
+  line-height: 0.95;
+}
+
+.legal__section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legal__heading {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.legal__text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 767px) {
+  .legal__title {
+    font-size: 44px;
+  }
+}

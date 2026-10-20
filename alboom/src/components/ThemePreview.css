@@ -1,0 +1,287 @@
+/* Cada vista previa define sus propias variables, así no depende del tema activo de la app */
+.theme-preview--historieta {
+  --pv-bg: #f3e35a;
+  --pv-card: #fffdf7;
+  --pv-ink: #1f1e2b;
+  --pv-accent: #ff5c8a;
+  --pv-on-accent: #1f1e2b;
+  --pv-soft: #2f5fd0;
+  --pv-shadow: #1f1e2b;
+  --pv-radius: 10px;
+}
+
+.theme-preview--garage {
+  --pv-bg: #f2f0eb;
+  --pv-card: #ffffff;
+  --pv-ink: #141414;
+  --pv-accent: #e3261f;
+  --pv-on-accent: #ffffff;
+  --pv-soft: #e4e1da;
+  --pv-shadow: #e3261f;
+  --pv-radius: 2px;
+}
+
+.theme-preview--psicodelia {
+  --pv-bg: #6e4c9a;
+  --pv-card: #f7a497;
+  --pv-ink: #24163d;
+  --pv-accent: #f2e33a;
+  --pv-on-accent: #24163d;
+  --pv-soft: #fbd3cb;
+  --pv-shadow: #24163d;
+  --pv-radius: 14px;
+}
+
+.theme-preview--medianoche {
+  --pv-bg: #121117;
+  --pv-card: #1e1d26;
+  --pv-ink: #f5f1e6;
+  --pv-accent: #ff5c8a;
+  --pv-on-accent: #121117;
+  --pv-soft: #3e3c4c;
+  --pv-shadow: transparent;
+  --pv-radius: 10px;
+}
+
+.theme-preview {
+  /* El estallido del logo toma estas variables (BurstMark usa --ink, --pink y --paper) */
+  --ink: var(--pv-ink);
+  --pink: var(--pv-accent);
+  --paper: var(--pv-bg);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+  padding: 14px;
+  background: var(--pv-bg);
+  border: 2px solid var(--pv-ink);
+  border-radius: 10px;
+  color: var(--pv-ink);
+}
+
+.theme-preview--large {
+  height: 276px;
+}
+
+.theme-preview--small {
+  height: 118px;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.theme-preview--medianoche {
+  border-color: #3e3c4c;
+}
+
+.theme-preview > * {
+  position: relative;
+}
+
+.theme-preview__decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.theme-preview--large.theme-preview--historieta .theme-preview__decor {
+  inset: -40%;
+  background: repeating-conic-gradient(from 0deg at 50% 50%, rgba(255, 92, 138, 0.6) 0deg 8deg, transparent 8deg 22deg);
+}
+
+.theme-preview--large.theme-preview--garage .theme-preview__decor {
+  background:
+    linear-gradient(-14deg, transparent 38%, #e3261f 38% 64%, transparent 64%),
+    radial-gradient(rgba(31, 30, 43, 0.28) 1px, transparent 1.3px) 0 0 / 5px 5px;
+}
+
+.theme-preview--large.theme-preview--psicodelia .theme-preview__decor {
+  background:
+    linear-gradient(110deg, transparent 20%, rgba(242, 227, 58, 0.85) 20% 34%, transparent 34%),
+    linear-gradient(70deg, transparent 66%, rgba(242, 227, 58, 0.85) 66% 78%, transparent 78%),
+    repeating-radial-gradient(circle at 100% 0%, rgba(247, 164, 151, 0.35) 0 14px, transparent 14px 34px);
+}
+
+.theme-preview--large.theme-preview--medianoche .theme-preview__decor {
+  background: radial-gradient(circle at 92% 10%, rgba(255, 92, 138, 0.35), transparent 55%);
+}
+
+.theme-preview__brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.theme-preview--small .theme-preview__brand {
+  font-size: 18px;
+}
+
+.theme-preview__burst {
+  width: 22px;
+  height: 22px;
+}
+
+.theme-preview__greeting {
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.theme-preview--historieta .theme-preview__greeting {
+  padding: 8px 14px;
+  background: var(--pv-card);
+  border: 2.5px solid var(--pv-ink);
+  border-radius: 18px;
+  box-shadow: 3px 3px 0 var(--pv-ink);
+  font-size: 26px;
+}
+
+.theme-preview--garage .theme-preview__greeting {
+  padding: 8px 16px 10px;
+  background: #fff;
+  transform: rotate(-4deg);
+  clip-path: polygon(0 8%, 12% 0, 30% 6%, 50% 0, 70% 7%, 88% 0, 100% 6%, 97% 92%, 80% 100%, 60% 94%, 40% 100%, 20% 93%, 0 100%);
+}
+
+.theme-preview--psicodelia .theme-preview__greeting {
+  color: #f7a497;
+  text-shadow: 3px 2px 0 #1f1e2b;
+}
+
+.theme-preview__pop {
+  position: absolute;
+  right: 22px;
+  top: 112px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1;
+  color: #f3e35a;
+  transform: rotate(-10deg);
+  text-shadow:
+    1.5px 1.5px 0 #1f1e2b,
+    -1.5px -1.5px 0 #1f1e2b,
+    1.5px -1.5px 0 #1f1e2b,
+    -1.5px 1.5px 0 #1f1e2b;
+}
+
+.theme-preview__tag {
+  align-self: flex-start;
+  padding: 3px 7px;
+  background: #1f1e2b;
+  color: #f2f0eb;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  transform: rotate(2deg);
+}
+
+.theme-preview__note {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #b9b6c6;
+}
+
+.theme-preview__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.theme-preview--large .theme-preview__bar {
+  padding: 10px;
+  background: var(--pv-card);
+  border: 2px solid var(--pv-ink);
+  border-radius: var(--pv-radius);
+  box-shadow: 4px 4px 0 var(--pv-shadow);
+}
+
+.theme-preview--medianoche.theme-preview--large .theme-preview__bar {
+  border: 1.5px solid var(--pv-accent);
+}
+
+.theme-preview__vinyls {
+  display: flex;
+  gap: 3px;
+}
+
+.theme-preview__vinyl {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--pv-card) 0 10%, var(--pv-accent) 11% 34%, var(--pv-ink) 36%);
+}
+
+.theme-preview--medianoche .theme-preview__vinyl {
+  background: radial-gradient(circle, #121117 0 10%, #ff5c8a 11% 34%, #6e6b7e 36%);
+}
+
+.theme-preview__vinyl--empty {
+  background: none;
+  border: 1.5px dashed var(--pv-ink);
+}
+
+.theme-preview__dots {
+  display: flex;
+  gap: 4px;
+}
+
+.theme-preview__dot {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--pv-ink);
+  border-radius: 50%;
+}
+
+.theme-preview__dot--card {
+  background: var(--pv-card);
+}
+
+.theme-preview__dot--accent {
+  background: var(--pv-accent);
+}
+
+.theme-preview__dot--soft {
+  background: var(--pv-soft);
+}
+
+.theme-preview__button {
+  padding: 6px 10px;
+  background: var(--pv-accent);
+  border: 1.5px solid var(--pv-ink);
+  border-radius: min(var(--pv-radius), 8px);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--pv-on-accent);
+}
+
+.theme-preview--small .theme-preview__button {
+  padding: 5px 9px;
+  font-size: 11px;
+}
+
+.theme-preview--psicodelia .theme-preview__button {
+  border-radius: 999px;
+}
+
+.theme-preview--garage .theme-preview__button {
+  border: 0;
+  background: #1f1e2b;
+  font-family: ui-monospace, Menlo, monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.theme-preview--small.theme-preview--garage .theme-preview__button {
+  background: var(--pv-accent);
+}
+
+.theme-preview--medianoche .theme-preview__button {
+  border-color: var(--pv-accent);
+}

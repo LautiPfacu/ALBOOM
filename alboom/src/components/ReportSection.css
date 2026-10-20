@@ -1,0 +1,31 @@
+.report-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.report-section__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.report-section__textarea {
+  min-height: 140px;
+  padding: 14px 16px;
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius);
+  font-size: 16px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.report-section__textarea--error {
+  border: 2.5px solid var(--error);
+}
+
+.report-section__actions {
+  display: flex;
+  justify-content: flex-end;
+}

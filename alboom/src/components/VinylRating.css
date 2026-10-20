@@ -1,0 +1,72 @@
+.vinyl-rating {
+  --vinyl-ring: max(1.5px, calc(var(--vinyl-size) * 0.06));
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--vinyl-size) * 0.22);
+}
+
+.vinyl-rating--interactive {
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.vinyl-rating--interactive:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 4px;
+}
+
+.vinyl-rating[aria-disabled='true'] {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.vinyl {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--vinyl-size);
+  height: var(--vinyl-size);
+  border-radius: 50%;
+}
+
+.vinyl::before,
+.vinyl::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Aro punteado: vinilo vacío o la mitad que falta */
+.vinyl--empty::after,
+.vinyl--half::after {
+  border: var(--vinyl-ring) dashed var(--vinyl-empty);
+}
+
+/* Disco negro con etiqueta rosa y agujero central */
+.vinyl--full::before,
+.vinyl--half::before {
+  background: radial-gradient(circle, var(--paper) 0 10%, var(--pink) 11% 34%, var(--vinyl-body) 36%);
+}
+
+.vinyl--half::before {
+  z-index: 1;
+  clip-path: inset(0 50% 0 0);
+}
+
+.vinyl__hit {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 50%;
+}
+
+.vinyl__hit--left {
+  left: 0;
+}
+
+.vinyl__hit--right {
+  right: 0;
+}

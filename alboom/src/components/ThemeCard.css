@@ -1,0 +1,103 @@
+.theme-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  background: var(--card);
+  border: var(--border);
+  border-radius: 16px;
+  font: inherit;
+  text-align: left;
+  color: var(--ink);
+  transition:
+    transform 80ms ease,
+    box-shadow 80ms ease;
+}
+
+.theme-card[aria-pressed='true'] {
+  box-shadow: var(--shadow-lg);
+}
+
+@media (hover: hover) {
+  .theme-card:not(:disabled):hover {
+    transform: translate(-1px, -1px);
+  }
+}
+
+.theme-card:disabled {
+  cursor: progress;
+}
+
+.theme-card--small {
+  padding: 10px;
+  border-radius: var(--radius-lg);
+}
+
+.theme-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.theme-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.theme-card__name {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1;
+}
+
+.theme-card--small .theme-card__name {
+  font-size: 24px;
+}
+
+.theme-card__tags {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.theme-card--small .theme-card__tags {
+  font-size: 12px;
+}
+
+/* Círculo de opción: relleno con punto cuando está elegido */
+.theme-card__radio {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border);
+  border-radius: 50%;
+  background: var(--card);
+}
+
+.theme-card[aria-pressed='true'] .theme-card__radio {
+  background: var(--pink);
+}
+
+.theme-card[aria-pressed='true'] .theme-card__radio::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.theme-card__description {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.theme-card__badge {
+  align-self: flex-start;
+}

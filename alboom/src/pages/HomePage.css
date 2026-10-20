@@ -1,0 +1,361 @@
+/* Encabezado: saludo + búsqueda (y a la derecha, "Te quedó pendiente") */
+.home__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 820px);
+  gap: 56px;
+  align-items: center;
+  padding-top: 44px;
+}
+
+.home__hero--with-card {
+  grid-template-columns: minmax(0, 1fr) 380px;
+}
+
+.home__hero-main {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+
+.home__greeting {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.home__title {
+  font-size: 72px;
+  line-height: 0.95;
+}
+
+.home__subtitle {
+  font-size: 19px;
+  color: var(--ink-soft);
+}
+
+/* "Probá con" + chips torcidos */
+.home__suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.home__chip {
+  min-height: 36px;
+  padding: 6px 12px;
+  border: var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--card);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  transform: rotate(-2deg);
+  transition: transform 80ms ease;
+}
+
+.home__chip:nth-of-type(2) {
+  background: var(--yellow);
+  transform: rotate(1.5deg);
+}
+
+.home__chip:nth-of-type(3) {
+  transform: rotate(-1deg);
+}
+
+@media (hover: hover) {
+  .home__chip:hover {
+    transform: rotate(0deg) translateY(-1px);
+  }
+}
+
+/* Secciones */
+.home__section {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-top: 52px;
+}
+
+.home__section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.home__section-header--baseline {
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.home__section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.home__section-title {
+  font-size: 40px;
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+
+.home__section-subtitle {
+  font-size: 16px;
+  color: var(--ink-soft);
+}
+
+.home__see-more {
+  flex-shrink: 0;
+}
+
+.home__see-more-short {
+  display: none;
+}
+
+/* Leyenda de colores de la búsqueda */
+.home__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.home__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.home__legend-swatch {
+  width: 14px;
+  height: 14px;
+  border: var(--border);
+  border-radius: 4px;
+}
+
+.home__legend-swatch--listened {
+  background: var(--listened);
+}
+
+.home__legend-swatch--saved {
+  background: var(--yellow);
+}
+
+.home__results-grid,
+.home__tiles {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.home__tiles--trends {
+  gap: 26px 24px;
+  padding-left: 12px;
+}
+
+.home__more {
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.home__recent-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* Responsive */
+@media (max-width: 1199px) {
+  .home__results-grid,
+  .home__tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  /* La quinta tarjeta no entra: la ocultamos para no dejar una fila con una sola */
+  .home__tiles > :nth-child(5) {
+    display: none;
+  }
+
+  .home__hero--with-card {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .home__results-grid,
+  .home__tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home__tiles > :nth-child(4) {
+    display: none;
+  }
+
+  .home__recent-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* "Te quedó pendiente" pasa debajo de la búsqueda */
+  .home__hero--with-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home__pending {
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 767px) {
+  .home__hero {
+    gap: 24px;
+    padding-top: 22px;
+  }
+
+  .home__hero-main {
+    gap: 16px;
+  }
+
+  .home__title {
+    font-size: 48px;
+  }
+
+  .home__subtitle {
+    font-size: 16px;
+  }
+
+  .home__section {
+    gap: 12px;
+    padding-top: 32px;
+  }
+
+  .home__section-header {
+    align-items: baseline;
+  }
+
+  .home__section-title {
+    font-size: 30px;
+  }
+
+  .home__section-subtitle {
+    font-size: 14px;
+  }
+
+  .home__see-more-long {
+    display: none;
+  }
+
+  .home__see-more-short {
+    display: inline;
+  }
+
+  .home__legend {
+    gap: 10px;
+    font-size: 13px;
+  }
+
+  /* Resultados en filas */
+  .home__results-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* "Para vos": carrusel horizontal de tarjetas de 140 px */
+  .home__tiles {
+    display: flex;
+    gap: 14px;
+    margin-inline: calc(var(--page-pad) * -1);
+    padding: 0 var(--page-pad) 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .home__tiles::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home__tiles > * {
+    width: 140px;
+    flex-shrink: 0;
+  }
+
+  .home__tiles > :nth-child(4),
+  .home__tiles > :nth-child(5) {
+    display: flex;
+  }
+
+  /* Tendencias: filas con número, portada de 56 px y puntaje a la derecha */
+  .home__tiles--trends {
+    flex-direction: column;
+    gap: 10px;
+    margin-inline: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .home__tiles--trends > * {
+    width: auto;
+  }
+
+  .home__tiles--trends .album-tile {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 2px dashed var(--line);
+  }
+
+  /* display: contents "saca" al número y a la portada de su caja para ordenarlos en la fila */
+  .home__tiles--trends .album-tile__cover-wrap {
+    display: contents;
+  }
+
+  .home__tiles--trends .album-tile__rank {
+    position: static;
+    order: -1;
+    width: 28px;
+    font-size: 40px;
+    text-shadow:
+      1.5px 1.5px 0 var(--outline),
+      -1.5px -1.5px 0 var(--outline),
+      1.5px -1.5px 0 var(--outline),
+      -1.5px 1.5px 0 var(--outline);
+  }
+
+  .home__tiles--trends .album-tile__cover-wrap > a {
+    width: 56px;
+    flex-shrink: 0;
+  }
+
+  .home__tiles--trends .album-tile__cover {
+    border-radius: 5px;
+    box-shadow: none;
+  }
+
+  .home__tiles--trends .album-tile__info {
+    flex: 1;
+  }
+
+  .home__tiles--trends .album-tile__count {
+    display: none;
+  }
+
+  .home__recent-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .home__pending {
+    display: none;
+  }
+}

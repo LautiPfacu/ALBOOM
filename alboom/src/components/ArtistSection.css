@@ -1,0 +1,168 @@
+.artist-section {
+  display: grid;
+  grid-template-columns: 400px minmax(0, 1fr);
+  gap: 56px;
+  align-items: center;
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: var(--border);
+}
+
+.artist-section__who {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.artist-section__photo {
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border: var(--border);
+  border-radius: 50%;
+}
+
+.artist-section__photo--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 2px dashed var(--line-strong);
+  font-family: var(--font-label);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.artist-section__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.artist-section__label {
+  font-family: var(--font-label);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--link);
+}
+
+.artist-section__name {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.artist-section__sub {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+/* El título "Más de X" solo se ve en celular (en escritorio lo dice el bloque de la izquierda) */
+.artist-section__albums-title {
+  display: none;
+}
+
+.artist-section__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.artist-section__album {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.artist-section__cover {
+  width: 88px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  box-shadow: var(--shadow-sm);
+}
+
+.artist-section__album-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.artist-section__album-name {
+  font-size: 16px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+@media (hover: hover) {
+  .artist-section__album:hover .artist-section__album-name {
+    text-decoration: underline;
+  }
+}
+
+.artist-section__album-year {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 1023px) {
+  .artist-section {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .artist-section {
+    gap: 12px;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .artist-section__who {
+    display: none;
+  }
+
+  .artist-section__albums-title {
+    display: block;
+    margin-bottom: 12px;
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .artist-section__grid {
+    gap: 12px;
+  }
+
+  .artist-section__album {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .artist-section__cover {
+    width: auto;
+    box-shadow: 2px 2px 0 var(--shadow-color);
+  }
+
+  .artist-section__album-name {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .artist-section__album-year {
+    display: none;
+  }
+}

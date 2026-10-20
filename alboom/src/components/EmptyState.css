@@ -1,0 +1,48 @@
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+  border-radius: var(--radius-lg);
+}
+
+.empty-state--card {
+  background: var(--card);
+  border: var(--border);
+}
+
+.empty-state--dashed {
+  gap: 8px;
+  border: 2px dashed var(--line-strong);
+}
+
+.empty-state__illustration {
+  width: 110px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--line-strong);
+  border-radius: 6px;
+  transform: rotate(-3deg);
+  font-family: var(--font-label);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.empty-state__title {
+  font-size: 28px;
+  line-height: 1.05;
+}
+
+.empty-state__text {
+  max-width: 520px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}

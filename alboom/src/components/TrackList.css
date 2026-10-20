@@ -1,0 +1,102 @@
+.track-list {
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+}
+
+.track-list__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.track-list__title {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.track-list__summary {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.track-list__disc-title {
+  margin: 14px 0 2px;
+  font-family: var(--font-label);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.track-list__items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.track-list__item {
+  display: flex;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 2px dashed var(--line);
+  font-size: 14px;
+}
+
+.track-list__number {
+  width: 22px;
+  flex-shrink: 0;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.track-list__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track-list__duration {
+  color: var(--ink-soft);
+}
+
+/* En escritorio se ven todas: el botón es solo para celular */
+.track-list__toggle {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .track-list {
+    padding-top: 0;
+  }
+
+  .track-list__title {
+    font-size: 30px;
+  }
+
+  .track-list__item {
+    gap: 14px;
+    padding: 12px 0;
+    font-size: 15px;
+  }
+
+  .track-list__item--extra {
+    display: none;
+  }
+
+  .track-list--expanded .track-list__item--extra {
+    display: flex;
+  }
+
+  .track-list__toggle {
+    display: inline;
+    align-self: flex-start;
+    min-height: 44px;
+    padding-top: 14px;
+  }
+}

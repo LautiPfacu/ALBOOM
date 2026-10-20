@@ -1,0 +1,49 @@
+.navbar {
+  background: var(--paper);
+  border-bottom: var(--border);
+}
+
+.navbar__inner {
+  height: var(--nav-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.navbar__logo {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.navbar__nav {
+  display: flex;
+  gap: 32px;
+}
+
+.navbar__link {
+  padding: 0 2px;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Subrayado tipo resaltador en la página actual */
+.navbar__link--active {
+  background: var(--highlight);
+}
+
+@media (hover: hover) {
+  .navbar__link:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+}
+
+/* Celular: solo logo + avatar (la navegación pasa a la TabBar) */
+@media (max-width: 767px) {
+  .navbar__nav {
+    display: none;
+  }
+}

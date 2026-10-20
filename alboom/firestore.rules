@@ -1,0 +1,83 @@
+rules_version = '2';
+
+// Reglas de ALBOOM V2.
+// Se pegan en Firebase Console → Firestore Database → Reglas → Publicar.
+// Desplegar en Vercel NO las actualiza.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function isValidLibraryItem(data) {
+      return data.name is string
+        && data.artist is string
+        && data.rating is number
+        && data.rating >= 0
+        && data.rating <= 5
+        && data.status in ['escuchado', 'pendiente']
+        && data.review is string
+        && data.review.size() <= 500
+        && (!('isPublic' in data) || data.isPublic is bool)
+        && (!('listenedAt' in data) || data.listenedAt == null || data.listenedAt is timestamp);
+    }
+
+    function isValidReview(reviewId, data) {
+      return data.uid == request.auth.uid
+        && data.albumId is string
+        && reviewId == data.albumId + '_' + request.auth.uid
+        && data.rating is number
+        && data.rating >= 0.5
+        && data.rating <= 5
+        && data.text is string
+        && data.text.size() <= 500
+        && data.username is string
+        && data.displayName is string;
+    }
+
+    // Perfil: solo lo lee y lo escribe su dueño.
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+
+      // Biblioteca personal: users/{uid}/library/{albumId}
+      match /library/{albumId} {
+        allow read, delete: if isOwner(uid);
+        allow create, update: if isOwner(uid) && isValidLibraryItem(request.resource.data);
+      }
+    }
+
+    // Reseñas públicas: reviews/{albumId}_{uid}
+    // Las lee cualquier persona con sesión; solo su autor las crea, edita o borra.
+    match /reviews/{reviewId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidReview(reviewId, request.resource.data);
+      // Se valida por el id (termina en _uid) para poder borrar aunque el documento no exista.
+      allow delete: if isSignedIn() && reviewId.matches('.+_' + request.auth.uid);
+    }
+
+    // Reserva de nombres de usuario: usernames/{username} → { uid }
+    match /usernames/{username} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && username.matches('^[a-z0-9._]{3,20}$');
+      allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // Reportes de problemas: solo se crean (nadie los lee desde la app).
+    match /reports/{reportId} {
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.message is string
+        && request.resource.data.message.size() <= 2000;
+    }
+
+    // Todo lo demás queda cerrado por defecto.
+  }
+}

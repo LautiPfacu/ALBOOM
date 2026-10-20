@@ -1,0 +1,71 @@
+.community {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.community__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.community__title {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.community__order {
+  display: flex;
+  gap: 16px;
+}
+
+.community__order-option {
+  min-height: 36px;
+  padding: 0 2px;
+  border: 0;
+  background: none;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.community__order-option[aria-pressed='true'] {
+  background: var(--highlight);
+}
+
+.community__body {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.community__reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.community__all {
+  align-self: center;
+}
+
+@media (max-width: 1023px) {
+  .community__body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  .community {
+    gap: 14px;
+  }
+
+  .community__title {
+    font-size: 30px;
+  }
+}

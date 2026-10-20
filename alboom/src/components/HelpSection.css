@@ -1,0 +1,133 @@
+.help-section__search {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius);
+}
+
+.help-section__search:focus-within {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.help-section__search svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.help-section__search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: none;
+  font-size: 16px;
+}
+
+.help-section__search input:focus-visible {
+  outline: none;
+}
+
+.help-section__search input::placeholder {
+  color: var(--placeholder);
+}
+
+.help-section__list {
+  display: flex;
+  flex-direction: column;
+  margin-top: -6px;
+}
+
+.help-section__empty {
+  padding: 16px 0;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.help-section__item {
+  border-bottom: 2px dashed var(--line);
+}
+
+/* <summary> es el botón del acordeón: el navegador ya maneja teclado y aria-expanded */
+.help-section__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  padding: 16px 0;
+  font-size: 16px;
+  font-weight: 700;
+  list-style: none;
+  cursor: pointer;
+}
+
+.help-section__question::-webkit-details-marker {
+  display: none;
+}
+
+.help-section__icon::before {
+  content: '+';
+  font-size: 22px;
+  line-height: 1;
+}
+
+.help-section__item[open] .help-section__icon::before {
+  content: '−';
+}
+
+.help-section__answer {
+  max-width: 640px;
+  padding-bottom: 16px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.help-section__report {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px;
+  background: var(--paper);
+  border: 2px dashed var(--line-strong);
+  border-radius: var(--radius);
+}
+
+.help-section__report-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.help-section__report-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 1;
+}
+
+.help-section__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.help-section__legal a {
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .help-section__report {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

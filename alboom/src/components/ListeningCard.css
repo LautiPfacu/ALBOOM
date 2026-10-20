@@ -1,0 +1,117 @@
+.listening-card {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 24px;
+  background: var(--card);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  scroll-margin-top: 24px;
+}
+
+.listening-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.listening-card__title {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.listening-card__text {
+  font-size: 16px;
+  color: var(--ink-soft);
+}
+
+.listening-card__add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.listening-card__rating {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.listening-card__rating-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.listening-card__label {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.listening-card__saved {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.listening-card__saving {
+  color: var(--ink-soft);
+}
+
+.listening-card__vinyls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.listening-card__number {
+  margin-left: 8px;
+  font-family: var(--font-display);
+  font-size: 32px;
+}
+
+.listening-card__help {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.listening-card__remove {
+  align-self: flex-start;
+}
+
+@media (max-width: 767px) {
+  .listening-card {
+    gap: 16px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+  }
+
+  .listening-card__top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .listening-card__title {
+    font-size: 28px;
+  }
+
+  /* VinylRating pone --vinyl-size en línea (style); !important es la forma de achicarlo solo en celular */
+  .listening-card__vinyls .vinyl-rating {
+    --vinyl-size: 40px !important;
+  }
+
+  .listening-card__number {
+    margin-left: 6px;
+    font-size: 28px;
+  }
+
+  .listening-card__add > * {
+    flex: 1;
+  }
+
+  .listening-card__remove {
+    align-self: center;
+  }
+}

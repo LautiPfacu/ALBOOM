@@ -1,0 +1,38 @@
+rules_version = '2';
+
+// Reglas de ALBOOM V1.
+// Se pegan en Firebase Console → Firestore Database → Reglas → Publicar.
+// Desplegar en Vercel NO las actualiza.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function isValidLibraryItem(data) {
+      return data.name is string
+        && data.artist is string
+        && data.rating is number
+        && data.rating >= 0
+        && data.rating <= 5
+        && data.status in ['escuchado', 'pendiente']
+        && data.review is string
+        && data.review.size() <= 500;
+    }
+
+    // Perfil: solo lo lee y lo escribe su dueño.
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+
+      // Biblioteca personal: users/{uid}/library/{albumId}
+      match /library/{albumId} {
+        allow read, delete: if isOwner(uid);
+        allow create, update: if isOwner(uid) && isValidLibraryItem(request.resource.data);
+      }
+    }
+
+    // Todo lo demás queda cerrado por defecto.
+  }
+}

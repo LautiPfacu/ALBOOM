@@ -1,0 +1,2092 @@
+{
+  "version": 1,
+  "total": 393,
+  "nota": "spotify = valor para el filtro genre:\"...\" de la búsqueda de Spotify (solo funciona con type=artist o type=track). Verificar los que devuelvan pocos resultados.",
+  "familias": [
+    {
+      "id": "rock",
+      "nombre": "Rock",
+      "generos": [
+        {
+          "id": "rock",
+          "nombre": "Rock",
+          "spotify": "rock"
+        },
+        {
+          "id": "rock-nacional",
+          "nombre": "Rock nacional",
+          "spotify": "rock nacional"
+        },
+        {
+          "id": "rock-en-espanol",
+          "nombre": "Rock en español",
+          "spotify": "rock en espanol"
+        },
+        {
+          "id": "rock-barrial",
+          "nombre": "Rock barrial",
+          "spotify": "rock barrial"
+        },
+        {
+          "id": "rock-latino",
+          "nombre": "Rock latino",
+          "spotify": "latin rock"
+        },
+        {
+          "id": "rock-clasico",
+          "nombre": "Rock clásico",
+          "spotify": "classic rock"
+        },
+        {
+          "id": "rock-alternativo",
+          "nombre": "Rock alternativo",
+          "spotify": "alternative rock"
+        },
+        {
+          "id": "indie-rock",
+          "nombre": "Indie rock",
+          "spotify": "indie rock"
+        },
+        {
+          "id": "garage-rock",
+          "nombre": "Garage rock",
+          "spotify": "garage rock"
+        },
+        {
+          "id": "hard-rock",
+          "nombre": "Hard rock",
+          "spotify": "hard rock"
+        },
+        {
+          "id": "rock-psicodelico",
+          "nombre": "Rock psicodélico",
+          "spotify": "psychedelic rock"
+        },
+        {
+          "id": "rock-progresivo",
+          "nombre": "Rock progresivo",
+          "spotify": "progressive rock"
+        },
+        {
+          "id": "stoner-rock",
+          "nombre": "Stoner rock",
+          "spotify": "stoner rock"
+        },
+        {
+          "id": "post-rock",
+          "nombre": "Post-rock",
+          "spotify": "post-rock"
+        },
+        {
+          "id": "shoegaze",
+          "nombre": "Shoegaze",
+          "spotify": "shoegaze"
+        },
+        {
+          "id": "grunge",
+          "nombre": "Grunge",
+          "spotify": "grunge"
+        },
+        {
+          "id": "britpop",
+          "nombre": "Britpop",
+          "spotify": "britpop"
+        },
+        {
+          "id": "rock-and-roll",
+          "nombre": "Rock and roll",
+          "spotify": "rock-and-roll"
+        },
+        {
+          "id": "rockabilly",
+          "nombre": "Rockabilly",
+          "spotify": "rockabilly"
+        },
+        {
+          "id": "surf-rock",
+          "nombre": "Surf rock",
+          "spotify": "surf rock"
+        },
+        {
+          "id": "krautrock",
+          "nombre": "Krautrock",
+          "spotify": "krautrock"
+        },
+        {
+          "id": "glam-rock",
+          "nombre": "Glam rock",
+          "spotify": "glam rock"
+        },
+        {
+          "id": "rock-sureno",
+          "nombre": "Rock sureño",
+          "spotify": "southern rock"
+        },
+        {
+          "id": "blues-rock",
+          "nombre": "Blues rock",
+          "spotify": "blues rock"
+        },
+        {
+          "id": "folk-rock",
+          "nombre": "Folk rock",
+          "spotify": "folk rock"
+        },
+        {
+          "id": "math-rock",
+          "nombre": "Math rock",
+          "spotify": "math rock"
+        },
+        {
+          "id": "noise-rock",
+          "nombre": "Noise rock",
+          "spotify": "noise rock"
+        },
+        {
+          "id": "rock-gotico",
+          "nombre": "Rock gótico",
+          "spotify": "gothic rock"
+        },
+        {
+          "id": "art-rock",
+          "nombre": "Art rock",
+          "spotify": "art rock"
+        },
+        {
+          "id": "space-rock",
+          "nombre": "Space rock",
+          "spotify": "space rock"
+        },
+        {
+          "id": "soft-rock",
+          "nombre": "Soft rock",
+          "spotify": "soft rock"
+        }
+      ]
+    },
+    {
+      "id": "pop",
+      "nombre": "Pop",
+      "generos": [
+        {
+          "id": "pop",
+          "nombre": "Pop",
+          "spotify": "pop"
+        },
+        {
+          "id": "pop-latino",
+          "nombre": "Pop latino",
+          "spotify": "latin pop"
+        },
+        {
+          "id": "pop-en-espanol",
+          "nombre": "Pop en español",
+          "spotify": "pop en espanol"
+        },
+        {
+          "id": "pop-rock",
+          "nombre": "Pop rock",
+          "spotify": "pop rock"
+        },
+        {
+          "id": "indie-pop",
+          "nombre": "Indie pop",
+          "spotify": "indie pop"
+        },
+        {
+          "id": "synth-pop",
+          "nombre": "Synth-pop",
+          "spotify": "synthpop"
+        },
+        {
+          "id": "new-wave",
+          "nombre": "New wave",
+          "spotify": "new wave"
+        },
+        {
+          "id": "dream-pop",
+          "nombre": "Dream pop",
+          "spotify": "dream pop"
+        },
+        {
+          "id": "electropop",
+          "nombre": "Electropop",
+          "spotify": "electropop"
+        },
+        {
+          "id": "art-pop",
+          "nombre": "Art pop",
+          "spotify": "art pop"
+        },
+        {
+          "id": "power-pop",
+          "nombre": "Power pop",
+          "spotify": "power pop"
+        },
+        {
+          "id": "hyperpop",
+          "nombre": "Hyperpop",
+          "spotify": "hyperpop"
+        },
+        {
+          "id": "bedroom-pop",
+          "nombre": "Bedroom pop",
+          "spotify": "bedroom pop"
+        },
+        {
+          "id": "dance-pop",
+          "nombre": "Dance pop",
+          "spotify": "dance pop"
+        },
+        {
+          "id": "teen-pop",
+          "nombre": "Teen pop",
+          "spotify": "teen pop"
+        },
+        {
+          "id": "chamber-pop",
+          "nombre": "Chamber pop",
+          "spotify": "chamber pop"
+        },
+        {
+          "id": "baladas",
+          "nombre": "Baladas",
+          "spotify": "latin ballad"
+        },
+        {
+          "id": "pop-romantico",
+          "nombre": "Pop romántico",
+          "spotify": "romantico"
+        },
+        {
+          "id": "cancion-melodica",
+          "nombre": "Canción melódica",
+          "spotify": "cancion melodica"
+        },
+        {
+          "id": "sophisti-pop",
+          "nombre": "Sophisti-pop",
+          "spotify": "sophisti-pop"
+        },
+        {
+          "id": "k-pop",
+          "nombre": "K-pop",
+          "spotify": "k-pop"
+        },
+        {
+          "id": "j-pop",
+          "nombre": "J-pop",
+          "spotify": "j-pop"
+        },
+        {
+          "id": "city-pop",
+          "nombre": "City pop",
+          "spotify": "city pop"
+        },
+        {
+          "id": "mandopop",
+          "nombre": "Mandopop",
+          "spotify": "mandopop"
+        },
+        {
+          "id": "cantopop",
+          "nombre": "Cantopop",
+          "spotify": "cantopop"
+        },
+        {
+          "id": "europop",
+          "nombre": "Europop",
+          "spotify": "europop"
+        }
+      ]
+    },
+    {
+      "id": "urbano",
+      "nombre": "Urbano latino",
+      "generos": [
+        {
+          "id": "reggaeton",
+          "nombre": "Reggaetón",
+          "spotify": "reggaeton"
+        },
+        {
+          "id": "trap-latino",
+          "nombre": "Trap latino",
+          "spotify": "trap latino"
+        },
+        {
+          "id": "urbano-latino",
+          "nombre": "Urbano latino",
+          "spotify": "urbano latino"
+        },
+        {
+          "id": "dembow",
+          "nombre": "Dembow",
+          "spotify": "dembow"
+        },
+        {
+          "id": "perreo",
+          "nombre": "Perreo",
+          "spotify": "perreo"
+        },
+        {
+          "id": "neoperreo",
+          "nombre": "Neoperreo",
+          "spotify": "neoperreo"
+        },
+        {
+          "id": "rkt",
+          "nombre": "RKT",
+          "spotify": "rkt"
+        },
+        {
+          "id": "cumbia-420",
+          "nombre": "Cumbia 420",
+          "spotify": "cumbia 420"
+        },
+        {
+          "id": "latin-drill",
+          "nombre": "Latin drill",
+          "spotify": "latin drill"
+        },
+        {
+          "id": "moombahton",
+          "nombre": "Moombahton",
+          "spotify": "moombahton"
+        }
+      ]
+    },
+    {
+      "id": "tropical",
+      "nombre": "Tropical y caribeña",
+      "generos": [
+        {
+          "id": "salsa",
+          "nombre": "Salsa",
+          "spotify": "salsa"
+        },
+        {
+          "id": "salsa-romantica",
+          "nombre": "Salsa romántica",
+          "spotify": "salsa romantica"
+        },
+        {
+          "id": "salsa-dura",
+          "nombre": "Salsa dura",
+          "spotify": "salsa dura"
+        },
+        {
+          "id": "timba",
+          "nombre": "Timba",
+          "spotify": "timba"
+        },
+        {
+          "id": "son-cubano",
+          "nombre": "Son cubano",
+          "spotify": "son cubano"
+        },
+        {
+          "id": "son-montuno",
+          "nombre": "Son montuno",
+          "spotify": "son montuno"
+        },
+        {
+          "id": "merengue",
+          "nombre": "Merengue",
+          "spotify": "merengue"
+        },
+        {
+          "id": "merengue-tipico",
+          "nombre": "Merengue típico",
+          "spotify": "merengue tipico"
+        },
+        {
+          "id": "bachata",
+          "nombre": "Bachata",
+          "spotify": "bachata"
+        },
+        {
+          "id": "cumbia",
+          "nombre": "Cumbia",
+          "spotify": "cumbia"
+        },
+        {
+          "id": "cumbia-villera",
+          "nombre": "Cumbia villera",
+          "spotify": "cumbia villera"
+        },
+        {
+          "id": "cumbia-santafesina",
+          "nombre": "Cumbia santafesina",
+          "spotify": "cumbia santafesina"
+        },
+        {
+          "id": "cumbia-colombiana",
+          "nombre": "Cumbia colombiana",
+          "spotify": "cumbia colombiana"
+        },
+        {
+          "id": "cumbia-peruana-chicha",
+          "nombre": "Cumbia peruana (chicha)",
+          "spotify": "chicha"
+        },
+        {
+          "id": "cumbia-sonidera",
+          "nombre": "Cumbia sonidera",
+          "spotify": "cumbia sonidera"
+        },
+        {
+          "id": "cumbia-pop",
+          "nombre": "Cumbia pop",
+          "spotify": "cumbia pop"
+        },
+        {
+          "id": "cuarteto",
+          "nombre": "Cuarteto",
+          "spotify": "cuarteto"
+        },
+        {
+          "id": "vallenato",
+          "nombre": "Vallenato",
+          "spotify": "vallenato"
+        },
+        {
+          "id": "champeta",
+          "nombre": "Champeta",
+          "spotify": "champeta"
+        },
+        {
+          "id": "porro",
+          "nombre": "Porro",
+          "spotify": "porro"
+        },
+        {
+          "id": "mambo",
+          "nombre": "Mambo",
+          "spotify": "mambo"
+        },
+        {
+          "id": "cha-cha-cha",
+          "nombre": "Cha-cha-chá",
+          "spotify": "cha-cha-cha"
+        },
+        {
+          "id": "danzon",
+          "nombre": "Danzón",
+          "spotify": "danzon"
+        },
+        {
+          "id": "bolero",
+          "nombre": "Bolero",
+          "spotify": "bolero"
+        },
+        {
+          "id": "guaracha-cubana",
+          "nombre": "Guaracha cubana",
+          "spotify": "guaracha"
+        },
+        {
+          "id": "rumba-cubana",
+          "nombre": "Rumba cubana",
+          "spotify": "rumba cubana"
+        },
+        {
+          "id": "guaguanco",
+          "nombre": "Guaguancó",
+          "spotify": "guaguanco"
+        },
+        {
+          "id": "boogaloo",
+          "nombre": "Boogaloo",
+          "spotify": "boogaloo"
+        },
+        {
+          "id": "charanga",
+          "nombre": "Charanga",
+          "spotify": "charanga"
+        },
+        {
+          "id": "pachanga",
+          "nombre": "Pachanga",
+          "spotify": "pachanga"
+        },
+        {
+          "id": "plena",
+          "nombre": "Plena",
+          "spotify": "plena"
+        },
+        {
+          "id": "bomba",
+          "nombre": "Bomba",
+          "spotify": "bomba"
+        },
+        {
+          "id": "calipso",
+          "nombre": "Calipso",
+          "spotify": "calypso"
+        },
+        {
+          "id": "soca",
+          "nombre": "Soca",
+          "spotify": "soca"
+        },
+        {
+          "id": "zouk",
+          "nombre": "Zouk",
+          "spotify": "zouk"
+        },
+        {
+          "id": "kompa",
+          "nombre": "Kompa",
+          "spotify": "kompa"
+        },
+        {
+          "id": "punta",
+          "nombre": "Punta",
+          "spotify": "punta"
+        }
+      ]
+    },
+    {
+      "id": "mexicano",
+      "nombre": "Regional mexicano",
+      "generos": [
+        {
+          "id": "ranchera",
+          "nombre": "Ranchera",
+          "spotify": "ranchera"
+        },
+        {
+          "id": "mariachi",
+          "nombre": "Mariachi",
+          "spotify": "mariachi"
+        },
+        {
+          "id": "corridos",
+          "nombre": "Corridos",
+          "spotify": "corrido"
+        },
+        {
+          "id": "corridos-tumbados",
+          "nombre": "Corridos tumbados",
+          "spotify": "corridos tumbados"
+        },
+        {
+          "id": "corridos-belicos",
+          "nombre": "Corridos bélicos",
+          "spotify": "corridos belicos"
+        },
+        {
+          "id": "banda",
+          "nombre": "Banda",
+          "spotify": "banda"
+        },
+        {
+          "id": "norteno",
+          "nombre": "Norteño",
+          "spotify": "norteno"
+        },
+        {
+          "id": "norteno-sax",
+          "nombre": "Norteño-sax",
+          "spotify": "norteno-sax"
+        },
+        {
+          "id": "sierreno",
+          "nombre": "Sierreño",
+          "spotify": "sierreno"
+        },
+        {
+          "id": "grupero",
+          "nombre": "Grupero",
+          "spotify": "grupera"
+        },
+        {
+          "id": "duranguense",
+          "nombre": "Duranguense",
+          "spotify": "duranguense"
+        },
+        {
+          "id": "huapango",
+          "nombre": "Huapango",
+          "spotify": "huapango"
+        },
+        {
+          "id": "son-jarocho",
+          "nombre": "Son jarocho",
+          "spotify": "son jarocho"
+        },
+        {
+          "id": "tejano",
+          "nombre": "Tejano",
+          "spotify": "tejano"
+        },
+        {
+          "id": "cumbia-nortena",
+          "nombre": "Cumbia norteña",
+          "spotify": "cumbia nortena"
+        },
+        {
+          "id": "trio-romantico",
+          "nombre": "Trío romántico",
+          "spotify": "trio romantico"
+        },
+        {
+          "id": "tierra-caliente",
+          "nombre": "Tierra Caliente",
+          "spotify": "tierra caliente"
+        }
+      ]
+    },
+    {
+      "id": "tango-folklore",
+      "nombre": "Tango y folklore",
+      "generos": [
+        {
+          "id": "tango",
+          "nombre": "Tango",
+          "spotify": "tango"
+        },
+        {
+          "id": "tango-nuevo",
+          "nombre": "Tango nuevo",
+          "spotify": "nuevo tango"
+        },
+        {
+          "id": "electrotango",
+          "nombre": "Electrotango",
+          "spotify": "electrotango"
+        },
+        {
+          "id": "milonga",
+          "nombre": "Milonga",
+          "spotify": "milonga"
+        },
+        {
+          "id": "candombe",
+          "nombre": "Candombe",
+          "spotify": "candombe"
+        },
+        {
+          "id": "murga",
+          "nombre": "Murga",
+          "spotify": "murga"
+        },
+        {
+          "id": "folklore-argentino",
+          "nombre": "Folklore argentino",
+          "spotify": "folklore argentino"
+        },
+        {
+          "id": "chacarera",
+          "nombre": "Chacarera",
+          "spotify": "chacarera"
+        },
+        {
+          "id": "zamba",
+          "nombre": "Zamba",
+          "spotify": "zamba"
+        },
+        {
+          "id": "chamame",
+          "nombre": "Chamamé",
+          "spotify": "chamame"
+        },
+        {
+          "id": "cueca",
+          "nombre": "Cueca",
+          "spotify": "cueca"
+        },
+        {
+          "id": "carnavalito",
+          "nombre": "Carnavalito",
+          "spotify": "carnavalito"
+        },
+        {
+          "id": "vidala",
+          "nombre": "Vidala",
+          "spotify": "vidala"
+        },
+        {
+          "id": "baguala",
+          "nombre": "Baguala",
+          "spotify": "baguala"
+        },
+        {
+          "id": "tonada-cuyana",
+          "nombre": "Tonada cuyana",
+          "spotify": "tonada"
+        },
+        {
+          "id": "payada",
+          "nombre": "Payada",
+          "spotify": "payada"
+        },
+        {
+          "id": "huayno",
+          "nombre": "Huayno",
+          "spotify": "huayno"
+        },
+        {
+          "id": "musica-andina",
+          "nombre": "Música andina",
+          "spotify": "andean"
+        },
+        {
+          "id": "joropo",
+          "nombre": "Joropo",
+          "spotify": "joropo"
+        },
+        {
+          "id": "vals-criollo",
+          "nombre": "Vals criollo",
+          "spotify": "vals criollo"
+        },
+        {
+          "id": "musica-criolla-peruana",
+          "nombre": "Música criolla peruana",
+          "spotify": "musica criolla"
+        },
+        {
+          "id": "afroperuano",
+          "nombre": "Afroperuano",
+          "spotify": "afroperuano"
+        },
+        {
+          "id": "bambuco",
+          "nombre": "Bambuco",
+          "spotify": "bambuco"
+        },
+        {
+          "id": "pasillo",
+          "nombre": "Pasillo",
+          "spotify": "pasillo"
+        },
+        {
+          "id": "sanjuanito",
+          "nombre": "Sanjuanito",
+          "spotify": "sanjuanito"
+        },
+        {
+          "id": "guarania",
+          "nombre": "Guarania",
+          "spotify": "guarania"
+        },
+        {
+          "id": "polca-paraguaya",
+          "nombre": "Polca paraguaya",
+          "spotify": "polca paraguaya"
+        },
+        {
+          "id": "folklore-chileno",
+          "nombre": "Folklore chileno",
+          "spotify": "chilean folk"
+        },
+        {
+          "id": "canto-popular-uruguayo",
+          "nombre": "Canto popular uruguayo",
+          "spotify": "canto popular uruguayo"
+        },
+        {
+          "id": "nueva-cancion",
+          "nombre": "Nueva canción",
+          "spotify": "nueva cancion"
+        },
+        {
+          "id": "nueva-trova",
+          "nombre": "Nueva trova",
+          "spotify": "nueva trova"
+        },
+        {
+          "id": "trova",
+          "nombre": "Trova",
+          "spotify": "trova"
+        }
+      ]
+    },
+    {
+      "id": "brasil",
+      "nombre": "Brasil",
+      "generos": [
+        {
+          "id": "mpb",
+          "nombre": "MPB",
+          "spotify": "mpb"
+        },
+        {
+          "id": "bossa-nova",
+          "nombre": "Bossa nova",
+          "spotify": "bossa nova"
+        },
+        {
+          "id": "samba",
+          "nombre": "Samba",
+          "spotify": "samba"
+        },
+        {
+          "id": "pagode",
+          "nombre": "Pagode",
+          "spotify": "pagode"
+        },
+        {
+          "id": "samba-rock",
+          "nombre": "Samba-rock",
+          "spotify": "samba-rock"
+        },
+        {
+          "id": "forro",
+          "nombre": "Forró",
+          "spotify": "forro"
+        },
+        {
+          "id": "piseiro",
+          "nombre": "Piseiro",
+          "spotify": "piseiro"
+        },
+        {
+          "id": "axe",
+          "nombre": "Axé",
+          "spotify": "axe"
+        },
+        {
+          "id": "sertanejo",
+          "nombre": "Sertanejo",
+          "spotify": "sertanejo"
+        },
+        {
+          "id": "funk-carioca",
+          "nombre": "Funk carioca",
+          "spotify": "funk carioca"
+        },
+        {
+          "id": "tropicalia",
+          "nombre": "Tropicália",
+          "spotify": "tropicalia"
+        },
+        {
+          "id": "choro",
+          "nombre": "Choro",
+          "spotify": "choro"
+        },
+        {
+          "id": "frevo",
+          "nombre": "Frevo",
+          "spotify": "frevo"
+        },
+        {
+          "id": "baiao",
+          "nombre": "Baião",
+          "spotify": "baiao"
+        },
+        {
+          "id": "maracatu",
+          "nombre": "Maracatu",
+          "spotify": "maracatu"
+        },
+        {
+          "id": "brega",
+          "nombre": "Brega",
+          "spotify": "brega"
+        },
+        {
+          "id": "arrocha",
+          "nombre": "Arrocha",
+          "spotify": "arrocha"
+        },
+        {
+          "id": "rock-brasileno",
+          "nombre": "Rock brasileño",
+          "spotify": "brazilian rock"
+        }
+      ]
+    },
+    {
+      "id": "hiphop",
+      "nombre": "Hip hop y rap",
+      "generos": [
+        {
+          "id": "hip-hop",
+          "nombre": "Hip hop",
+          "spotify": "hip hop"
+        },
+        {
+          "id": "rap",
+          "nombre": "Rap",
+          "spotify": "rap"
+        },
+        {
+          "id": "rap-en-espanol",
+          "nombre": "Rap en español",
+          "spotify": "rap en espanol"
+        },
+        {
+          "id": "rap-argentino",
+          "nombre": "Rap argentino",
+          "spotify": "argentine hip hop"
+        },
+        {
+          "id": "freestyle",
+          "nombre": "Freestyle",
+          "spotify": "freestyle rap"
+        },
+        {
+          "id": "trap",
+          "nombre": "Trap",
+          "spotify": "trap"
+        },
+        {
+          "id": "drill",
+          "nombre": "Drill",
+          "spotify": "drill"
+        },
+        {
+          "id": "uk-drill",
+          "nombre": "UK drill",
+          "spotify": "uk drill"
+        },
+        {
+          "id": "boom-bap",
+          "nombre": "Boom bap",
+          "spotify": "boom bap"
+        },
+        {
+          "id": "hip-hop-consciente",
+          "nombre": "Hip hop consciente",
+          "spotify": "conscious hip hop"
+        },
+        {
+          "id": "rap-alternativo",
+          "nombre": "Rap alternativo",
+          "spotify": "alternative hip hop"
+        },
+        {
+          "id": "gangsta-rap",
+          "nombre": "Gangsta rap",
+          "spotify": "gangster rap"
+        },
+        {
+          "id": "g-funk",
+          "nombre": "G-funk",
+          "spotify": "g funk"
+        },
+        {
+          "id": "memphis-rap",
+          "nombre": "Memphis rap",
+          "spotify": "memphis rap"
+        },
+        {
+          "id": "grime",
+          "nombre": "Grime",
+          "spotify": "grime"
+        },
+        {
+          "id": "cloud-rap",
+          "nombre": "Cloud rap",
+          "spotify": "cloud rap"
+        },
+        {
+          "id": "emo-rap",
+          "nombre": "Emo rap",
+          "spotify": "emo rap"
+        },
+        {
+          "id": "phonk",
+          "nombre": "Phonk",
+          "spotify": "phonk"
+        },
+        {
+          "id": "plugg",
+          "nombre": "Plugg",
+          "spotify": "plugg"
+        },
+        {
+          "id": "jazz-rap",
+          "nombre": "Jazz rap",
+          "spotify": "jazz rap"
+        },
+        {
+          "id": "lo-fi-hip-hop",
+          "nombre": "Lo-fi hip hop",
+          "spotify": "lo-fi beats"
+        }
+      ]
+    },
+    {
+      "id": "rnb",
+      "nombre": "R&B, soul y funk",
+      "generos": [
+        {
+          "id": "ryb",
+          "nombre": "R&B",
+          "spotify": "r&b"
+        },
+        {
+          "id": "ryb-alternativo",
+          "nombre": "R&B alternativo",
+          "spotify": "alternative r&b"
+        },
+        {
+          "id": "neo-soul",
+          "nombre": "Neo soul",
+          "spotify": "neo soul"
+        },
+        {
+          "id": "soul",
+          "nombre": "Soul",
+          "spotify": "soul"
+        },
+        {
+          "id": "motown",
+          "nombre": "Motown",
+          "spotify": "motown"
+        },
+        {
+          "id": "philly-soul",
+          "nombre": "Philly soul",
+          "spotify": "philly soul"
+        },
+        {
+          "id": "soul-sureno",
+          "nombre": "Soul sureño",
+          "spotify": "southern soul"
+        },
+        {
+          "id": "northern-soul",
+          "nombre": "Northern soul",
+          "spotify": "northern soul"
+        },
+        {
+          "id": "funk",
+          "nombre": "Funk",
+          "spotify": "funk"
+        },
+        {
+          "id": "p-funk",
+          "nombre": "P-funk",
+          "spotify": "p funk"
+        },
+        {
+          "id": "disco",
+          "nombre": "Disco",
+          "spotify": "disco"
+        },
+        {
+          "id": "boogie",
+          "nombre": "Boogie",
+          "spotify": "boogie"
+        },
+        {
+          "id": "quiet-storm",
+          "nombre": "Quiet storm",
+          "spotify": "quiet storm"
+        },
+        {
+          "id": "new-jack-swing",
+          "nombre": "New jack swing",
+          "spotify": "new jack swing"
+        },
+        {
+          "id": "doo-wop",
+          "nombre": "Doo-wop",
+          "spotify": "doo-wop"
+        },
+        {
+          "id": "gospel",
+          "nombre": "Gospel",
+          "spotify": "gospel"
+        }
+      ]
+    },
+    {
+      "id": "electronica",
+      "nombre": "Electrónica",
+      "generos": [
+        {
+          "id": "house",
+          "nombre": "House",
+          "spotify": "house"
+        },
+        {
+          "id": "deep-house",
+          "nombre": "Deep house",
+          "spotify": "deep house"
+        },
+        {
+          "id": "tech-house",
+          "nombre": "Tech house",
+          "spotify": "tech house"
+        },
+        {
+          "id": "afro-house",
+          "nombre": "Afro house",
+          "spotify": "afro house"
+        },
+        {
+          "id": "acid-house",
+          "nombre": "Acid house",
+          "spotify": "acid house"
+        },
+        {
+          "id": "progressive-house",
+          "nombre": "Progressive house",
+          "spotify": "progressive house"
+        },
+        {
+          "id": "electro-house",
+          "nombre": "Electro house",
+          "spotify": "electro house"
+        },
+        {
+          "id": "techno",
+          "nombre": "Techno",
+          "spotify": "techno"
+        },
+        {
+          "id": "minimal",
+          "nombre": "Minimal",
+          "spotify": "minimal techno"
+        },
+        {
+          "id": "trance",
+          "nombre": "Trance",
+          "spotify": "trance"
+        },
+        {
+          "id": "drum-and-bass",
+          "nombre": "Drum and bass",
+          "spotify": "drum and bass"
+        },
+        {
+          "id": "jungle",
+          "nombre": "Jungle",
+          "spotify": "jungle"
+        },
+        {
+          "id": "dubstep",
+          "nombre": "Dubstep",
+          "spotify": "dubstep"
+        },
+        {
+          "id": "uk-garage",
+          "nombre": "UK garage",
+          "spotify": "uk garage"
+        },
+        {
+          "id": "breakbeat",
+          "nombre": "Breakbeat",
+          "spotify": "breakbeat"
+        },
+        {
+          "id": "big-beat",
+          "nombre": "Big beat",
+          "spotify": "big beat"
+        },
+        {
+          "id": "electro",
+          "nombre": "Electro",
+          "spotify": "electro"
+        },
+        {
+          "id": "ambient",
+          "nombre": "Ambient",
+          "spotify": "ambient"
+        },
+        {
+          "id": "idm",
+          "nombre": "IDM",
+          "spotify": "idm"
+        },
+        {
+          "id": "downtempo",
+          "nombre": "Downtempo",
+          "spotify": "downtempo"
+        },
+        {
+          "id": "trip-hop",
+          "nombre": "Trip hop",
+          "spotify": "trip hop"
+        },
+        {
+          "id": "chillout",
+          "nombre": "Chillout",
+          "spotify": "chill-out"
+        },
+        {
+          "id": "synthwave",
+          "nombre": "Synthwave",
+          "spotify": "synthwave"
+        },
+        {
+          "id": "vaporwave",
+          "nombre": "Vaporwave",
+          "spotify": "vaporwave"
+        },
+        {
+          "id": "hardstyle",
+          "nombre": "Hardstyle",
+          "spotify": "hardstyle"
+        },
+        {
+          "id": "hardcore-electronico",
+          "nombre": "Hardcore electrónico",
+          "spotify": "hardcore techno"
+        },
+        {
+          "id": "edm",
+          "nombre": "EDM",
+          "spotify": "edm"
+        },
+        {
+          "id": "future-bass",
+          "nombre": "Future bass",
+          "spotify": "future bass"
+        },
+        {
+          "id": "eurodance",
+          "nombre": "Eurodance",
+          "spotify": "eurodance"
+        },
+        {
+          "id": "amapiano",
+          "nombre": "Amapiano",
+          "spotify": "amapiano"
+        },
+        {
+          "id": "footwork",
+          "nombre": "Footwork",
+          "spotify": "footwork"
+        },
+        {
+          "id": "glitch",
+          "nombre": "Glitch",
+          "spotify": "glitch"
+        },
+        {
+          "id": "folktronica",
+          "nombre": "Folktrónica",
+          "spotify": "folktronica"
+        },
+        {
+          "id": "electronica-latina",
+          "nombre": "Electrónica latina",
+          "spotify": "latin electronica"
+        },
+        {
+          "id": "cumbia-digital",
+          "nombre": "Cumbia digital",
+          "spotify": "digital cumbia"
+        },
+        {
+          "id": "guaracha-electronica-aleteo",
+          "nombre": "Guaracha electrónica (aleteo)",
+          "spotify": "aleteo"
+        }
+      ]
+    },
+    {
+      "id": "jazz",
+      "nombre": "Jazz",
+      "generos": [
+        {
+          "id": "jazz",
+          "nombre": "Jazz",
+          "spotify": "jazz"
+        },
+        {
+          "id": "swing",
+          "nombre": "Swing",
+          "spotify": "swing"
+        },
+        {
+          "id": "big-band",
+          "nombre": "Big band",
+          "spotify": "big band"
+        },
+        {
+          "id": "dixieland",
+          "nombre": "Dixieland",
+          "spotify": "dixieland"
+        },
+        {
+          "id": "bebop",
+          "nombre": "Bebop",
+          "spotify": "bebop"
+        },
+        {
+          "id": "cool-jazz",
+          "nombre": "Cool jazz",
+          "spotify": "cool jazz"
+        },
+        {
+          "id": "hard-bop",
+          "nombre": "Hard bop",
+          "spotify": "hard bop"
+        },
+        {
+          "id": "jazz-modal",
+          "nombre": "Jazz modal",
+          "spotify": "modal jazz"
+        },
+        {
+          "id": "free-jazz",
+          "nombre": "Free jazz",
+          "spotify": "free jazz"
+        },
+        {
+          "id": "spiritual-jazz",
+          "nombre": "Spiritual jazz",
+          "spotify": "spiritual jazz"
+        },
+        {
+          "id": "jazz-fusion",
+          "nombre": "Jazz fusión",
+          "spotify": "jazz fusion"
+        },
+        {
+          "id": "jazz-latino",
+          "nombre": "Jazz latino",
+          "spotify": "latin jazz"
+        },
+        {
+          "id": "jazz-afrocubano",
+          "nombre": "Jazz afrocubano",
+          "spotify": "afro-cuban jazz"
+        },
+        {
+          "id": "jazz-manouche",
+          "nombre": "Jazz manouche",
+          "spotify": "gypsy jazz"
+        },
+        {
+          "id": "jazz-vocal",
+          "nombre": "Jazz vocal",
+          "spotify": "vocal jazz"
+        },
+        {
+          "id": "smooth-jazz",
+          "nombre": "Smooth jazz",
+          "spotify": "smooth jazz"
+        },
+        {
+          "id": "acid-jazz",
+          "nombre": "Acid jazz",
+          "spotify": "acid jazz"
+        },
+        {
+          "id": "nu-jazz",
+          "nombre": "Nu jazz",
+          "spotify": "nu jazz"
+        },
+        {
+          "id": "jazz-contemporaneo",
+          "nombre": "Jazz contemporáneo",
+          "spotify": "contemporary jazz"
+        }
+      ]
+    },
+    {
+      "id": "blues",
+      "nombre": "Blues",
+      "generos": [
+        {
+          "id": "blues",
+          "nombre": "Blues",
+          "spotify": "blues"
+        },
+        {
+          "id": "delta-blues",
+          "nombre": "Delta blues",
+          "spotify": "delta blues"
+        },
+        {
+          "id": "chicago-blues",
+          "nombre": "Chicago blues",
+          "spotify": "chicago blues"
+        },
+        {
+          "id": "blues-electrico",
+          "nombre": "Blues eléctrico",
+          "spotify": "electric blues"
+        },
+        {
+          "id": "texas-blues",
+          "nombre": "Texas blues",
+          "spotify": "texas blues"
+        },
+        {
+          "id": "blues-acustico",
+          "nombre": "Blues acústico",
+          "spotify": "acoustic blues"
+        },
+        {
+          "id": "boogie-woogie",
+          "nombre": "Boogie-woogie",
+          "spotify": "boogie-woogie"
+        },
+        {
+          "id": "rhythm-and-blues-clasico",
+          "nombre": "Rhythm and blues clásico",
+          "spotify": "rhythm and blues"
+        }
+      ]
+    },
+    {
+      "id": "folk",
+      "nombre": "Folk y country",
+      "generos": [
+        {
+          "id": "folk",
+          "nombre": "Folk",
+          "spotify": "folk"
+        },
+        {
+          "id": "indie-folk",
+          "nombre": "Indie folk",
+          "spotify": "indie folk"
+        },
+        {
+          "id": "folk-tradicional",
+          "nombre": "Folk tradicional",
+          "spotify": "traditional folk"
+        },
+        {
+          "id": "folk-psicodelico",
+          "nombre": "Folk psicodélico",
+          "spotify": "psychedelic folk"
+        },
+        {
+          "id": "freak-folk",
+          "nombre": "Freak folk",
+          "spotify": "freak folk"
+        },
+        {
+          "id": "cantautor",
+          "nombre": "Cantautor",
+          "spotify": "singer-songwriter"
+        },
+        {
+          "id": "americana",
+          "nombre": "Americana",
+          "spotify": "americana"
+        },
+        {
+          "id": "country",
+          "nombre": "Country",
+          "spotify": "country"
+        },
+        {
+          "id": "country-alternativo",
+          "nombre": "Country alternativo",
+          "spotify": "alt country"
+        },
+        {
+          "id": "country-pop",
+          "nombre": "Country pop",
+          "spotify": "country pop"
+        },
+        {
+          "id": "bluegrass",
+          "nombre": "Bluegrass",
+          "spotify": "bluegrass"
+        },
+        {
+          "id": "musica-celta",
+          "nombre": "Música celta",
+          "spotify": "celtic"
+        }
+      ]
+    },
+    {
+      "id": "metal",
+      "nombre": "Metal",
+      "generos": [
+        {
+          "id": "heavy-metal",
+          "nombre": "Heavy metal",
+          "spotify": "heavy metal"
+        },
+        {
+          "id": "speed-metal",
+          "nombre": "Speed metal",
+          "spotify": "speed metal"
+        },
+        {
+          "id": "thrash-metal",
+          "nombre": "Thrash metal",
+          "spotify": "thrash metal"
+        },
+        {
+          "id": "death-metal",
+          "nombre": "Death metal",
+          "spotify": "death metal"
+        },
+        {
+          "id": "black-metal",
+          "nombre": "Black metal",
+          "spotify": "black metal"
+        },
+        {
+          "id": "doom-metal",
+          "nombre": "Doom metal",
+          "spotify": "doom metal"
+        },
+        {
+          "id": "stoner-metal",
+          "nombre": "Stoner metal",
+          "spotify": "stoner metal"
+        },
+        {
+          "id": "sludge",
+          "nombre": "Sludge",
+          "spotify": "sludge metal"
+        },
+        {
+          "id": "power-metal",
+          "nombre": "Power metal",
+          "spotify": "power metal"
+        },
+        {
+          "id": "metal-sinfonico",
+          "nombre": "Metal sinfónico",
+          "spotify": "symphonic metal"
+        },
+        {
+          "id": "metal-gotico",
+          "nombre": "Metal gótico",
+          "spotify": "gothic metal"
+        },
+        {
+          "id": "folk-metal",
+          "nombre": "Folk metal",
+          "spotify": "folk metal"
+        },
+        {
+          "id": "metal-progresivo",
+          "nombre": "Metal progresivo",
+          "spotify": "progressive metal"
+        },
+        {
+          "id": "djent",
+          "nombre": "Djent",
+          "spotify": "djent"
+        },
+        {
+          "id": "post-metal",
+          "nombre": "Post-metal",
+          "spotify": "post-metal"
+        },
+        {
+          "id": "metal-alternativo",
+          "nombre": "Metal alternativo",
+          "spotify": "alternative metal"
+        },
+        {
+          "id": "nu-metal",
+          "nombre": "Nu metal",
+          "spotify": "nu metal"
+        },
+        {
+          "id": "metalcore",
+          "nombre": "Metalcore",
+          "spotify": "metalcore"
+        },
+        {
+          "id": "grindcore",
+          "nombre": "Grindcore",
+          "spotify": "grindcore"
+        },
+        {
+          "id": "glam-metal",
+          "nombre": "Glam metal",
+          "spotify": "glam metal"
+        }
+      ]
+    },
+    {
+      "id": "punk",
+      "nombre": "Punk y hardcore",
+      "generos": [
+        {
+          "id": "punk",
+          "nombre": "Punk",
+          "spotify": "punk"
+        },
+        {
+          "id": "punk-rock",
+          "nombre": "Punk rock",
+          "spotify": "punk rock"
+        },
+        {
+          "id": "garage-punk",
+          "nombre": "Garage punk",
+          "spotify": "garage punk"
+        },
+        {
+          "id": "hardcore-punk",
+          "nombre": "Hardcore punk",
+          "spotify": "hardcore punk"
+        },
+        {
+          "id": "crust-punk",
+          "nombre": "Crust punk",
+          "spotify": "crust punk"
+        },
+        {
+          "id": "oi",
+          "nombre": "Oi!",
+          "spotify": "oi"
+        },
+        {
+          "id": "skate-punk",
+          "nombre": "Skate punk",
+          "spotify": "skate punk"
+        },
+        {
+          "id": "pop-punk",
+          "nombre": "Pop punk",
+          "spotify": "pop punk"
+        },
+        {
+          "id": "ska-punk",
+          "nombre": "Ska punk",
+          "spotify": "ska punk"
+        },
+        {
+          "id": "riot-grrrl",
+          "nombre": "Riot grrrl",
+          "spotify": "riot grrrl"
+        },
+        {
+          "id": "post-punk",
+          "nombre": "Post-punk",
+          "spotify": "post-punk"
+        },
+        {
+          "id": "post-hardcore",
+          "nombre": "Post-hardcore",
+          "spotify": "post-hardcore"
+        },
+        {
+          "id": "emo",
+          "nombre": "Emo",
+          "spotify": "emo"
+        },
+        {
+          "id": "screamo",
+          "nombre": "Screamo",
+          "spotify": "screamo"
+        },
+        {
+          "id": "punk-argentino",
+          "nombre": "Punk argentino",
+          "spotify": "punk argentino"
+        }
+      ]
+    },
+    {
+      "id": "reggae",
+      "nombre": "Reggae y ska",
+      "generos": [
+        {
+          "id": "reggae",
+          "nombre": "Reggae",
+          "spotify": "reggae"
+        },
+        {
+          "id": "roots-reggae",
+          "nombre": "Roots reggae",
+          "spotify": "roots reggae"
+        },
+        {
+          "id": "lovers-rock",
+          "nombre": "Lovers rock",
+          "spotify": "lovers rock"
+        },
+        {
+          "id": "dub",
+          "nombre": "Dub",
+          "spotify": "dub"
+        },
+        {
+          "id": "dancehall",
+          "nombre": "Dancehall",
+          "spotify": "dancehall"
+        },
+        {
+          "id": "ska",
+          "nombre": "Ska",
+          "spotify": "ska"
+        },
+        {
+          "id": "rocksteady",
+          "nombre": "Rocksteady",
+          "spotify": "rocksteady"
+        },
+        {
+          "id": "two-tone",
+          "nombre": "Two tone",
+          "spotify": "2 tone"
+        },
+        {
+          "id": "reggae-en-espanol",
+          "nombre": "Reggae en español",
+          "spotify": "reggae en espanol"
+        },
+        {
+          "id": "ska-latino",
+          "nombre": "Ska latino",
+          "spotify": "latin ska"
+        }
+      ]
+    },
+    {
+      "id": "clasica",
+      "nombre": "Clásica y orquestal",
+      "generos": [
+        {
+          "id": "musica-clasica",
+          "nombre": "Música clásica",
+          "spotify": "classical"
+        },
+        {
+          "id": "musica-antigua",
+          "nombre": "Música antigua",
+          "spotify": "early music"
+        },
+        {
+          "id": "barroco",
+          "nombre": "Barroco",
+          "spotify": "baroque"
+        },
+        {
+          "id": "clasicismo",
+          "nombre": "Clasicismo",
+          "spotify": "classical era"
+        },
+        {
+          "id": "romanticismo",
+          "nombre": "Romanticismo",
+          "spotify": "romantic era"
+        },
+        {
+          "id": "opera",
+          "nombre": "Ópera",
+          "spotify": "opera"
+        },
+        {
+          "id": "zarzuela",
+          "nombre": "Zarzuela",
+          "spotify": "zarzuela"
+        },
+        {
+          "id": "musica-de-camara",
+          "nombre": "Música de cámara",
+          "spotify": "chamber music"
+        },
+        {
+          "id": "musica-coral",
+          "nombre": "Música coral",
+          "spotify": "choral"
+        },
+        {
+          "id": "orquestal",
+          "nombre": "Orquestal",
+          "spotify": "orchestral"
+        },
+        {
+          "id": "piano-solo",
+          "nombre": "Piano solo",
+          "spotify": "classical piano"
+        },
+        {
+          "id": "contemporanea-academica",
+          "nombre": "Contemporánea académica",
+          "spotify": "contemporary classical"
+        },
+        {
+          "id": "minimalismo",
+          "nombre": "Minimalismo",
+          "spotify": "minimalism"
+        },
+        {
+          "id": "neoclasica",
+          "nombre": "Neoclásica",
+          "spotify": "neoclassical"
+        }
+      ]
+    },
+    {
+      "id": "mundo",
+      "nombre": "Músicas del mundo",
+      "generos": [
+        {
+          "id": "flamenco",
+          "nombre": "Flamenco",
+          "spotify": "flamenco"
+        },
+        {
+          "id": "rumba-flamenca",
+          "nombre": "Rumba flamenca",
+          "spotify": "rumba flamenca"
+        },
+        {
+          "id": "copla",
+          "nombre": "Copla",
+          "spotify": "copla"
+        },
+        {
+          "id": "fado",
+          "nombre": "Fado",
+          "spotify": "fado"
+        },
+        {
+          "id": "chanson-francesa",
+          "nombre": "Chanson francesa",
+          "spotify": "chanson"
+        },
+        {
+          "id": "canzone-italiana",
+          "nombre": "Canzone italiana",
+          "spotify": "canzone"
+        },
+        {
+          "id": "rebetiko",
+          "nombre": "Rebetiko",
+          "spotify": "rebetiko"
+        },
+        {
+          "id": "balcanica",
+          "nombre": "Balcánica",
+          "spotify": "balkan brass"
+        },
+        {
+          "id": "klezmer",
+          "nombre": "Klezmer",
+          "spotify": "klezmer"
+        },
+        {
+          "id": "afrobeat",
+          "nombre": "Afrobeat",
+          "spotify": "afrobeat"
+        },
+        {
+          "id": "afrobeats",
+          "nombre": "Afrobeats",
+          "spotify": "afrobeats"
+        },
+        {
+          "id": "highlife",
+          "nombre": "Highlife",
+          "spotify": "highlife"
+        },
+        {
+          "id": "soukous",
+          "nombre": "Soukous",
+          "spotify": "soukous"
+        },
+        {
+          "id": "mbalax",
+          "nombre": "Mbalax",
+          "spotify": "mbalax"
+        },
+        {
+          "id": "desert-blues",
+          "nombre": "Desert blues",
+          "spotify": "desert blues"
+        },
+        {
+          "id": "kizomba",
+          "nombre": "Kizomba",
+          "spotify": "kizomba"
+        },
+        {
+          "id": "kuduro",
+          "nombre": "Kuduro",
+          "spotify": "kuduro"
+        },
+        {
+          "id": "rai",
+          "nombre": "Raï",
+          "spotify": "rai"
+        },
+        {
+          "id": "musica-arabe",
+          "nombre": "Música árabe",
+          "spotify": "arabic"
+        },
+        {
+          "id": "musica-turca",
+          "nombre": "Música turca",
+          "spotify": "turkish folk"
+        },
+        {
+          "id": "musica-india-clasica",
+          "nombre": "Música india clásica",
+          "spotify": "hindustani classical"
+        },
+        {
+          "id": "bollywood",
+          "nombre": "Bollywood",
+          "spotify": "filmi"
+        },
+        {
+          "id": "qawwali",
+          "nombre": "Qawwali",
+          "spotify": "qawwali"
+        },
+        {
+          "id": "bhangra",
+          "nombre": "Bhangra",
+          "spotify": "bhangra"
+        },
+        {
+          "id": "enka",
+          "nombre": "Enka",
+          "spotify": "enka"
+        },
+        {
+          "id": "gamelan",
+          "nombre": "Gamelan",
+          "spotify": "gamelan"
+        },
+        {
+          "id": "musica-hawaiana",
+          "nombre": "Música hawaiana",
+          "spotify": "hawaiian"
+        }
+      ]
+    },
+    {
+      "id": "experimental",
+      "nombre": "Experimental y oscura",
+      "generos": [
+        {
+          "id": "experimental",
+          "nombre": "Experimental",
+          "spotify": "experimental"
+        },
+        {
+          "id": "avant-garde",
+          "nombre": "Avant-garde",
+          "spotify": "avant-garde"
+        },
+        {
+          "id": "noise",
+          "nombre": "Noise",
+          "spotify": "noise"
+        },
+        {
+          "id": "musica-concreta",
+          "nombre": "Música concreta",
+          "spotify": "musique concrete"
+        },
+        {
+          "id": "drone",
+          "nombre": "Drone",
+          "spotify": "drone"
+        },
+        {
+          "id": "industrial",
+          "nombre": "Industrial",
+          "spotify": "industrial"
+        },
+        {
+          "id": "ebm",
+          "nombre": "EBM",
+          "spotify": "ebm"
+        },
+        {
+          "id": "darkwave",
+          "nombre": "Darkwave",
+          "spotify": "darkwave"
+        },
+        {
+          "id": "coldwave",
+          "nombre": "Coldwave",
+          "spotify": "coldwave"
+        },
+        {
+          "id": "witch-house",
+          "nombre": "Witch house",
+          "spotify": "witch house"
+        },
+        {
+          "id": "dark-ambient",
+          "nombre": "Dark ambient",
+          "spotify": "dark ambient"
+        },
+        {
+          "id": "no-wave",
+          "nombre": "No wave",
+          "spotify": "no wave"
+        },
+        {
+          "id": "lo-fi",
+          "nombre": "Lo-fi",
+          "spotify": "lo-fi"
+        },
+        {
+          "id": "spoken-word",
+          "nombre": "Spoken word",
+          "spotify": "spoken word"
+        },
+        {
+          "id": "new-age",
+          "nombre": "New age",
+          "spotify": "new age"
+        }
+      ]
+    },
+    {
+      "id": "otros",
+      "nombre": "Bandas sonoras y más",
+      "generos": [
+        {
+          "id": "bandas-sonoras",
+          "nombre": "Bandas sonoras",
+          "spotify": "soundtrack"
+        },
+        {
+          "id": "musica-de-videojuegos",
+          "nombre": "Música de videojuegos",
+          "spotify": "video game music"
+        },
+        {
+          "id": "musicales",
+          "nombre": "Musicales",
+          "spotify": "show tunes"
+        },
+        {
+          "id": "infantil",
+          "nombre": "Infantil",
+          "spotify": "children's music"
+        },
+        {
+          "id": "musica-cristiana",
+          "nombre": "Música cristiana",
+          "spotify": "christian music"
+        },
+        {
+          "id": "worship",
+          "nombre": "Worship",
+          "spotify": "worship"
+        },
+        {
+          "id": "humor",
+          "nombre": "Humor",
+          "spotify": "comedy"
+        },
+        {
+          "id": "navidad",
+          "nombre": "Navidad",
+          "spotify": "christmas"
+        },
+        {
+          "id": "meditacion-y-relax",
+          "nombre": "Meditación y relax",
+          "spotify": "meditation"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+.genres-section__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.genres-section__chip {
+  padding: 8px 14px;
+  border: var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--pink);
+  box-shadow: 2px 2px 0 var(--shadow-color);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--on-accent);
+}
+
+.genres-section__empty {
+  font-size: 15px;
+  color: var(--ink-soft);
+}

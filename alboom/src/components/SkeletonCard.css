@@ -1,0 +1,51 @@
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton-card__cover {
+  aspect-ratio: 1;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-sm);
+  background-color: var(--skeleton);
+  background-image: radial-gradient(var(--skeleton-dot) 1.4px, transparent 1.7px);
+  background-size: 9px 9px;
+}
+
+.skeleton-card__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.skeleton-card__bar {
+  height: 12px;
+  border-radius: 4px;
+  background: var(--skeleton-bar);
+}
+
+.skeleton-card__bar--title {
+  width: 80%;
+}
+
+.skeleton-card__bar--sub {
+  width: 55%;
+  height: 10px;
+}
+
+/* Horizontal: portada chica a la izquierda (tarjetas de "Lo último" y filas en celular) */
+.skeleton-card--horizontal {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.skeleton-card--horizontal .skeleton-card__cover {
+  width: 76px;
+  flex-shrink: 0;
+}
