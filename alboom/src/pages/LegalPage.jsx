@@ -65,7 +65,7 @@ export default function LegalPage({ kind }) {
             <p className="legal__text">{section.text}</p>
           </section>
         ))}
-        <Link to="/perfil/ayuda" className="text-link">
+        <Link to="/ajustes/ayuda" className="text-link">
           ← Volver a la ayuda
         </Link>
       </main>

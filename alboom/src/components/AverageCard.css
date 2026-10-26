@@ -1,0 +1,12 @@
+.average-card__value {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.average-card__number {
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 0.9;
+  text-shadow: 3px 2px 0 var(--pink);
+}

@@ -14,6 +14,9 @@ export default function TabBar() {
       <NavLink to="/explorar" className={tabClass}>
         Explorar
       </NavLink>
+      <NavLink to="/comunidad" className={tabClass}>
+        Comunidad
+      </NavLink>
       <NavLink to="/biblioteca" className={tabClass}>
         Biblioteca
       </NavLink>

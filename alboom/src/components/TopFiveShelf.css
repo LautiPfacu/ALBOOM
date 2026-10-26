@@ -1,0 +1,176 @@
+.top-five {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.top-five__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.top-five__title {
+  font-size: 40px;
+  line-height: 1;
+}
+
+.top-five__list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 10px 0 0 10px;
+  list-style: none;
+}
+
+.top-five__item {
+  position: relative;
+  min-width: 0;
+}
+
+/* Número en un círculo amarillo, encima de la esquina de la tapa */
+.top-five__number {
+  position: absolute;
+  left: -10px;
+  top: -12px;
+  z-index: 1;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border);
+  border-radius: 50%;
+  background: var(--yellow);
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.top-five__album {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-decoration: none;
+}
+
+.top-five__cover-wrap {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.top-five__cover {
+  box-shadow: var(--shadow);
+}
+
+.top-five__listened {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border);
+  border-radius: 50%;
+  background: var(--listened);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.top-five__name {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .top-five__album:hover .top-five__name {
+    text-decoration: underline;
+  }
+}
+
+.top-five__artist {
+  overflow: hidden;
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Lugar vacío: punteado, con el mismo tamaño que una tapa */
+.top-five__empty {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 2px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: none;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.top-five__empty--static {
+  font-weight: 600;
+}
+
+/* Compacta: para posteos "actualizó su Top 5" */
+.top-five--compact .top-five__list {
+  gap: 14px;
+}
+
+.top-five--compact .top-five__cover {
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 767px) {
+  .top-five {
+    gap: 12px;
+  }
+
+  .top-five__title {
+    font-size: 30px;
+  }
+
+  .top-five__edit {
+    min-height: 36px;
+  }
+
+  .top-five__list {
+    gap: 8px;
+    padding: 8px 0 0 6px;
+  }
+
+  .top-five__number {
+    left: -6px;
+    top: -8px;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+  }
+
+  .top-five__cover {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .top-five__name,
+  .top-five__artist,
+  .top-five__listened {
+    display: none;
+  }
+
+  .top-five__empty {
+    font-size: 10px;
+  }
+}

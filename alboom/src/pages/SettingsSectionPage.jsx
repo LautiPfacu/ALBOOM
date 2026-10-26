@@ -8,7 +8,7 @@ import HelpSection from '../components/HelpSection';
 import PrivacySection from '../components/PrivacySection';
 import ReportSection from '../components/ReportSection';
 import ThemeSection from '../components/ThemeSection';
-import './ProfileSectionPage.css';
+import './SettingsSectionPage.css';
 
 const SECTIONS = {
   cuenta: AccountSection,
@@ -19,16 +19,16 @@ const SECTIONS = {
   reportar: ReportSection,
 };
 
-export default function ProfileSectionPage() {
+export default function SettingsSectionPage() {
   const { section } = useParams();
   const Section = SECTIONS[section];
 
   // Una sección que no existe vuelve al perfil.
-  if (!Section) return <Navigate to="/perfil" replace />;
+  if (!Section) return <Navigate to="/ajustes" replace />;
 
   return (
     <div className="profile-section-page page">
-      <Link to="/perfil" className="profile-section-page__back">
+      <Link to="/ajustes" className="profile-section-page__back">
         <span aria-hidden="true">←</span> Perfil y ajustes
       </Link>
       <Section />

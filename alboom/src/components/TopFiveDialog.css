@@ -1,0 +1,226 @@
+.top-five-dialog {
+  width: min(900px, calc(100vw - 32px));
+}
+
+/* Fila de 5 lugares (los números usan el estilo de TopFiveShelf) */
+.top-five-editor__row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 12px 0 18px 10px;
+  border-bottom: 2px dashed var(--line);
+  list-style: none;
+  touch-action: none; /* que arrastrar con el dedo no haga scroll */
+}
+
+.top-five-editor__slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  transition: transform 120ms ease;
+}
+
+.top-five-editor__slot--moving {
+  transform: translateY(-4px);
+}
+
+.top-five-editor__handle {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  cursor: grab;
+}
+
+.top-five-editor__handle:active {
+  cursor: grabbing;
+}
+
+.top-five-editor__slot--moving .top-five-editor__cover {
+  box-shadow: var(--shadow-lg);
+  outline: 3px solid var(--pink);
+}
+
+.top-five-editor__cover {
+  box-shadow: var(--shadow);
+}
+
+.top-five-editor__grip {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: var(--card);
+  border: 1.5px solid var(--border-color);
+  font-size: 12px;
+  color: var(--ink);
+  transform: translateX(-50%);
+}
+
+.top-five-editor__remove {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.top-five-editor__remove::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  z-index: -1;
+  border: var(--border);
+  border-radius: 50%;
+  background: var(--card);
+}
+
+.top-five-editor__name {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-five-editor__free {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px;
+  border: 2px dashed var(--pink);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--pink) 10%, var(--card));
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.top-five-editor__free span {
+  font-size: 22px;
+}
+
+.top-five-editor__search {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.top-five-editor__search-box {
+  flex: 1;
+  min-width: 220px;
+}
+
+.top-five-editor__search-box input {
+  width: 100%;
+  height: 46px;
+  padding: 0 16px;
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius);
+  font-size: 16px;
+}
+
+.top-five-editor__search-box input::placeholder {
+  color: var(--placeholder);
+}
+
+.top-five-editor__options {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.top-five-editor__option {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.top-five-editor__option-name {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-five-editor__option .btn {
+  margin-top: auto;
+  padding: 0 8px;
+  font-size: 13px;
+}
+
+.top-five-editor__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 4px -22px -22px;
+  padding: 16px 22px;
+  background: var(--paper);
+  border-top: var(--border);
+}
+
+.top-five-editor__notify {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.top-five-editor__notify > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-five-editor__notify-title {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .top-five-editor__row {
+    gap: 8px;
+    padding-left: 6px;
+  }
+
+  .top-five-editor__name,
+  .top-five-editor__grip {
+    display: none;
+  }
+
+  .top-five-editor__free {
+    font-size: 0;
+  }
+
+  .top-five-editor__options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .top-five-editor__footer {
+    margin: 4px -20px -20px;
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+  }
+}

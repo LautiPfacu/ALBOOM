@@ -1,12 +1,20 @@
 // Estructura de todas las pantallas con sesión.
+// Además, mantiene al día dos cosas en segundo plano:
+//   - la copia pública de tu perfil (profiles/{uid})
+//   - lo que escuchaste en Spotify, si lo conectaste (cada 30 minutos como máximo)
 
 import { Outlet } from 'react-router-dom';
+import { usePublicProfileSync } from '../hooks/usePublicProfileSync';
+import { useSpotifySync } from '../hooks/useSpotifySync';
 import Navbar from './Navbar';
 import TabBar from './TabBar';
 import ToastViewport from './ToastViewport';
 import './Layout.css';
 
 export default function Layout() {
+  usePublicProfileSync();
+  useSpotifySync();
+
   return (
     <div className="layout">
       <Navbar />

@@ -20,6 +20,9 @@ export default function Navbar() {
           <NavLink to="/explorar" className={linkClass}>
             Explorar
           </NavLink>
+          <NavLink to="/comunidad" className={linkClass}>
+            Comunidad
+          </NavLink>
           <NavLink to="/biblioteca" className={linkClass}>
             Biblioteca
           </NavLink>

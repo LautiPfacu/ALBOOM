@@ -1,9 +1,11 @@
-// Perfil → Tu cuenta: foto, nombre, nombre de usuario (con chequeo de disponibilidad) y email.
+// Perfil → Tu cuenta: foto, nombre, nombre de usuario (con chequeo de disponibilidad), bio y email.
+// La bio es pública (profiles/{uid}); el email nunca se muestra a otras personas.
 
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useAsyncAction } from '../hooks/useAsyncAction';
+import { usePublicProfile } from '../hooks/usePublicProfile';
 import {
   changeEmail,
   isUsernameAvailable,
@@ -12,6 +14,7 @@ import {
   updateAccount,
   USERNAME_PATTERN,
 } from '../services/profile';
+import { BIO_MAX_LENGTH, updateBio } from '../services/publicProfile';
 import Button from './Button';
 import PhotoPicker from './PhotoPicker';
 import ProfileSection from './ProfileSection';
@@ -41,6 +44,13 @@ export default function AccountSection() {
     email: user.email ?? '',
   });
   const [submitted, setSubmitted] = useState(false);
+
+  // La bio vive en el perfil público, que llega un instante después: la cargamos cuando aparece
+  // (patrón "ajustar estado cuando cambia algo", sin useEffect).
+  const { profile: publicProfile } = usePublicProfile(user.uid);
+  const savedBio = publicProfile?.bio ?? '';
+  const [bio, setBio] = useState(null); // null = todavía no la cargamos
+  if (bio === null && publicProfile) setBio(savedBio);
   // Resultado del chequeo de disponibilidad: { username, available }
   const [availability, setAvailability] = useState(null);
 
@@ -53,9 +63,11 @@ export default function AccountSection() {
         previousUsername: profile?.username,
       });
     }
+    const bioChanged = bio !== null && bio.trim() !== savedBio;
+    if (bioChanged) await updateBio(user.uid, bio);
     const emailChanged = canChangeEmail && values.email.trim() !== user.email;
     if (emailChanged) await changeEmail(values.email);
-    return { accountChanged, emailChanged };
+    return { accountChanged: accountChanged || bioChanged, emailChanged };
   });
 
   const errors = validate(values);
@@ -134,6 +146,24 @@ export default function AccountSection() {
               </span>
             </TextField>
             <p className="account-section__hint">{usernameHint}</p>
+          </div>
+          <div className="account-section__field account-section__field--wide">
+            <label htmlFor="account-bio" className="text-field__label">
+              Bio
+            </label>
+            <textarea
+              id="account-bio"
+              className="account-section__bio"
+              value={bio ?? ''}
+              maxLength={BIO_MAX_LENGTH}
+              onChange={(event) => setBio(event.target.value)}
+              placeholder="Contá qué escuchás, en pocas palabras."
+              aria-describedby="account-bio-count"
+              disabled={bio === null}
+            />
+            <p id="account-bio-count" className="account-section__hint">
+              {(bio ?? '').length} / {BIO_MAX_LENGTH} · Se ve en tu perfil.
+            </p>
           </div>
           <div className="account-section__field">
             <TextField

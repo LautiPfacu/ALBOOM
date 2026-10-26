@@ -2,21 +2,19 @@
 // "Ya lo escuché" lo pasa a escuchado (y pone la fecha de escucha).
 
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useAsyncAction } from '../hooks/useAsyncAction';
+import { useAuthor } from '../hooks/useAuthor';
 import { libraryErrorMessage, saveListening, STATUS } from '../services/library';
-import { photoFor } from '../services/profile';
 import AlbumCover from './AlbumCover';
 import Button from './Button';
 import './PendingCard.css';
 
 export default function PendingCard({ item }) {
-  const { user, profile, displayName } = useAuth();
   const { showToast } = useToast();
-  const author = { username: profile?.username, displayName, photoURL: photoFor(profile, user) };
+  const { author, postListened } = useAuthor();
   const { run, pending } = useAsyncAction(() =>
-    saveListening(user.uid, item, { status: STATUS.LISTENED }, author),
+    saveListening(author.uid, item, { status: STATUS.LISTENED }, author, { postListened }),
   );
 
   async function handleListened() {

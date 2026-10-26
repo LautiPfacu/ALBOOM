@@ -1,0 +1,43 @@
+/* Tarjetas de la columna derecha (Gente con tus gustos, Spotify, Seguidores en común, Su promedio) */
+.side-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  background: var(--card);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.side-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.side-card__title {
+  font-size: 28px;
+  line-height: 1.05;
+}
+
+.side-card__text {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.side-card__action {
+  width: 100%;
+}
+
+.side-card__badge {
+  padding: 3px 10px;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  background: var(--listened);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}

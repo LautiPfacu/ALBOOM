@@ -1,0 +1,164 @@
+/* Pop-ups y tarjeta de Spotify */
+.spotify-dialog__group {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.spotify-dialog__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.spotify-dialog__list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+}
+
+.spotify-dialog__list li::before {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border);
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.spotify-dialog__yes::before {
+  content: '✓';
+  background: var(--listened);
+}
+
+.spotify-dialog__no::before {
+  content: '×';
+  background: var(--card);
+}
+
+.spotify-dialog__later {
+  align-self: center;
+  min-height: 44px;
+}
+
+.spotify-dialog__account {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius);
+}
+
+.spotify-dialog__account > span:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.spotify-dialog__check {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border);
+  border-radius: 50%;
+  background: var(--listened);
+  font-weight: 700;
+}
+
+.spotify-dialog__disconnect {
+  align-self: flex-start;
+  min-height: 44px;
+  color: var(--error);
+}
+
+.spotify-suggestions {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.spotify-suggestions__row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 2px dashed var(--line);
+}
+
+.spotify-suggestions__cover {
+  width: 64px;
+  flex-shrink: 0;
+  border-radius: 6px;
+}
+
+.spotify-suggestions__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.spotify-suggestions__name {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.spotify-suggestions__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spotify-suggestions__dismiss {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 18px;
+  color: var(--ink-soft);
+}
+
+.spotify-suggestions__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.spotify-card__covers {
+  display: grid;
+  grid-template-columns: repeat(3, 64px);
+  gap: 10px;
+}
+
+.spotify-card__settings {
+  align-self: flex-start;
+  min-height: 36px;
+  font-size: 14px;
+}
+
+@media (max-width: 767px) {
+  .spotify-suggestions__row {
+    flex-wrap: wrap;
+  }
+
+  .spotify-suggestions__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

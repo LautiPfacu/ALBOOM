@@ -2,10 +2,13 @@
 // Ruta de cada disco guardado: users/{uid}/library/{albumId}   (albumId = id de Spotify)
 //
 //   CONSULTAR  → subscribeToLibrary, subscribeToLibraryItem  (onSnapshot)
-//   AGREGAR    → addToLibrary, addAlbumsToLibrary            (setDoc / writeBatch)
-//   MODIFICAR  → saveListening (puntaje, estado, reseña y reseña pública en un lote)
+//   AGREGAR    → addToLibrary, addAlbumsToLibrary            (writeBatch)
+//   MODIFICAR  → saveListening (puntaje, estado, reseña, reseña pública y posteo en un lote)
 //                updateRating, updateStatus, updateReview    (updateDoc)
-//   ELIMINAR   → removeFromLibrary                           (writeBatch: disco + reseña pública)
+//   ELIMINAR   → removeFromLibrary                           (writeBatch: disco + reseña + posteos)
+//
+// Comunidad: al publicar una reseña se escribe también su posteo (posts/review_…), y si la persona
+// activó "Publicar cuando marco un disco como escuchado", un posteo "escuchó" (posts/listened_…).
 
 import {
   collection,
@@ -14,11 +17,11 @@ import {
   orderBy,
   query,
   serverTimestamp,
-  setDoc,
   updateDoc,
   writeBatch,
 } from 'firebase/firestore';
 import { db } from '../firebase';
+import { EMPTY_COUNTERS, listenedPostId, postRef, reviewPostId } from './posts';
 
 export const STATUS = Object.freeze({ LISTENED: 'escuchado', PENDING: 'pendiente' });
 export const REVIEW_MAX_LENGTH = 500;
@@ -56,10 +59,41 @@ export function subscribeToLibraryItem(uid, albumId, onData, onError) {
 // ---------- AGREGAR ----------
 
 // isPublic: valor inicial de "Mostrar en la comunidad" (sale de los ajustes del perfil).
-export async function addToLibrary(uid, album, status = STATUS.LISTENED, { isPublic = true } = {}) {
+// postListened + author: si está activo y el disco entra como escuchado, se publica "escuchó".
+export async function addToLibrary(
+  uid,
+  album,
+  status = STATUS.LISTENED,
+  { isPublic = true, postListened = false, author = null } = {},
+) {
   assertValidStatus(status);
-  await safeWrite(() => setDoc(libraryDoc(uid, album.id), newLibraryItem(album, status, isPublic)));
+  const batch = writeBatch(db);
+  batch.set(libraryDoc(uid, album.id), newLibraryItem(album, status, isPublic));
+  if (postListened && author && status === STATUS.LISTENED) {
+    batch.set(postRef(listenedPostId(album.id, uid)), listenedPost(album.id, album, author));
+  }
+  await safeWrite(() => batch.commit());
 }
+
+// Posteo "marcó como escuchado".
+function listenedPost(albumId, album, author) {
+  return {
+    ...author,
+    type: 'listened',
+    album: albumForPost(albumId, album),
+    ...EMPTY_COUNTERS,
+    createdAt: serverTimestamp(),
+  };
+}
+
+const albumForPost = (albumId, album) => ({
+  albumId,
+  name: album.name,
+  artist: album.artist,
+  cover: album.cover ?? null,
+  year: album.year ?? null,
+  spotifyUrl: album.spotifyUrl ?? null,
+});
 
 // Varios discos a la vez (primera vez, paso 2): todos como escuchados, en un solo lote.
 export async function addAlbumsToLibrary(uid, albums, { isPublic = true } = {}) {
@@ -118,9 +152,10 @@ export function isPublishable(item) {
 // Guarda cambios de "Tu escucha" y mantiene la reseña pública al día, todo en un writeBatch:
 // o se guardan las dos cosas, o ninguna.
 //   changes: { rating?, status?, review?, isPublic? }
-//   author:  { username, displayName, photoURL } (del perfil)
+//   author:  { uid, username, displayName, photoURL } (del perfil)
+//   postListened: publicar "escuchó" la primera vez que el disco pasa a escuchado
 // → { published, wasPublished }
-export async function saveListening(uid, item, changes, author) {
+export async function saveListening(uid, item, changes, author, { postListened = false } = {}) {
   const cleanChanges = { ...changes };
   if ('rating' in cleanChanges) cleanChanges.rating = normalizeRating(cleanChanges.rating);
   if ('review' in cleanChanges) cleanChanges.review = cleanChanges.review.trim().slice(0, REVIEW_MAX_LENGTH);
@@ -140,6 +175,7 @@ export async function saveListening(uid, item, changes, author) {
   batch.update(libraryDoc(uid, item.id), { ...cleanChanges, updatedAt: serverTimestamp() });
 
   const reviewRef = reviewDoc(item.id, uid);
+  const reviewPost = postRef(reviewPostId(item.id, uid));
   if (published) {
     batch.set(
       reviewRef,
@@ -158,8 +194,31 @@ export async function saveListening(uid, item, changes, author) {
       },
       { merge: true },
     );
+    // Su posteo en la comunidad (mismo lote). Los contadores arrancan en 0 solo la primera vez.
+    batch.set(
+      reviewPost,
+      {
+        uid,
+        username: author?.username ?? '',
+        displayName: author?.displayName ?? '',
+        photoURL: author?.photoURL ?? null,
+        type: 'review',
+        album: albumForPost(item.id, item),
+        rating: next.rating,
+        text: next.review ?? '',
+        ...(wasPublished ? {} : { ...EMPTY_COUNTERS, createdAt: serverTimestamp() }),
+      },
+      { merge: true },
+    );
   } else if (wasPublished) {
     batch.delete(reviewRef);
+    batch.delete(reviewPost);
+  }
+
+  // "Escuchó": solo la primera vez que pasa a escuchado, y si la persona lo activó.
+  const becameListened = cleanChanges.status === STATUS.LISTENED && !item.listenedAt;
+  if (becameListened && postListened && author) {
+    batch.set(postRef(listenedPostId(item.id, uid)), listenedPost(item.id, item, author));
   }
 
   await safeWrite(() => batch.commit());
@@ -168,11 +227,13 @@ export async function saveListening(uid, item, changes, author) {
 
 // ---------- ELIMINAR ----------
 
-// Borra el disco y, si existía, su reseña pública.
+// Borra el disco y, si existían, su reseña pública y sus posteos.
 export async function removeFromLibrary(uid, albumId) {
   const batch = writeBatch(db);
   batch.delete(libraryDoc(uid, albumId));
   batch.delete(reviewDoc(albumId, uid));
+  batch.delete(postRef(reviewPostId(albumId, uid)));
+  batch.delete(postRef(listenedPostId(albumId, uid)));
   await safeWrite(() => batch.commit());
 }
 

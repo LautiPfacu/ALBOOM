@@ -15,7 +15,7 @@ import HelpSection from '../components/HelpSection';
 import PrivacySection from '../components/PrivacySection';
 import ProfileSummary from '../components/ProfileSummary';
 import ThemeSection from '../components/ThemeSection';
-import './ProfilePage.css';
+import './SettingsPage.css';
 
 const SECTIONS = [
   { id: 'cuenta', label: 'Tu cuenta' },
@@ -25,7 +25,7 @@ const SECTIONS = [
   { id: 'ayuda', label: 'Ayuda' },
 ];
 
-export default function ProfilePage() {
+export default function SettingsPage() {
   const { profile } = useAuth();
   const { userTheme } = useTheme();
   const { showToast } = useToast();
@@ -46,22 +46,22 @@ export default function ProfilePage() {
     {
       title: 'Cuenta',
       links: [
-        { to: '/perfil/cuenta', label: 'Tus datos' },
-        { to: '/perfil/privacidad', label: 'Privacidad y seguridad' },
+        { to: '/ajustes/cuenta', label: 'Tus datos' },
+        { to: '/ajustes/privacidad', label: 'Privacidad y seguridad' },
       ],
     },
     {
       title: 'La app',
       links: [
-        { to: '/perfil/tema', label: 'Tema', value: themeName(userTheme) },
-        { to: '/perfil/generos', label: 'Tus géneros', value: profile?.genres?.length ?? 0 },
+        { to: '/ajustes/tema', label: 'Tema', value: themeName(userTheme) },
+        { to: '/ajustes/generos', label: 'Tus géneros', value: profile?.genres?.length ?? 0 },
       ],
     },
     {
       title: 'Ayuda',
       links: [
-        { to: '/perfil/ayuda', label: 'Preguntas frecuentes' },
-        { to: '/perfil/reportar', label: 'Reportar un problema' },
+        { to: '/ajustes/ayuda', label: 'Preguntas frecuentes' },
+        { to: '/ajustes/reportar', label: 'Reportar un problema' },
       ],
     },
   ];

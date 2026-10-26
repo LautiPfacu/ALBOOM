@@ -5,31 +5,29 @@
 // Todo lo que se ve sale de Firestore (item): si una escritura falla, el valor vuelve solo.
 
 import { useEffect, useRef, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useAsyncAction } from '../hooks/useAsyncAction';
+import { useAuthor } from '../hooks/useAuthor';
 import { addToLibrary, isPublishable, libraryErrorMessage, saveListening, STATUS } from '../services/library';
-import { photoFor } from '../services/profile';
 import Button from './Button';
 import ReviewForm from './ReviewForm';
 import StatusToggle from './StatusToggle';
 import VinylRating, { formatRating } from './VinylRating';
 import './ListeningCard.css';
 
-export default function ListeningCard({ album, item, onRemove }) {
-  const { user, profile, displayName } = useAuth();
+export default function ListeningCard({ album, item, onRemove, focusReview = false }) {
+  const { author, postListened, publicReviewsDefault } = useAuthor();
   const { showToast } = useToast();
-  const uid = user.uid;
-  const author = { username: profile?.username ?? '', displayName, photoURL: photoFor(profile, user) };
-  const defaultPublic = profile?.settings?.publicReviewsDefault ?? true;
+  const uid = author.uid;
+  const options = { postListened };
 
   // Una acción por cada cosa que se guarda, así cada una tiene su propio "Guardando…".
   const [savingAs, setSavingAs] = useState(null);
-  const addAction = useAsyncAction((status) => addToLibrary(uid, album, status, { isPublic: defaultPublic }));
-  const statusAction = useAsyncAction((status) => saveListening(uid, item, { status }, author));
-  const ratingAction = useAsyncAction((rating) => saveListening(uid, item, { rating }, author));
-  const reviewAction = useAsyncAction((review) => saveListening(uid, item, { review }, author));
-  const publicAction = useAsyncAction((isPublic) => saveListening(uid, item, { isPublic }, author));
+  const addAction = useAsyncAction((status) => addToLibrary(uid, album, status, { isPublic: publicReviewsDefault, postListened, author }));
+  const statusAction = useAsyncAction((status) => saveListening(uid, item, { status }, author, options));
+  const ratingAction = useAsyncAction((rating) => saveListening(uid, item, { rating }, author, options));
+  const reviewAction = useAsyncAction((review) => saveListening(uid, item, { review }, author, options));
+  const publicAction = useAsyncAction((isPublic) => saveListening(uid, item, { isPublic }, author, options));
 
   // "Guardado ✓" durante 2 segundos después de puntuar.
   const [ratingSaved, setRatingSaved] = useState(false);
@@ -170,6 +168,7 @@ export default function ListeningCard({ album, item, onRemove }) {
           </div>
 
           <ReviewForm
+            autoFocus={focusReview}
             savedReview={item.review ?? ''}
             isPublic={Boolean(item.isPublic)}
             saving={reviewAction.pending}

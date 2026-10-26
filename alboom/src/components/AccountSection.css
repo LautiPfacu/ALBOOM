@@ -27,6 +27,25 @@
   color: var(--ink-soft);
 }
 
+.account-section__field--wide {
+  grid-column: 1 / -1;
+}
+
+.account-section__bio {
+  min-height: 84px;
+  padding: 12px 16px;
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius);
+  font-size: 16px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.account-section__bio::placeholder {
+  color: var(--placeholder);
+}
+
 .account-section__hint {
   font-size: 13px;
   line-height: 1.4;

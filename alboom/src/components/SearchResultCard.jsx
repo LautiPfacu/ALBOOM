@@ -4,19 +4,20 @@
 //   libraryStatus: 'escuchado' | 'pendiente' | undefined (no está guardado)
 
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useAsyncAction } from '../hooks/useAsyncAction';
+import { useAuthor } from '../hooks/useAuthor';
 import { addToLibrary, libraryErrorMessage, STATUS } from '../services/library';
 import AlbumCover from './AlbumCover';
 import Button from './Button';
 import './SearchResultCard.css';
 
 export default function SearchResultCard({ album, libraryStatus }) {
-  const { user, profile } = useAuth();
   const { showToast } = useToast();
-  const isPublic = profile?.settings?.publicReviewsDefault ?? true;
-  const { run, pending } = useAsyncAction(() => addToLibrary(user.uid, album, STATUS.LISTENED, { isPublic }));
+  const { author, postListened, publicReviewsDefault } = useAuthor();
+  const { run, pending } = useAsyncAction(() =>
+    addToLibrary(author.uid, album, STATUS.LISTENED, { isPublic: publicReviewsDefault, postListened, author }),
+  );
   const albumUrl = `/disco/${album.id}`;
 
   async function handleSave() {

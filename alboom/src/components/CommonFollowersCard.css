@@ -1,0 +1,8 @@
+/* Avatares apilados (cada uno se monta un poco sobre el anterior) */
+.common-followers__avatars {
+  display: flex;
+}
+
+.common-followers__avatars > * + * {
+  margin-left: -10px;
+}

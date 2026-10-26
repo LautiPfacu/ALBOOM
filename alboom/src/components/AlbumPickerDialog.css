@@ -1,0 +1,49 @@
+.album-picker__list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.album-picker__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 6px;
+  border: 0;
+  border-bottom: 2px dashed var(--line);
+  background: none;
+  text-align: left;
+  color: var(--ink);
+}
+
+@media (hover: hover) {
+  .album-picker__item:hover {
+    background: var(--paper);
+  }
+}
+
+.album-picker__cover {
+  width: 56px;
+  flex-shrink: 0;
+  border-radius: 6px;
+}
+
+.album-picker__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.album-picker__name {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.album-picker__meta {
+  font-size: 13px;
+  color: var(--ink-soft);
+}

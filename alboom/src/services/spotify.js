@@ -58,6 +58,12 @@ export async function getArtist(id, { signal } = {}) {
   return cachedRequest({ type: 'artist', id }, { signal });
 }
 
+// Client ID público de la app de Spotify (para conectar la cuenta de cada persona).
+export async function getSpotifyClientId() {
+  const data = await cachedRequest({ type: 'config' });
+  return data.clientId;
+}
+
 // Discos poco escuchados relacionados con un término (por ejemplo, un género).
 // → [{ id, name, artist, artistId, year, cover, totalTracks, spotifyUrl }]
 export async function discoverAlbums(term, { offset = 0, signal } = {}) {

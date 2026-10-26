@@ -113,21 +113,24 @@ export default function PrivacySection() {
           />
         </div>
 
+        {/* "Perfil público" queda oculto por ahora: todos los perfiles son públicos (README de Comunidad). */}
         <div className="setting-row">
           <div className="setting-row__text">
-            <span className="setting-row__title" id="setting-public-profile">
-              Perfil público
+            <span className="setting-row__title" id="setting-post-listened">
+              Publicar cuando marco un disco como escuchado
             </span>
-            <span className="setting-row__description">Otras personas pueden ver tu biblioteca y tus puntajes.</span>
+            <span className="setting-row__description">
+              Aparece «escuchó» en la comunidad para la gente que te sigue.
+            </span>
           </div>
           <button
             type="button"
             role="switch"
             className="switch"
-            aria-checked={settings.publicProfile}
-            aria-labelledby="setting-public-profile"
+            aria-checked={settings.postListened}
+            aria-labelledby="setting-post-listened"
             disabled={settingsAction.pending}
-            onClick={() => toggleSetting('publicProfile')}
+            onClick={() => toggleSetting('postListened')}
           />
         </div>
 

@@ -42,8 +42,21 @@ function genreLabel(id) {
 
 // ---------- Afinidad ----------
 
-async function affinityPicks(liked, genres, signal) {
+// spotifyArtists: [{ id, name }] de tus artistas más escuchados en Spotify (si lo conectaste).
+async function affinityPicks(liked, genres, spotifyArtists, signal) {
+  // Artistas de Spotify: más discos de los que escuchás, con su propio motivo.
+  const fromSpotify = Promise.all(
+    spotifyArtists.slice(0, 2).map(async (artist) => {
+      const { albums } = await getArtist(artist.id, { signal });
+      return shuffle(albums)
+        .slice(0, PER_ARTIST)
+        .map((album) => ({ album, reason: `Porque escuchás ${artist.name}` }));
+    }),
+  );
+
   if (liked.length === 0) {
+    const spotifyGroups = await fromSpotify;
+    if (spotifyGroups.flat().length > 0) return interleave(spotifyGroups);
     // Sin puntajes todavía: discos de tus géneros.
     const pages = await Promise.all(
       genres.slice(0, 2).map(async (id) => {
@@ -78,7 +91,11 @@ async function affinityPicks(liked, genres, signal) {
         .map((album) => ({ album, reason: `Porque te gustó ${seed.name}` }));
     }),
   );
-  // Intercalamos artistas: uno de cada uno, así no se amontona uno solo.
+  return interleave([...groups, ...(await fromSpotify)]);
+}
+
+// Intercalamos artistas: uno de cada uno, así no se amontona uno solo.
+function interleave(groups) {
   const mixed = [];
   for (let i = 0; i < PER_ARTIST; i += 1) groups.forEach((group) => group[i] && mixed.push(group[i]));
   return mixed;
@@ -153,15 +170,16 @@ function mixWithQuotas(sources, size, exclude) {
 // ---------- Todo junto ----------
 
 // library: los discos de la biblioteca · genres: ids de generos.json · size: cuántas recomendaciones
+// spotifyArtists: tus artistas más escuchados en Spotify (vacío si no lo conectaste)
 // → [{ album, reason, source }]
-export async function getRecommendations({ uid, library, genres, size = 10, signal }) {
+export async function getRecommendations({ uid, library, genres, spotifyArtists = [], size = 10, signal }) {
   const liked = library
     .filter((item) => item.rating >= GOOD_RATING)
     .sort((a, b) => b.rating - a.rating);
   const exclude = library.map((item) => item.id);
 
   const [affinity, community, discovery] = await Promise.all([
-    safely(affinityPicks(liked, genres, signal)),
+    safely(affinityPicks(liked, genres, spotifyArtists, signal)),
     safely(getCommunityPicks(uid, liked.map((item) => item.id))),
     safely(discoveryPicks(genres, signal)),
   ]);

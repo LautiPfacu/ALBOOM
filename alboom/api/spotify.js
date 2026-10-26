@@ -123,6 +123,13 @@ export default async function handler(req, res) {
   const { searchParams } = new URL(req.url, 'http://localhost');
   const type = searchParams.get('type');
 
+  // El Client ID es público (no es el secret): el navegador lo necesita para conectar la cuenta
+  // de Spotify de cada persona con el flujo PKCE. Así no hace falta repetirlo en el .env.
+  if (type === 'config') {
+    if (!process.env.SPOTIFY_CLIENT_ID) return sendJson(res, 500, { error: 'Falta SPOTIFY_CLIENT_ID.' });
+    return sendJson(res, 200, { clientId: process.env.SPOTIFY_CLIENT_ID });
+  }
+
   try {
     if (type === 'search') {
       const query = (searchParams.get('q') ?? '').trim();

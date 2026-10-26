@@ -21,6 +21,12 @@ export function subscribeToAlbumReviews(albumId, onData, onError) {
   return onSnapshot(q, (snapshot) => onData(snapshot.docs.map(fromSnapshot)), onError);
 }
 
+// CONSULTAR en tiempo real las reseñas públicas de una persona (para su perfil).
+export function subscribeToUserReviews(uid, onData, onError) {
+  const q = query(reviewsCollection, where('uid', '==', uid));
+  return onSnapshot(q, (snapshot) => onData(snapshot.docs.map(fromSnapshot)), onError);
+}
+
 // Promedio y cantidad de reseñas de varios discos a la vez.
 // Firestore acepta hasta 30 valores en un "in", así que pedimos de a 30.
 // → Map(albumId → { average, count })

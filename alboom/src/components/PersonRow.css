@@ -1,0 +1,61 @@
+.person-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 2px dashed var(--line);
+}
+
+.person-row:last-child {
+  border-bottom: 0;
+}
+
+.person-row__avatar {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.person-row__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.person-row__name {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .person-row__name:hover {
+    text-decoration: underline;
+  }
+}
+
+.person-row__handle {
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.person-row__detail {
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+.person-row__covers {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.person-row__cover {
+  width: 32px;
+  border-radius: 4px;
+}

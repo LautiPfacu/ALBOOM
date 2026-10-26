@@ -1,0 +1,61 @@
+.recently-played {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.recently-played__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.recently-played__title {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.recently-played__list {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recently-played__item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.recently-played__cover {
+  box-shadow: var(--shadow-sm);
+}
+
+.recently-played__time {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 767px) {
+  .recently-played__title {
+    font-size: 28px;
+  }
+
+  .recently-played__list {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .recently-played__list li:nth-child(6) {
+    display: none;
+  }
+
+  .recently-played__time {
+    font-size: 12px;
+  }
+}

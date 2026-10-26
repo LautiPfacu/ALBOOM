@@ -31,12 +31,15 @@ import {
 } from 'firebase/firestore';
 import { auth, db, googleProvider } from '../firebase';
 import { normalizeText } from '../utils/text';
+import { getAllFollowRefs } from './follows';
+import { getPostRefsBy } from './posts';
+import { publicProfileRef } from './publicProfile';
 
 const profileRef = (uid) => doc(db, 'users', uid);
 const usernameRef = (username) => doc(db, 'usernames', username);
 
 export const USERNAME_PATTERN = /^[a-z0-9._]{3,20}$/;
-export const DEFAULT_SETTINGS = { publicReviewsDefault: true, publicProfile: false };
+export const DEFAULT_SETTINGS = { publicReviewsDefault: true, publicProfile: true, postListened: false };
 
 // ---------- Primera vez ----------
 
@@ -232,10 +235,15 @@ export async function exportUserData(uid) {
 export async function deleteAccount(uid, password) {
   await reauthenticate(password);
   const { profileSnapshot, librarySnapshot, reviewsSnapshot, dismissedSnapshot } = await getUserData(uid);
+  const [postRefs, followRefs] = await Promise.all([getPostRefsBy(uid), getAllFollowRefs(uid)]);
   const refs = [
     ...librarySnapshot.docs.map((d) => d.ref),
     ...reviewsSnapshot.docs.map((d) => d.ref),
     ...dismissedSnapshot.docs.map((d) => d.ref),
+    ...postRefs,
+    ...followRefs,
+    doc(db, 'users', uid, 'private', 'spotify'),
+    publicProfileRef(uid),
   ];
   const username = profileSnapshot.data()?.username;
   if (username) refs.push(usernameRef(username));

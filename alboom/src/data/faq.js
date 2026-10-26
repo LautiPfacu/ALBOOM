@@ -11,7 +11,7 @@ export const FAQ = [
     id: 'quien-ve-resenas',
     question: '¿Quién puede ver mis reseñas?',
     answer:
-      'Solo las que tienen «Mostrar en la comunidad» activado, y únicamente las personas con cuenta en ALBOOM. Tu biblioteca y tus discos pendientes son privados.',
+      'Los perfiles de ALBOOM son públicos para las personas con cuenta: ven tu nombre, tu @usuario, tu bio, tu Top 5 y tu biblioteca. Tus reseñas aparecen en la comunidad solo si tienen «Mostrar en la comunidad» activado. Tu email y tus ajustes nunca se muestran.',
   },
   {
     id: 'como-puntuo',

@@ -9,6 +9,7 @@ import Button from './Button';
 import './ReviewForm.css';
 
 export default function ReviewForm({
+  autoFocus = false,
   savedReview,
   isPublic,
   saving,
@@ -41,6 +42,7 @@ export default function ReviewForm({
         Tu reseña
       </label>
       <textarea
+        autoFocus={autoFocus}
         id={textareaId}
         className="review-form__textarea"
         value={draft}

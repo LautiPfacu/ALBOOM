@@ -128,7 +128,13 @@ export default function AlbumPage() {
             {itemLoading ? (
               <Loader size={48} label="Cargando tu escucha…" />
             ) : (
-              <ListeningCard album={album} item={item} onRemove={() => setConfirmOpen(true)} />
+              <ListeningCard
+                album={album}
+                item={item}
+                onRemove={() => setConfirmOpen(true)}
+                // Desde Comunidad → "Escribir reseña" llegamos con el foco en la reseña.
+                focusReview={Boolean(location.state?.focusReview)}
+              />
             )}
           </div>
 

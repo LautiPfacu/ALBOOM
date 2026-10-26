@@ -26,6 +26,17 @@
   font-weight: 700;
 }
 
+.review-card__link {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .review-card__link:hover {
+    text-decoration: underline;
+  }
+}
+
 .review-card__mine {
   font-weight: 600;
   color: var(--ink-soft);

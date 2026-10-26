@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// Reglas de ALBOOM V2.
+// Reglas de ALBOOM (V2 + Comunidad).
 // Se pegan en Firebase Console → Firestore Database → Reglas → Publicar.
 // Desplegar en Vercel NO las actualiza.
 
@@ -48,7 +48,9 @@ service cloud.firestore {
         && isValidPhoto(data);
     }
 
-    // Perfil: solo lo lee y lo escribe su dueño.
+    // ---------- Perfil privado y biblioteca ----------
+
+    // Perfil privado (email, ajustes, Spotify): solo lo lee y lo escribe su dueño.
     match /users/{uid} {
       allow read, delete: if isOwner(uid);
       allow create, update: if isOwner(uid) && isValidPhoto(request.resource.data);
@@ -58,12 +60,147 @@ service cloud.firestore {
         allow read, write: if isOwner(uid);
       }
 
-      // Biblioteca personal: users/{uid}/library/{albumId}
+      // Datos privados de Spotify (refresh token, sugerencias): users/{uid}/private/spotify
+      match /private/{docId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // Biblioteca: users/{uid}/library/{albumId}
+      // Todos los perfiles son públicos: la lee cualquiera con sesión; solo el dueño la cambia.
       match /library/{albumId} {
-        allow read, delete: if isOwner(uid);
+        allow read: if isSignedIn();
+        allow delete: if isOwner(uid);
         allow create, update: if isOwner(uid) && isValidLibraryItem(request.resource.data);
       }
     }
+
+    // ---------- Perfil público ----------
+
+    function isValidProfile(data) {
+      return data.displayName is string && data.displayName.size() <= 60
+        && data.username is string
+        && (!('bio' in data) || (data.bio is string && data.bio.size() <= 160))
+        && (!('top5' in data) || (data.top5 is list && data.top5.size() <= 5))
+        && (!('recent' in data) || (data.recent is list && data.recent.size() <= 6))
+        && isValidPhoto(data);
+    }
+
+    // Otra persona solo puede sumar o restar 1 a "seguidores", y solo si al mismo tiempo
+    // crea (o borra) su follows/{ella}_{este perfil}.
+    function isFollowerCounterUpdate(uid) {
+      let before = resource.data;
+      let after = request.resource.data;
+      let followPath = /databases/$(database)/documents/follows/$(request.auth.uid + '_' + uid);
+      return isSignedIn() && request.auth.uid != uid
+        && after.diff(before).affectedKeys().hasOnly(['followersCount'])
+        && ((after.followersCount == before.get('followersCount', 0) + 1
+              && existsAfter(followPath) && !exists(followPath))
+          || (after.followersCount == before.get('followersCount', 0) - 1
+              && !existsAfter(followPath) && exists(followPath)));
+    }
+
+    // profiles/{uid}: nombre, @usuario, foto, bio, géneros, Top 5, escuchado recientemente y contadores.
+    match /profiles/{uid} {
+      allow read: if isSignedIn();
+      allow create: if isOwner(uid) && isValidProfile(request.resource.data)
+        && request.resource.data.followersCount == 0
+        && request.resource.data.followingCount == 0;
+      // El dueño cambia sus datos, pero no puede tocar su contador de seguidores.
+      allow update: if (isOwner(uid) && isValidProfile(request.resource.data)
+          && request.resource.data.get('followersCount', 0) == resource.data.get('followersCount', 0))
+        || isFollowerCounterUpdate(uid);
+      allow delete: if isOwner(uid);
+    }
+
+    // ---------- Seguir ----------
+
+    // follows/{seguidor}_{seguido}: lo crea solo quien sigue, a su nombre.
+    match /follows/{followId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn()
+        && request.resource.data.follower == request.auth.uid
+        && request.resource.data.followed is string
+        && request.resource.data.followed != request.auth.uid
+        && followId == request.auth.uid + '_' + request.resource.data.followed;
+      // Lo borra quien sigue (dejar de seguir) o el seguido (al eliminar su cuenta).
+      allow delete: if isSignedIn()
+        && (resource.data.follower == request.auth.uid || resource.data.followed == request.auth.uid);
+    }
+
+    // ---------- Comunidad ----------
+
+    function isValidPost(data) {
+      return data.uid == request.auth.uid
+        && data.type in ['review', 'listened', 'top5', 'repost']
+        && data.username is string
+        && data.displayName is string
+        && isValidPhoto(data)
+        && (!('text' in data) || (data.text is string && data.text.size() <= 500))
+        && (!('rating' in data) || (data.rating is number && data.rating >= 0 && data.rating <= 5))
+        && (!('top5' in data) || (data.top5 is list && data.top5.size() <= 5));
+    }
+
+    // Los contadores arrancan en 0 (o todavía no existen).
+    function countersStartAtZero(data) {
+      return data.get('likeCount', 0) == 0 && data.get('replyCount', 0) == 0 && data.get('repostCount', 0) == 0;
+    }
+
+    function countersUnchanged() {
+      return request.resource.data.get('likeCount', 0) == resource.data.get('likeCount', 0)
+        && request.resource.data.get('replyCount', 0) == resource.data.get('replyCount', 0)
+        && request.resource.data.get('repostCount', 0) == resource.data.get('repostCount', 0);
+    }
+
+    // Cualquiera con sesión puede mover un contador de a 1, atado a su like o a su repost.
+    function isCounterUpdate(postId) {
+      let before = resource.data;
+      let after = request.resource.data;
+      let changed = after.diff(before).affectedKeys();
+      let likePath = /databases/$(database)/documents/posts/$(postId)/likes/$(request.auth.uid);
+      let repostPath = /databases/$(database)/documents/posts/$('repost_' + postId + '_' + request.auth.uid);
+      return isSignedIn() && (
+        (changed.hasOnly(['likeCount'])
+          && ((after.likeCount == before.get('likeCount', 0) + 1 && existsAfter(likePath) && !exists(likePath))
+            || (after.likeCount == before.get('likeCount', 0) - 1 && !existsAfter(likePath) && exists(likePath))))
+        || (changed.hasOnly(['replyCount']) && after.replyCount == before.get('replyCount', 0) + 1)
+        || (changed.hasOnly(['repostCount'])
+          && ((after.repostCount == before.get('repostCount', 0) + 1 && existsAfter(repostPath) && !exists(repostPath))
+            || (after.repostCount == before.get('repostCount', 0) - 1 && !existsAfter(repostPath) && exists(repostPath))))
+      );
+    }
+
+    // posts/{postId}: los lee cualquiera con sesión; solo el autor los crea, edita y borra.
+    match /posts/{postId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidPost(request.resource.data)
+        && countersStartAtZero(request.resource.data);
+      allow update: if (isSignedIn() && resource.data.uid == request.auth.uid
+          && isValidPost(request.resource.data) && countersUnchanged())
+        || isCounterUpdate(postId);
+      // Los posteos de reseñas, "escuchó" y compartidos tienen un id que termina en _uid:
+      // así se pueden borrar aunque todavía no existan (en el mismo lote que la biblioteca).
+      allow delete: if isSignedIn()
+        && (postId.matches('.+_' + request.auth.uid) || resource.data.uid == request.auth.uid);
+
+      // Me gusta: posts/{postId}/likes/{uid} → solo el propio uid.
+      match /likes/{uid} {
+        allow read: if isSignedIn();
+        allow create, delete: if isOwner(uid);
+      }
+
+      // Respuestas: las crea cualquiera con sesión a su nombre; solo el autor las borra.
+      match /replies/{replyId} {
+        allow read: if isSignedIn();
+        allow create: if isSignedIn()
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 300;
+        allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+      }
+    }
+
+    // ---------- Otros ----------
 
     // Reseñas públicas: reviews/{albumId}_{uid}
     // Las lee cualquier persona con sesión; solo su autor las crea, edita o borra.

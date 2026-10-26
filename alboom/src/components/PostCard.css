@@ -1,0 +1,227 @@
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.post__reposted,
+.post__reason {
+  padding-left: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.post__reason {
+  font-family: var(--font-label);
+  font-size: 13px;
+  color: var(--link);
+}
+
+.post__card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: var(--card);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.post__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.post__who {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.post__name {
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .post__name:hover {
+    text-decoration: underline;
+  }
+}
+
+.post__meta {
+  font-size: 13px;
+}
+
+.post__menu {
+  position: relative;
+}
+
+.post__menu-button {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.post__menu-panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 15;
+  width: 200px;
+  padding: 6px;
+  background: var(--card);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.post__menu-panel .share-menu__item {
+  width: 100%;
+}
+
+/* Disco del posteo: caja con borde, tapa y datos */
+.post__album {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+}
+
+.post__cover {
+  width: 88px;
+  flex-shrink: 0;
+  border-radius: 6px;
+}
+
+.post__album--small .post__cover {
+  width: 64px;
+}
+
+.post__album-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.post__album-name {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.post__album-meta {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.post__rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.post__rating-number {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.post__text {
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.post__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px 18px;
+  flex-wrap: wrap;
+}
+
+.post__spacer {
+  flex: 1;
+}
+
+.post__spotify {
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Botones chicos de acción (Me gusta, Responder, Compartir) */
+.post-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.post-action--liked {
+  background: var(--pink-pressed);
+  color: var(--ink);
+}
+
+.post-action:disabled {
+  cursor: progress;
+}
+
+@media (hover: hover) {
+  .post-action:not(:disabled):hover {
+    background: var(--paper);
+  }
+
+  .post-action--liked:not(:disabled):hover {
+    background: var(--pink-pressed);
+  }
+}
+
+@media (max-width: 767px) {
+  .post__card {
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .post__cover {
+    width: 64px;
+  }
+
+  .post__actions {
+    gap: 4px 8px;
+  }
+
+  .post-action {
+    min-height: 44px;
+    padding: 0 6px;
+  }
+
+  .post__spacer {
+    flex-basis: 100%;
+  }
+}

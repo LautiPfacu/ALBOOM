@@ -1,5 +1,5 @@
 // Nombre + avatar en la barra. Al tocarlo abre el menú de la cuenta:
-// Perfil y ajustes · Tema (nombre actual) · Ayuda · Cerrar sesión.
+// Tu perfil · Perfil y ajustes · Tema (nombre actual) · Ayuda · Cerrar sesión.
 
 import { useCallback, useId, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -64,12 +64,15 @@ export default function UserMenu() {
             </div>
           </div>
           <Link to="/perfil" className="user-menu__item" onClick={close}>
+            Tu perfil
+          </Link>
+          <Link to="/ajustes" className="user-menu__item" onClick={close}>
             Perfil y ajustes
           </Link>
-          <Link to="/perfil/tema" className="user-menu__item" onClick={close}>
+          <Link to="/ajustes/tema" className="user-menu__item" onClick={close}>
             Tema <strong>{themeName(userTheme)}</strong>
           </Link>
-          <Link to="/perfil/ayuda" className="user-menu__item" onClick={close}>
+          <Link to="/ajustes/ayuda" className="user-menu__item" onClick={close}>
             Ayuda
           </Link>
           <button

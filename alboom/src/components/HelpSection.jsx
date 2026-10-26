@@ -60,7 +60,7 @@ export default function HelpSection() {
           <span className="help-section__report-title">¿Algo no funciona?</span>
           <span className="setting-row__description">Contanos qué pasó y en qué pantalla. Te respondemos por mail.</span>
         </div>
-        <Link to="/perfil/reportar" className="btn btn--primary btn--md">
+        <Link to="/ajustes/reportar" className="btn btn--primary btn--md">
           Reportar un problema
         </Link>
       </div>
