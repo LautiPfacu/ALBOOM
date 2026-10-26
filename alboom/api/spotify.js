@@ -242,8 +242,14 @@ export default async function handler(req, res) {
 
     return sendJson(res, 400, { error: 'Falta el parámetro type (search, album, genre, artist o discover).' });
   } catch (error) {
-    const status = error instanceof HttpError ? error.status : 500;
-    if (status === 500) console.error(error);
-    return sendJson(res, status, { error: error.message || 'Error inesperado.' });
+    if (error instanceof HttpError) return sendJson(res, error.status, { error: error.message });
+    console.error(error);
+    // "fetch failed": el servidor no pudo llegar a Spotify (sin internet, o una red que bloquea Spotify).
+    const unreachable = error instanceof TypeError && error.message === 'fetch failed';
+    return sendJson(res, unreachable ? 502 : 500, {
+      error: unreachable
+        ? 'No pudimos conectarnos con Spotify. Revisá tu conexión o probá con otra red.'
+        : error.message || 'Error inesperado.',
+    });
   }
 }

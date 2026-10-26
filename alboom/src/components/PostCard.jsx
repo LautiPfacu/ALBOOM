@@ -21,6 +21,8 @@ import PostReplies from './PostReplies';
 import ShareMenu from './ShareMenu';
 import TopFiveShelf from './TopFiveShelf';
 import VinylRating, { formatRating } from './VinylRating';
+import { useRequireAccount } from '../hooks/useRequireAccount';
+import { useT } from '../i18n/LanguageContext';
 import './PostCard.css';
 
 const ACTION_TEXT = {
@@ -30,6 +32,8 @@ const ACTION_TEXT = {
 };
 
 export default function PostCard({ post, reason, repostedBy, showFollow = false, readOnly = false }) {
+  const requireAccount = useRequireAccount();
+  const t = useT();
   const { author } = useAuthor();
   const { showToast } = useToast();
   const isMine = post.uid === author.uid;
@@ -62,6 +66,7 @@ export default function PostCard({ post, reason, repostedBy, showFollow = false,
   useDismiss(menuOpen, closeMenu, menuRef);
 
   async function toggleLike() {
+    if (requireAccount()) return;
     const liked = !mine.liked;
     setMine((current) => ({ ...current, liked }));
     setLikeState((current) => ({ ...current, delta: current.delta + (liked ? 1 : -1) }));
@@ -76,6 +81,7 @@ export default function PostCard({ post, reason, repostedBy, showFollow = false,
   }
 
   async function toggleRepost() {
+    if (requireAccount()) return;
     const reposted = !mine.reposted;
     try {
       await repostAction.run(reposted);
@@ -104,7 +110,7 @@ export default function PostCard({ post, reason, repostedBy, showFollow = false,
     <div className="post">
       {repostedBy && (
         <p className="post__reposted">
-          <span aria-hidden="true">⟲</span> {repostedBy} compartió
+          <span aria-hidden="true">⟲</span> {t('{name} compartió', { name: repostedBy })}
         </p>
       )}
       {reason && <p className="post__reason">{reason}</p>}
@@ -118,7 +124,7 @@ export default function PostCard({ post, reason, repostedBy, showFollow = false,
               <Link to={`/u/${post.username}`} className="post__name">
                 {post.displayName}
               </Link>{' '}
-              {ACTION_TEXT[post.type]}
+              {t(ACTION_TEXT[post.type])}
             </span>
             <span className="post__meta">
               @{post.username} · {timeAgo(post.createdAt)}
@@ -130,7 +136,7 @@ export default function PostCard({ post, reason, repostedBy, showFollow = false,
               <button
                 type="button"
                 className="post__menu-button"
-                aria-label="Opciones del posteo"
+                aria-label={t('Opciones del posteo')}
                 aria-expanded={menuOpen}
                 onClick={() => setMenuOpen((value) => !value)}
               >
@@ -139,7 +145,7 @@ export default function PostCard({ post, reason, repostedBy, showFollow = false,
               {menuOpen && (
                 <div className="post__menu-panel">
                   <button type="button" className="share-menu__item" disabled={deleteAction.pending} onClick={handleDelete}>
-                    {deleteAction.pending ? 'Borrando…' : 'Borrar posteo'}
+                    {deleteAction.pending ? t('Borrando…') : t('Borrar posteo')}
                   </button>
                 </div>
               )}
@@ -155,7 +161,7 @@ export default function PostCard({ post, reason, repostedBy, showFollow = false,
               <span className="post__album-meta">{[album.artist, album.year].filter(Boolean).join(' · ')}</span>
               {post.type === 'review' && post.rating > 0 && (
                 <span className="post__rating">
-                  <VinylRating value={post.rating} readOnly size={18} label={`Puntaje de ${firstName}`} />
+                  <VinylRating value={post.rating} readOnly size={18} label={t('Puntaje de {name}', { name: firstName })} />
                   <span className="post__rating-number" aria-hidden="true">
                     {formatRating(post.rating)}
                   </span>
@@ -182,7 +188,7 @@ export default function PostCard({ post, reason, repostedBy, showFollow = false,
               type="button"
               className={`post-action${mine.liked ? ' post-action--liked' : ''}`}
               aria-pressed={mine.liked}
-              aria-label={`Me gusta · ${likeCount}`}
+              aria-label={t('Me gusta · {n}', { n: likeCount })}
               disabled={likeAction.pending}
               onClick={toggleLike}
             >
@@ -200,7 +206,7 @@ export default function PostCard({ post, reason, repostedBy, showFollow = false,
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true">
                 <path d="M4 5h16v11H9l-5 4z" />
               </svg>
-              Responder · {post.replyCount ?? 0}
+              {t('Responder')} · {post.replyCount ?? 0}
             </button>
             {post.type !== 'repost' && (
               <ShareMenu
@@ -209,7 +215,7 @@ export default function PostCard({ post, reason, repostedBy, showFollow = false,
                 pending={repostAction.pending}
                 onRepost={toggleRepost}
                 url={`${window.location.origin}/post/${post.id}`}
-                title={album ? `${album.name} en ALBOOM` : 'ALBOOM'}
+                title={album ? t('{name} en ALBOOM', { name: album.name }) : 'ALBOOM'}
               />
             )}
             <span className="post__spacer" />
@@ -221,7 +227,7 @@ export default function PostCard({ post, reason, repostedBy, showFollow = false,
             )}
             {post.type === 'top5' && (
               <Link to={`/u/${post.username}`} className="post__spotify">
-                Ver su perfil
+                {t('Ver su perfil')}
               </Link>
             )}
           </footer>

@@ -1,15 +1,20 @@
 // Eliminar cuenta: hay que escribir ELIMINAR y (si entra con email) la contraseña.
 // Después: reautenticación → borrado de biblioteca, reseñas, usuario y perfil → deleteUser.
 
-import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useAsyncAction } from '../hooks/useAsyncAction';
-import { deleteAccount, profileErrorMessage, providerIds } from '../services/profile';
-import Button from './Button';
-import Dialog from './Dialog';
-import TextField from './TextField';
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useT } from "../i18n/LanguageContext";
+import { useAsyncAction } from "../hooks/useAsyncAction";
+import {
+  deleteAccount,
+  profileErrorMessage,
+  providerIds,
+} from "../services/profile";
+import Button from "./Button";
+import Dialog from "./Dialog";
+import TextField from "./TextField";
 
-const CONFIRM_WORD = 'ELIMINAR';
+const CONFIRM_WORD = "ELIMINAR";
 
 export default function DeleteAccountDialog({ open, onClose }) {
   return (
@@ -20,12 +25,15 @@ export default function DeleteAccountDialog({ open, onClose }) {
 }
 
 function DeleteAccountForm({ onClose }) {
+  const t = useT();
   const { user } = useAuth();
-  const usesPassword = providerIds(user).includes('password');
-  const [word, setWord] = useState('');
-  const [password, setPassword] = useState('');
+  const usesPassword = providerIds(user).includes("password");
+  const [word, setWord] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const { run, pending } = useAsyncAction(() => deleteAccount(user.uid, password));
+  const { run, pending } = useAsyncAction(() =>
+    deleteAccount(user.uid, password),
+  );
 
   const ready = word === CONFIRM_WORD && (!usesPassword || password.length > 0);
 
@@ -44,15 +52,17 @@ function DeleteAccountForm({ onClose }) {
   return (
     <form className="dialog__form" onSubmit={handleSubmit} noValidate>
       <h2 id="delete-dialog-title" className="dialog__title">
-        ¿Eliminar tu cuenta?
+        {t("¿Eliminar tu cuenta?")}
       </h2>
       <p className="dialog__text">
-        Se borran tu biblioteca, tus puntajes y tus reseñas. No se puede deshacer. Para confirmar, escribí{' '}
+        {t(
+          "Se borran tu biblioteca, tus puntajes y tus reseñas. No se puede deshacer. Para confirmar, escribí",
+        )}{" "}
         <strong>{CONFIRM_WORD}</strong>.
       </p>
       <TextField
         id="delete-word"
-        label={`Escribí ${CONFIRM_WORD}`}
+        label={t("Escribí {word}", { word: CONFIRM_WORD })}
         value={word}
         onChange={(event) => setWord(event.target.value.toUpperCase())}
         autoComplete="off"
@@ -68,19 +78,32 @@ function DeleteAccountForm({ onClose }) {
           onChange={(event) => setPassword(event.target.value)}
         />
       ) : (
-        <p className="dialog__text">Te vamos a pedir que entres con Google una vez más.</p>
+        <p className="dialog__text">
+          {t("Te vamos a pedir que entres con Google una vez más.")}
+        </p>
       )}
       {error && (
         <p className="dialog__error" role="alert">
-          {error}
+          {t(error)}
         </p>
       )}
       <div className="dialog__actions">
-        <Button variant="secondary" size="sm" disabled={pending} onClick={onClose}>
+        <Button
+          variant="secondary"
+          size="sm"
+          disabled={pending}
+          onClick={onClose}
+        >
           Cancelar
         </Button>
-        <Button type="submit" variant="danger" size="sm" pending={pending} disabled={!ready}>
-          {pending ? 'Eliminando…' : 'Eliminar mi cuenta'}
+        <Button
+          type="submit"
+          variant="danger"
+          size="sm"
+          pending={pending}
+          disabled={!ready}
+        >
+          {pending ? "Eliminando…" : "Eliminar mi cuenta"}
         </Button>
       </div>
     </form>

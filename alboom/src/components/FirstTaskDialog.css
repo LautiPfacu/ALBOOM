@@ -1,0 +1,37 @@
+.first-task__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 0 24px;
+  padding: 0;
+  list-style: none;
+}
+
+.first-task__step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.first-task__number {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--pink);
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.first-task__title,
+.first-task__text {
+  display: block;
+}
+
+.first-task__text {
+  color: var(--ink-soft, var(--ink));
+  font-size: 14px;
+}

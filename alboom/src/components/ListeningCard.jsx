@@ -8,16 +8,20 @@ import { useEffect, useRef, useState } from 'react';
 import { useToast } from '../context/ToastContext';
 import { useAsyncAction } from '../hooks/useAsyncAction';
 import { useAuthor } from '../hooks/useAuthor';
+import { useT } from '../i18n/LanguageContext';
 import { addToLibrary, isPublishable, libraryErrorMessage, saveListening, STATUS } from '../services/library';
 import Button from './Button';
 import ReviewForm from './ReviewForm';
 import StatusToggle from './StatusToggle';
 import VinylRating, { formatRating } from './VinylRating';
+import { useRequireAccount } from '../hooks/useRequireAccount';
 import './ListeningCard.css';
 
 export default function ListeningCard({ album, item, onRemove, focusReview = false }) {
+  const requireAccount = useRequireAccount('albums');
   const { author, postListened, publicReviewsDefault } = useAuthor();
   const { showToast } = useToast();
+  const t = useT();
   const uid = author.uid;
   const options = { postListened };
 
@@ -35,6 +39,7 @@ export default function ListeningCard({ album, item, onRemove, focusReview = fal
   useEffect(() => () => clearTimeout(savedTimerRef.current), []);
 
   async function handleAdd(status) {
+    if (requireAccount()) return;
     setSavingAs(status);
     try {
       await addAction.run(status);
@@ -42,7 +47,7 @@ export default function ListeningCard({ album, item, onRemove, focusReview = fal
         type: 'success',
         message: (
           <>
-            <strong>{album.name}</strong> se guardó en tu biblioteca.
+            <strong>{album.name}</strong> {t('se guardó en tu biblioteca.')}
           </>
         ),
       });
@@ -52,6 +57,7 @@ export default function ListeningCard({ album, item, onRemove, focusReview = fal
   }
 
   async function handleStatus(status) {
+    if (requireAccount()) return;
     try {
       await statusAction.run(status);
     } catch (error) {
@@ -60,6 +66,7 @@ export default function ListeningCard({ album, item, onRemove, focusReview = fal
   }
 
   async function handleRating(rating) {
+    if (requireAccount()) return;
     clearTimeout(savedTimerRef.current);
     setRatingSaved(false);
     try {
@@ -73,6 +80,7 @@ export default function ListeningCard({ album, item, onRemove, focusReview = fal
   }
 
   async function handleReview(review) {
+    if (requireAccount()) return;
     try {
       const result = await reviewAction.run(review);
       showToast({
@@ -89,6 +97,7 @@ export default function ListeningCard({ album, item, onRemove, focusReview = fal
   }
 
   async function handleTogglePublic(isPublic) {
+    if (requireAccount()) return;
     try {
       const result = await publicAction.run(isPublic);
       if (result?.published) showToast({ type: 'success', message: 'Tu reseña ya se ve en la comunidad.' });
@@ -102,9 +111,9 @@ export default function ListeningCard({ album, item, onRemove, focusReview = fal
     return (
       <section id="tu-escucha" className="listening-card" aria-labelledby="listening-title">
         <h2 id="listening-title" className="listening-card__title">
-          Tu escucha
+          {t('Tu escucha')}
         </h2>
-        <p className="listening-card__text">Guardalo para puntuarlo y escribir tu reseña.</p>
+        <p className="listening-card__text">{t('Guardalo para puntuarlo y escribir tu reseña.')}</p>
         <div className="listening-card__add">
           <Button
             pending={addAction.pending && savingAs === STATUS.LISTENED}
@@ -133,22 +142,22 @@ export default function ListeningCard({ album, item, onRemove, focusReview = fal
     <section id="tu-escucha" className="listening-card" aria-labelledby="listening-title">
       <div className="listening-card__top">
         <h2 id="listening-title" className="listening-card__title">
-          Tu escucha
+          {t('Tu escucha')}
         </h2>
         <StatusToggle value={item.status} onChange={handleStatus} disabled={statusAction.pending} />
       </div>
 
       {isPending ? (
-        <p className="listening-card__text">Marcalo como escuchado para puntuarlo y reseñarlo.</p>
+        <p className="listening-card__text">{t('Marcalo como escuchado para puntuarlo y reseñarlo.')}</p>
       ) : (
         <>
           <div className="listening-card__rating">
             <div className="listening-card__rating-head">
-              <span className="listening-card__label">Tu puntaje</span>
+              <span className="listening-card__label">{t('Tu puntaje')}</span>
               {/* role="status": el lector de pantalla anuncia "Guardando…" y "Guardado ✓" */}
               <span className="listening-card__saved" role="status">
-                {ratingAction.pending && <span className="listening-card__saving">Guardando…</span>}
-                {!ratingAction.pending && ratingSaved && <span className="highlight">Guardado ✓</span>}
+                {ratingAction.pending && <span className="listening-card__saving">{t('Guardando…')}</span>}
+                {!ratingAction.pending && ratingSaved && <span className="highlight">{t('Guardado ✓')}</span>}
               </span>
             </div>
             <div className="listening-card__vinyls">
@@ -163,7 +172,7 @@ export default function ListeningCard({ album, item, onRemove, focusReview = fal
               </span>
             </div>
             <p className="listening-card__help">
-              Tocá la mitad izquierda de un vinilo para medio punto. Tocá el mismo puntaje para borrarlo.
+              {t('Tocá la mitad izquierda de un vinilo para medio punto. Tocá el mismo puntaje para borrarlo.')}
             </p>
           </div>
 
@@ -177,13 +186,13 @@ export default function ListeningCard({ album, item, onRemove, focusReview = fal
             onTogglePublic={handleTogglePublic}
             onRemove={onRemove}
           />
-          {publishHint && <p className="listening-card__help">Tu reseña se publica cuando le pongas puntaje.</p>}
+          {publishHint && <p className="listening-card__help">{t('Tu reseña se publica cuando le pongas puntaje.')}</p>}
         </>
       )}
 
       {isPending && (
         <button type="button" className="text-link listening-card__remove" onClick={onRemove}>
-          Quitar de la biblioteca
+          {t('Quitar de la biblioteca')}
         </button>
       )}
     </section>

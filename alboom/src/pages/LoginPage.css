@@ -118,6 +118,20 @@
   }
 }
 
+.login-page__guest {
+  align-self: center;
+  min-height: 44px;
+}
+
+.login-page__guest-notice {
+  padding: 12px 16px;
+  background: var(--yellow);
+  border: var(--border);
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 600;
+}
+
 .login-page__form-error {
   padding: 12px 16px;
   background: var(--error-bg);

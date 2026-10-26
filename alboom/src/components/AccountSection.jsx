@@ -1,11 +1,12 @@
 // Perfil → Tu cuenta: foto, nombre, nombre de usuario (con chequeo de disponibilidad), bio y email.
 // La bio es pública (profiles/{uid}); el email nunca se muestra a otras personas.
 
-import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useToast } from '../context/ToastContext';
-import { useAsyncAction } from '../hooks/useAsyncAction';
-import { usePublicProfile } from '../hooks/usePublicProfile';
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
+import { useT } from "../i18n/LanguageContext";
+import { useAsyncAction } from "../hooks/useAsyncAction";
+import { usePublicProfile } from "../hooks/usePublicProfile";
 import {
   changeEmail,
   isUsernameAvailable,
@@ -13,49 +14,55 @@ import {
   providerIds,
   updateAccount,
   USERNAME_PATTERN,
-} from '../services/profile';
-import { BIO_MAX_LENGTH, updateBio } from '../services/publicProfile';
-import Button from './Button';
-import PhotoPicker from './PhotoPicker';
-import ProfileSection from './ProfileSection';
-import TextField from './TextField';
-import './AccountSection.css';
+} from "../services/profile";
+import { BIO_MAX_LENGTH, updateBio } from "../services/publicProfile";
+import Button from "./Button";
+import PhotoPicker from "./PhotoPicker";
+import ProfileSection from "./ProfileSection";
+import TextField from "./TextField";
+import "./AccountSection.css";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 function validate({ name, username, email }) {
   const errors = {};
-  if (name.trim().length < 2 || name.trim().length > 30) errors.name = 'Escribí tu nombre (2 a 30 caracteres).';
+  if (name.trim().length < 2 || name.trim().length > 30)
+    errors.name = "Escribí tu nombre (2 a 30 caracteres).";
   if (!USERNAME_PATTERN.test(username)) {
-    errors.username = 'De 3 a 20 caracteres: letras minúsculas, números, punto o guion bajo.';
+    errors.username =
+      "De 3 a 20 caracteres: letras minúsculas, números, punto o guion bajo.";
   }
-  if (!EMAIL_PATTERN.test(email.trim())) errors.email = 'Ingresá un email válido, por ejemplo nombre@mail.com.';
+  if (!EMAIL_PATTERN.test(email.trim()))
+    errors.email = "Ingresá un email válido, por ejemplo nombre@mail.com.";
   return errors;
 }
 
 export default function AccountSection() {
+  const t = useT();
   const { user, profile, displayName } = useAuth();
   const { showToast } = useToast();
-  const canChangeEmail = providerIds(user).includes('password');
+  const canChangeEmail = providerIds(user).includes("password");
 
   const [values, setValues] = useState({
     name: displayName,
-    username: profile?.username ?? '',
-    email: user.email ?? '',
+    username: profile?.username ?? "",
+    email: user.email ?? "",
   });
   const [submitted, setSubmitted] = useState(false);
 
   // La bio vive en el perfil público, que llega un instante después: la cargamos cuando aparece
   // (patrón "ajustar estado cuando cambia algo", sin useEffect).
   const { profile: publicProfile } = usePublicProfile(user.uid);
-  const savedBio = publicProfile?.bio ?? '';
+  const savedBio = publicProfile?.bio ?? "";
   const [bio, setBio] = useState(null); // null = todavía no la cargamos
   if (bio === null && publicProfile) setBio(savedBio);
   // Resultado del chequeo de disponibilidad: { username, available }
   const [availability, setAvailability] = useState(null);
 
   const saveAction = useAsyncAction(async () => {
-    const accountChanged = values.name.trim() !== displayName || values.username !== (profile?.username ?? '');
+    const accountChanged =
+      values.name.trim() !== displayName ||
+      values.username !== (profile?.username ?? "");
     if (accountChanged) {
       await updateAccount(user.uid, {
         displayName: values.name,
@@ -72,12 +79,17 @@ export default function AccountSection() {
 
   const errors = validate(values);
   const showError = (field) => (submitted ? errors[field] : undefined);
-  const usernameTaken = availability?.username === values.username && availability.available === false;
+  const usernameTaken =
+    availability?.username === values.username &&
+    availability.available === false;
 
   function handleChange(event) {
     const { name, value } = event.target;
     // El nombre de usuario se escribe siempre en minúsculas.
-    setValues((current) => ({ ...current, [name]: name === 'username' ? value.toLowerCase() : value }));
+    setValues((current) => ({
+      ...current,
+      [name]: name === "username" ? value.toLowerCase() : value,
+    }));
   }
 
   async function checkUsername() {
@@ -101,25 +113,36 @@ export default function AccountSection() {
     try {
       const result = await saveAction.run();
       if (result?.emailChanged) {
-        showToast({ type: 'success', message: `Te mandamos un mail a ${values.email.trim()} para confirmarlo.` });
+        showToast({
+          type: "success",
+          message: t("Te mandamos un mail a {email} para confirmarlo.", {
+            email: values.email.trim(),
+          }),
+        });
       } else if (result?.accountChanged) {
-        showToast({ type: 'success', message: 'Guardamos tus cambios.' });
+        showToast({ type: "success", message: "Guardamos tus cambios." });
       }
       setSubmitted(false);
     } catch (error) {
-      if (error.code === 'app/username-taken') setAvailability({ username: values.username, available: false });
-      showToast({ type: 'error', message: profileErrorMessage(error) });
+      if (error.code === "app/username-taken")
+        setAvailability({ username: values.username, available: false });
+      showToast({ type: "error", message: profileErrorMessage(error) });
     }
   }
 
-  let usernameHint = 'Así te ven en la comunidad.';
-  if (availability?.username === values.username && availability.available) usernameHint = 'Está disponible ✓';
+  let usernameHint = "Así te ven en la comunidad.";
+  if (availability?.username === values.username && availability.available)
+    usernameHint = "Está disponible ✓";
 
   return (
-    <ProfileSection id="cuenta" title="Tu cuenta">
+    <ProfileSection id="cuenta" title={t("Tu cuenta")}>
       <PhotoPicker />
 
-      <form className="account-section__form" onSubmit={handleSubmit} noValidate>
+      <form
+        className="account-section__form"
+        onSubmit={handleSubmit}
+        noValidate
+      >
         <div className="account-section__grid">
           <TextField
             id="account-name"
@@ -128,7 +151,7 @@ export default function AccountSection() {
             value={values.name}
             onChange={handleChange}
             autoComplete="name"
-            error={showError('name')}
+            error={showError("name")}
           />
           <div className="account-section__field">
             <TextField
@@ -139,30 +162,36 @@ export default function AccountSection() {
               onChange={handleChange}
               onBlur={checkUsername}
               autoComplete="username"
-              error={showError('username') ?? (usernameTaken ? 'Ese nombre de usuario ya está en uso.' : undefined)}
+              error={
+                showError("username") ??
+                (usernameTaken
+                  ? "Ese nombre de usuario ya está en uso."
+                  : undefined)
+              }
             >
               <span className="account-section__at" aria-hidden="true">
                 @
               </span>
             </TextField>
-            <p className="account-section__hint">{usernameHint}</p>
+            <p className="account-section__hint">{t(usernameHint)}</p>
           </div>
           <div className="account-section__field account-section__field--wide">
             <label htmlFor="account-bio" className="text-field__label">
-              Bio
+              {t("Bio")}
             </label>
             <textarea
               id="account-bio"
               className="account-section__bio"
-              value={bio ?? ''}
+              value={bio ?? ""}
               maxLength={BIO_MAX_LENGTH}
               onChange={(event) => setBio(event.target.value)}
-              placeholder="Contá qué escuchás, en pocas palabras."
+              placeholder={t("Contá qué escuchás, en pocas palabras.")}
               aria-describedby="account-bio-count"
               disabled={bio === null}
             />
             <p id="account-bio-count" className="account-section__hint">
-              {(bio ?? '').length} / {BIO_MAX_LENGTH} · Se ve en tu perfil.
+              {(bio ?? "").length} / {BIO_MAX_LENGTH} ·{" "}
+              {t("Se ve en tu perfil.")}
             </p>
           </div>
           <div className="account-section__field">
@@ -175,18 +204,20 @@ export default function AccountSection() {
               onChange={handleChange}
               autoComplete="email"
               readOnly={!canChangeEmail}
-              error={showError('email')}
+              error={showError("email")}
             />
             <p className="account-section__hint">
-              {canChangeEmail
-                ? 'Si lo cambiás, te mandamos un mail para confirmarlo.'
-                : 'Entrás con Google: el email lo maneja tu cuenta de Google.'}
+              {t(
+                canChangeEmail
+                  ? "Si lo cambiás, te mandamos un mail para confirmarlo."
+                  : "Entrás con Google: el email lo maneja tu cuenta de Google.",
+              )}
             </p>
           </div>
         </div>
         <div className="account-section__actions">
           <Button type="submit" pending={saveAction.pending}>
-            {saveAction.pending ? 'Guardando…' : 'Guardar cambios'}
+            {saveAction.pending ? "Guardando…" : "Guardar cambios"}
           </Button>
         </div>
       </form>

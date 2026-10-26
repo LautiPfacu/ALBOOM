@@ -6,12 +6,14 @@
 
 import BurstMark from './BurstMark';
 import './ThemePreview.css';
+import { useT } from '../i18n/LanguageContext';
 
 export default function ThemePreview({ themeId, size = 'large', name }) {
+  const t = useT();
   const firstName = name ? name.split(' ')[0] : '';
   const withName = firstName ? `, ${firstName}` : '';
   // Historieta saluda con signos de exclamación, como en el diseño.
-  const greeting = themeId === 'historieta' ? `¡Hola${withName}!` : `Hola${withName}.`;
+  const greeting = themeId === 'historieta' ? t('¡Hola{name}!', { name: withName }) : t('Hola{name}.', { name: withName });
 
   return (
     <div className={`theme-preview theme-preview--${themeId} theme-preview--${size}`} aria-hidden="true">
@@ -24,9 +26,9 @@ export default function ThemePreview({ themeId, size = 'large', name }) {
         <>
           <span className="theme-preview__greeting">{greeting}</span>
           {themeId === 'historieta' && <span className="theme-preview__pop">POP!</span>}
-          {themeId === 'garage' && <span className="theme-preview__tag">LADO B · 03</span>}
+          {themeId === 'garage' && <span className="theme-preview__tag">{t('LADO B · 03')}</span>}
           {themeId === 'medianoche' && (
-            <span className="theme-preview__note">Para escuchar con las luces apagadas.</span>
+            <span className="theme-preview__note">{t('Para escuchar con las luces apagadas.')}</span>
           )}
         </>
       )}
@@ -44,7 +46,7 @@ export default function ThemePreview({ themeId, size = 'large', name }) {
             <span className="theme-preview__dot theme-preview__dot--soft" />
           </span>
         )}
-        <span className="theme-preview__button">Guardar</span>
+        <span className="theme-preview__button">{t('Guardar')}</span>
       </div>
     </div>
   );

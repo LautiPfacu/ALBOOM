@@ -1,6 +1,6 @@
 // Inicio: saludo, búsqueda en Spotify, "Para vos", "Tendencias" y "Lo último en tu biblioteca".
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLibrary } from '../context/LibraryContext';
@@ -8,15 +8,17 @@ import { useToast } from '../context/ToastContext';
 import { useAlbumSearch } from '../hooks/useAlbumSearch';
 import { useAlbumStats } from '../hooks/useAlbumStats';
 import { useAsyncAction } from '../hooks/useAsyncAction';
+import { useRequireAccount } from '../hooks/useRequireAccount';
 import { useRecommendations } from '../hooks/useRecommendations';
 import { useTrends } from '../hooks/useTrends';
 import { STATUS } from '../services/library';
-import { dismissAlbum, profileErrorMessage, undismissAlbum } from '../services/profile';
+import { dismissAlbum, profileErrorMessage, undismissAlbum, updateFirstTask } from '../services/profile';
 import { plural } from '../utils/text';
 import AlbumTile from '../components/AlbumTile';
 import Button from '../components/Button';
 import EmptyState from '../components/EmptyState';
 import ErrorState from '../components/ErrorState';
+import FirstTaskDialog from '../components/FirstTaskDialog';
 import Loader from '../components/Loader';
 import PendingCard from '../components/PendingCard';
 import RecentAlbumCard from '../components/RecentAlbumCard';
@@ -24,17 +26,24 @@ import SearchBar from '../components/SearchBar';
 import SearchResultCard from '../components/SearchResultCard';
 import SkeletonCard from '../components/SkeletonCard';
 import './HomePage.css';
+import { useT } from '../i18n/LanguageContext';
 
 const PAGE_SIZE = 5; // recomendaciones visibles por vez
 const FIVE = [1, 2, 3, 4, 5];
 const THREE = [1, 2, 3];
 
 export default function HomePage() {
-  const { user, displayName } = useAuth();
+  const t = useT();
+  const requireAccount = useRequireAccount('albums');
+  const { user, profile, displayName } = useAuth();
   const { showToast } = useToast();
   const { items, loading: libraryLoading, getItem } = useLibrary();
   const { query, results, status, error, hasMore, search, loadMore, reset } = useAlbumSearch();
   const [text, setText] = useState('');
+  const searchRef = useRef(null);
+  // Se cierra enseguida al tocar un botón, sin esperar a que Firestore confirme.
+  const [firstTaskClosed, setFirstTaskClosed] = useState(false);
+  const firstTaskOpen = profile?.firstTask === 'pending' && !firstTaskClosed;
 
   const { picks, loading: picksLoading } = useRecommendations(10);
   const [page, setPage] = useState(0);
@@ -47,20 +56,32 @@ export default function HomePage() {
   const pickStats = useAlbumStats(visiblePicks.map((pick) => pick.album.id));
   const dismissAction = useAsyncAction((albumId) => dismissAlbum(user.uid, albumId));
 
-  const firstName = displayName.split(' ')[0];
+  const firstName = displayName.split(' ')[0] || 'invitado';
   // items ya viene ordenado por addedAt desc: los primeros son los más recientes.
   const recentItems = items.slice(0, 3);
   const pendingItem = items.find((item) => item.status === STATUS.PENDING);
 
+  function answerFirstTask(firstTask) {
+    setFirstTaskClosed(true);
+    updateFirstTask(user.uid, firstTask).catch(() => {});
+  }
+
+  function startFirstTask() {
+    answerFirstTask('started');
+    // Después de que el diálogo se cierre, el foco va al buscador.
+    setTimeout(() => searchRef.current?.focus(), 0);
+  }
+
   // "No me interesa": se guarda en users/{uid}/dismissed y no se vuelve a recomendar.
   async function handleDismiss(album) {
+    if (requireAccount()) return;
     try {
       await dismissAction.run(album.id);
       showToast({
         type: 'success',
         message: (
           <>
-            Listo, no te vamos a recomendar <strong>{album.name}</strong>.
+            {t('Listo, no te vamos a recomendar')} <strong>{album.name}</strong>.
           </>
         ),
         action: { label: 'Deshacer', onClick: () => undismissAlbum(user.uid, album.id).catch(() => {}) },
@@ -84,14 +105,14 @@ export default function HomePage() {
         <div className="home__hero-main">
           <div className="home__greeting">
             <h1 className="home__title">
-              Hola, <span className="highlight">{firstName}.</span>
+              {t('Hola,')} <span className="highlight">{firstName}.</span>
             </h1>
             {!searching && (
-              <p className="home__subtitle">¿Qué disco sonó hoy? Buscalo, guardalo y contá qué te pareció.</p>
+              <p className="home__subtitle">{t('¿Qué disco sonó hoy? Buscalo, guardalo y contá qué te pareció.')}</p>
             )}
           </div>
 
-          <SearchBar value={text} onChange={setText} onSearch={search} onClear={handleClear} />
+          <SearchBar ref={searchRef} value={text} onChange={setText} onSearch={search} onClear={handleClear} />
         </div>
 
         {pendingItem && !searching && (
@@ -105,17 +126,17 @@ export default function HomePage() {
         <section className="home__section" aria-labelledby="results-title">
           <div className="home__section-header home__section-header--baseline">
             <h2 id="results-title" className="home__section-title">
-              Resultados para «{query}»
+              {t('Resultados para «{query}»', { query })}
             </h2>
             {hasResults && (
               <div className="home__legend">
                 <span className="home__legend-item">
                   <span className="home__legend-swatch home__legend-swatch--listened" aria-hidden="true" />
-                  Ya lo escuchaste
+                  {t('Ya lo escuchaste')}
                 </span>
                 <span className="home__legend-item">
                   <span className="home__legend-swatch home__legend-swatch--saved" aria-hidden="true" />
-                  En tu biblioteca
+                  {t('En tu biblioteca')}
                 </span>
                 <span>· {plural(results.length, 'disco')}</span>
               </div>
@@ -136,7 +157,7 @@ export default function HomePage() {
             <EmptyState
               variant="dashed"
               title="Nada por acá"
-              text={`No encontramos discos para «${query}». Revisá cómo lo escribiste o probá con el nombre del artista.`}
+              text={t('No encontramos discos para «{query}». Revisá cómo lo escribiste o probá con el nombre del artista.', { query })}
             />
           )}
 
@@ -160,15 +181,15 @@ export default function HomePage() {
           <div className="home__section-header">
             <div className="home__section-heading">
               <h2 id="for-you-title" className="home__section-title">
-                Para vos
+                {t('Para vos')}
               </h2>
               <p className="home__section-subtitle">
-                Lo que te gusta, lo que recomienda la comunidad y joyas escondidas para descubrir.
+                {t('Lo que te gusta, lo que recomienda la comunidad y joyas escondidas para descubrir.')}
               </p>
             </div>
             {pageCount > 1 && (
               <button type="button" className="text-link home__see-more" onClick={() => setPage((p) => p + 1)}>
-                Mostrar otras
+                {t('Mostrar otras')}
               </button>
             )}
           </div>
@@ -194,9 +215,9 @@ export default function HomePage() {
           <div className="home__section-header">
             <div className="home__section-heading">
               <h2 id="trends-title" className="home__section-title">
-                Tendencias
+                {t('Tendencias')}
               </h2>
-              <p className="home__section-subtitle">Lo más reseñado esta semana en ALBOOM</p>
+              <p className="home__section-subtitle">{t('Lo más reseñado esta semana en ALBOOM')}</p>
             </div>
           </div>
           <div className="home__tiles home__tiles--trends">
@@ -207,7 +228,7 @@ export default function HomePage() {
                 subtitle={trend.album?.artist}
                 stats={trend}
                 rank={index + 1}
-                meta={`· +${trend.count} esta semana`}
+                meta={t('· +{n} esta semana', { n: trend.count })}
               />
             ))}
           </div>
@@ -218,10 +239,10 @@ export default function HomePage() {
         <section className="home__section" aria-labelledby="recent-title">
           <div className="home__section-header">
             <h2 id="recent-title" className="home__section-title">
-              Lo último en tu biblioteca
+              {t('Lo último en tu biblioteca')}
             </h2>
             <Link to="/biblioteca" className="text-link">
-              Ir a la biblioteca
+              {t('Ir a la biblioteca')}
             </Link>
           </div>
           <div className="home__recent-grid">
@@ -231,6 +252,7 @@ export default function HomePage() {
           </div>
         </section>
       )}
+      <FirstTaskDialog open={firstTaskOpen} onStart={startFirstTask} onSkip={() => answerFirstTask('skipped')} />
     </div>
   );
 }

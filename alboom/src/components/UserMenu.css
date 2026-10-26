@@ -102,3 +102,7 @@
     font-size: 16px;
   }
 }
+
+.user-menu__language {
+  padding: 8px 12px;
+}

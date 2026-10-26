@@ -5,6 +5,7 @@
 
 import { useId, useState } from 'react';
 import { REVIEW_MAX_LENGTH } from '../services/library';
+import { useT } from '../i18n/LanguageContext';
 import Button from './Button';
 import './ReviewForm.css';
 
@@ -22,6 +23,7 @@ export default function ReviewForm({
   const [base, setBase] = useState(savedReview); // valor de Firestore del que salió el borrador
   const textareaId = useId();
   const counterId = useId();
+  const t = useT();
 
   // "Ajustar estado cuando cambia una prop" (patrón de la doc de React): sin useEffect.
   if (savedReview !== base) {
@@ -39,7 +41,7 @@ export default function ReviewForm({
   return (
     <form className="review-form" onSubmit={handleSubmit}>
       <label htmlFor={textareaId} className="review-form__label">
-        Tu reseña
+        {t('Tu reseña')}
       </label>
       <textarea
         autoFocus={autoFocus}
@@ -48,7 +50,7 @@ export default function ReviewForm({
         value={draft}
         onChange={(event) => setDraft(event.target.value)}
         maxLength={REVIEW_MAX_LENGTH}
-        placeholder="¿Qué te pareció?"
+        placeholder={t('¿Qué te pareció?')}
         aria-describedby={counterId}
       />
       <div className="review-form__footer">
@@ -64,7 +66,7 @@ export default function ReviewForm({
             <span className="review-form__box" aria-hidden="true">
               ✓
             </span>
-            Mostrar en la comunidad
+            {t('Mostrar en la comunidad')}
           </label>
           <span id={counterId} className="review-form__counter">
             {draft.length} / {REVIEW_MAX_LENGTH}
@@ -72,7 +74,7 @@ export default function ReviewForm({
         </div>
         <div className="review-form__actions">
           <button type="button" className="text-link" onClick={onRemove}>
-            Quitar de la biblioteca
+            {t('Quitar de la biblioteca')}
           </button>
           <Button type="submit" pending={saving} disabled={unchanged}>
             {saving ? 'Guardando…' : 'Guardar reseña'}

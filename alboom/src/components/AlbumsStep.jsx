@@ -11,11 +11,13 @@ import ErrorState from './ErrorState';
 import Loader from './Loader';
 import OnboardingFooter from './OnboardingFooter';
 import SearchBar from './SearchBar';
+import { useT } from '../i18n/LanguageContext';
 import './AlbumsStep.css';
 
 const MAX_PICKS = 5;
 
 export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, saving, error }) {
+  const t = useT();
   const [text, setText] = useState('');
   const { query, results, status, error: searchError, search, reset } = useAlbumSearch();
   const suggestions = useForYou(genres, 6);
@@ -35,9 +37,9 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
       <main className="albums-step page">
         <div className="albums-step__main">
           <div className="onboarding__intro">
-            <h1 className="onboarding__title onboarding__title--md">¿Qué escuchaste últimamente?</h1>
+            <h1 className="onboarding__title onboarding__title--md">{t('¿Qué escuchaste últimamente?')}</h1>
             <p className="onboarding__subtitle">
-              Sumá hasta 5 discos. Van a tu biblioteca como escuchados y nos ayudan a recomendarte.
+              {t('Sumá hasta 5 discos. Van a tu biblioteca como escuchados y nos ayudan a recomendarte.')}
             </p>
           </div>
 
@@ -53,7 +55,7 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
 
           <section className="albums-step__list" aria-labelledby="albums-step-title">
             <h2 id="albums-step-title" className="label-caps">
-              {searching ? `Resultados para «${query}»` : 'Sugerencias por tus géneros'}
+              {searching ? t('Resultados para «{query}»', { query }) : t('Sugerencias por tus géneros')}
             </h2>
 
             {(status === 'loading' || (!searching && suggestions.loading)) && (
@@ -61,7 +63,7 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
             )}
             {status === 'error' && <ErrorState message={searchError} onRetry={() => search(query)} />}
             {status === 'success' && results.length === 0 && (
-              <EmptyState variant="dashed" title="Nada por acá" text={`No encontramos discos para «${query}».`} />
+              <EmptyState variant="dashed" title="Nada por acá" text={t('No encontramos discos para «{query}».', { query })} />
             )}
 
             {albums.length > 0 && (
@@ -80,7 +82,7 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
                         disabled={!picked && full}
                         onClick={() => toggle(album)}
                       >
-                        {picked ? '✓ Sumado' : '+ Sumar'}
+                        {t(picked ? '✓ Sumado' : '+ Sumar')}
                         <span className="visually-hidden"> {album.name}</span>
                       </button>
                     </article>
@@ -94,10 +96,10 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
         <aside className="albums-step__picks" aria-labelledby="picks-title">
           <div className="albums-step__picks-head">
             <h2 id="picks-title" className="albums-step__picks-title">
-              Tus discos
+              {t('Tus discos')}
             </h2>
             <span className="albums-step__picks-count">
-              {picks.length} de {MAX_PICKS}
+              {t('{n} de {total}', { n: picks.length, total: MAX_PICKS })}
             </span>
           </div>
           {picks.map((album) => (
@@ -110,7 +112,7 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
               <button
                 type="button"
                 className="albums-step__remove"
-                aria-label={`Sacar ${album.name}`}
+                aria-label={t('Sacar {name}', { name: album.name })}
                 onClick={() => toggle(album)}
               >
                 ×
@@ -119,7 +121,9 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
           ))}
           {!full && (
             <div className="albums-step__slots">
-              {MAX_PICKS - picks.length === 1 ? 'Te queda 1 lugar' : `Te quedan ${MAX_PICKS - picks.length} lugares`}
+              {MAX_PICKS - picks.length === 1
+                ? t('Te queda 1 lugar')
+                : t('Te quedan {n} lugares', { n: MAX_PICKS - picks.length })}
             </div>
           )}
         </aside>
@@ -134,11 +138,11 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
       >
         {error && (
           <span className="albums-step__error" role="alert">
-            {error}
+            {t(error)}
           </span>
         )}
         <button type="button" className="text-link albums-step__skip" onClick={() => onNext([])} disabled={saving}>
-          Saltear este paso
+          {t('Saltear este paso')}
         </button>
         <Button size="lg" pending={saving} onClick={() => onNext(picks)}>
           {saving ? 'Guardando…' : 'Siguiente'}

@@ -10,9 +10,13 @@ import { useAuthor } from '../hooks/useAuthor';
 import { addToLibrary, libraryErrorMessage, STATUS } from '../services/library';
 import AlbumCover from './AlbumCover';
 import Button from './Button';
+import { useRequireAccount } from '../hooks/useRequireAccount';
 import './SearchResultCard.css';
+import { useT } from '../i18n/LanguageContext';
 
 export default function SearchResultCard({ album, libraryStatus }) {
+  const t = useT();
+  const requireAccount = useRequireAccount('albums');
   const { showToast } = useToast();
   const { author, postListened, publicReviewsDefault } = useAuthor();
   const { run, pending } = useAsyncAction(() =>
@@ -21,6 +25,7 @@ export default function SearchResultCard({ album, libraryStatus }) {
   const albumUrl = `/disco/${album.id}`;
 
   async function handleSave() {
+    if (requireAccount()) return;
     try {
       // AGREGAR: el aviso de éxito se muestra recién cuando Firestore confirma.
       await run();
@@ -28,7 +33,7 @@ export default function SearchResultCard({ album, libraryStatus }) {
         type: 'success',
         message: (
           <>
-            <strong>{album.name}</strong> se guardó en tu biblioteca.
+            <strong>{album.name}</strong> {t('se guardó en tu biblioteca.')}
           </>
         ),
         action: { label: 'Puntuar', to: albumUrl },
@@ -50,7 +55,7 @@ export default function SearchResultCard({ album, libraryStatus }) {
     action = (
       <Button to={albumUrl} variant="listened" size="sm" block className="search-result-card__button">
         <span aria-hidden="true">✓</span>
-        <span className="search-result-card__state-text">Escuchado</span>
+        <span className="search-result-card__state-text">{t('Escuchado')}</span>
       </Button>
     );
   } else if (libraryStatus === STATUS.PENDING) {
@@ -59,7 +64,7 @@ export default function SearchResultCard({ album, libraryStatus }) {
         <span className="search-result-card__mobile-mark" aria-hidden="true">
           ✓
         </span>
-        <span className="search-result-card__state-text">En tu biblioteca</span>
+        <span className="search-result-card__state-text">{t('En tu biblioteca')}</span>
       </Button>
     );
   } else {
@@ -68,7 +73,7 @@ export default function SearchResultCard({ album, libraryStatus }) {
         size="sm"
         block
         className="search-result-card__button"
-        aria-label={`Guardar ${album.name} en tu biblioteca`}
+        aria-label={t('Guardar {name} en tu biblioteca', { name: album.name })}
         onClick={handleSave}
       >
         Guardar

@@ -3,6 +3,7 @@
 
 import { Link } from 'react-router-dom';
 import { STATUS } from '../services/library';
+import { useT } from '../i18n/LanguageContext';
 import AlbumCover from './AlbumCover';
 import MiniRating from './MiniRating';
 import StatusChip from './StatusChip';
@@ -10,12 +11,13 @@ import VinylRating from './VinylRating';
 import './LibraryCard.css';
 
 export default function LibraryCard({ item, onRemove }) {
+  const t = useT();
   const albumUrl = `/disco/${item.id}`;
   const isPending = item.status === STATUS.PENDING;
 
   let ratingInfo;
-  if (isPending) ratingInfo = <span className="library-card__muted">Para escuchar</span>;
-  else if (item.rating === 0) ratingInfo = <span className="library-card__muted">Sin puntaje</span>;
+  if (isPending) ratingInfo = <span className="library-card__muted">{t('Para escuchar')}</span>;
+  else if (item.rating === 0) ratingInfo = <span className="library-card__muted">{t('Sin puntaje')}</span>;
   else
     ratingInfo = (
       <>
@@ -37,10 +39,10 @@ export default function LibraryCard({ item, onRemove }) {
         <button
           type="button"
           className="library-card__remove"
-          aria-label={`Quitar ${item.name} de tu biblioteca`}
+          aria-label={t('Quitar {name} de tu biblioteca', { name: item.name })}
           onClick={() => onRemove(item)}
         >
-          <span className="library-card__remove-text">Quitar</span>
+          <span className="library-card__remove-text">{t('Quitar')}</span>
           <span className="library-card__remove-x" aria-hidden="true">
             ×
           </span>

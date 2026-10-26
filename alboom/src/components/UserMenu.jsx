@@ -1,5 +1,6 @@
 // Nombre + avatar en la barra. Al tocarlo abre el menú de la cuenta:
-// Tu perfil · Perfil y ajustes · Tema (nombre actual) · Ayuda · Cerrar sesión.
+// Tu perfil · Perfil y ajustes · Tema (nombre actual) · Idioma · Ayuda · Cerrar sesión.
+// Un invitado ve: Crear cuenta / Iniciar sesión · Idioma · Salir.
 
 import { useCallback, useId, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,11 +12,14 @@ import { logout } from '../services/auth';
 import { useAsyncAction } from '../hooks/useAsyncAction';
 import { useDismiss } from '../hooks/useDismiss';
 import { photoFor } from '../services/profile';
+import { useT } from '../i18n/LanguageContext';
 import Avatar from './Avatar';
+import LanguageSwitcher from './LanguageSwitcher';
 import './UserMenu.css';
 
 export default function UserMenu() {
-  const { user, profile, displayName } = useAuth();
+  const { user, profile, displayName, isGuest } = useAuth();
+  const t = useT();
   const { userTheme } = useTheme();
   const { showToast } = useToast();
   const navigate = useNavigate();
@@ -24,7 +28,8 @@ export default function UserMenu() {
   const menuId = useId();
   const { run: runLogout, pending } = useAsyncAction(logout);
 
-  const firstName = displayName.split(' ')[0];
+  const name = isGuest ? t('Invitado') : displayName;
+  const firstName = name.split(' ')[0];
   const photoURL = photoFor(profile, user);
 
   const close = useCallback(() => setOpen(false), []);
@@ -50,38 +55,49 @@ export default function UserMenu() {
         onClick={() => setOpen((current) => !current)}
       >
         <span className="user-menu__name">{firstName}</span>
-        <Avatar name={displayName} photoURL={photoURL} className="user-menu__avatar" />
-        <span className="visually-hidden">Menú de tu cuenta</span>
+        <Avatar name={name} photoURL={photoURL} className="user-menu__avatar" />
+        <span className="visually-hidden">{t('Menú de tu cuenta')}</span>
       </button>
 
       {open && (
         <div className="user-menu__panel" id={menuId}>
           <div className="user-menu__info">
-            <Avatar name={displayName} photoURL={photoURL} size={40} />
+            <Avatar name={name} photoURL={photoURL} size={40} />
             <div className="user-menu__who">
-              <span className="user-menu__full-name">{displayName}</span>
+              <span className="user-menu__full-name">{name}</span>
               {user.email && <span className="user-menu__email">{user.email}</span>}
             </div>
           </div>
-          <Link to="/perfil" className="user-menu__item" onClick={close}>
-            Tu perfil
-          </Link>
-          <Link to="/ajustes" className="user-menu__item" onClick={close}>
-            Perfil y ajustes
-          </Link>
-          <Link to="/ajustes/tema" className="user-menu__item" onClick={close}>
-            Tema <strong>{themeName(userTheme)}</strong>
-          </Link>
-          <Link to="/ajustes/ayuda" className="user-menu__item" onClick={close}>
-            Ayuda
-          </Link>
+          {isGuest ? (
+            <Link to="/login" state={{ mode: 'register' }} className="user-menu__item" onClick={close}>
+              {t('Crear cuenta / Iniciar sesión')}
+            </Link>
+          ) : (
+            <>
+              <Link to="/perfil" className="user-menu__item" onClick={close}>
+                {t('Tu perfil')}
+              </Link>
+              <Link to="/ajustes" className="user-menu__item" onClick={close}>
+                {t('Perfil y ajustes')}
+              </Link>
+              <Link to="/ajustes/tema" className="user-menu__item" onClick={close}>
+                {t('Tema')} <strong>{t(themeName(userTheme))}</strong>
+              </Link>
+              <Link to="/ajustes/ayuda" className="user-menu__item" onClick={close}>
+                {t('Ayuda')}
+              </Link>
+            </>
+          )}
+          <div className="user-menu__language">
+            <LanguageSwitcher />
+          </div>
           <button
             type="button"
             className="user-menu__item user-menu__item--logout"
             disabled={pending}
             onClick={handleLogout}
           >
-            {pending ? 'Cerrando sesión…' : 'Cerrar sesión'}
+            {t(pending ? 'Cerrando sesión…' : isGuest ? 'Salir' : 'Cerrar sesión')}
           </button>
         </div>
       )}

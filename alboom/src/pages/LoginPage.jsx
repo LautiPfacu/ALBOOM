@@ -1,14 +1,21 @@
 // Login y registro en la misma pantalla (selector "Entrar" / "Crear cuenta").
+// Arranca en "Crear cuenta". También se puede entrar como invitado, solo para mirar.
 // Cuando Firebase confirma la sesión, PublicOnlyRoute redirige solo: acá no navegamos.
 
 import { useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useT } from '../i18n/LanguageContext';
 import Button from '../components/Button';
+import ConfirmDialog from '../components/ConfirmDialog';
 import EyeIcon from '../components/EyeIcon';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 import LoginIllustration from '../components/LoginIllustration';
 import TextField from '../components/TextField';
 import { useAsyncAction } from '../hooks/useAsyncAction';
 import {
   authErrorMessage,
+  loginAsGuest,
   loginWithEmail,
   loginWithGoogle,
   registerWithEmail,
@@ -38,7 +45,12 @@ function validate(values, isRegister) {
 }
 
 export default function LoginPage() {
-  const [mode, setMode] = useState('login'); // 'login' | 'register'
+  const t = useT();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { isGuest } = useAuth();
+  // Arranca en "Crear cuenta" (o en lo que pida quien nos mandó acá).
+  const [mode, setMode] = useState(location.state?.mode === 'login' ? 'login' : 'register'); // 'login' | 'register'
   const [values, setValues] = useState(EMPTY_VALUES);
   const [touched, setTouched] = useState({}); // campos que la persona ya dejó
   const [submitted, setSubmitted] = useState(false);
@@ -53,7 +65,9 @@ export default function LoginPage() {
   const isRegister = mode === 'register';
   const emailAction = useAsyncAction(isRegister ? registerWithEmail : loginWithEmail);
   const googleAction = useAsyncAction(loginWithGoogle);
-  const busy = emailAction.pending || googleAction.pending;
+  const guestAction = useAsyncAction(loginAsGuest);
+  const [guestConfirmOpen, setGuestConfirmOpen] = useState(false);
+  const busy = emailAction.pending || googleAction.pending || guestAction.pending;
 
   // Los errores se derivan de los valores: no se guardan en otro estado.
   const errors = useMemo(() => validate(values, isRegister), [values, isRegister]);
@@ -107,27 +121,58 @@ export default function LoginPage() {
     }
   }
 
+  // Invitado: si ya estás mirando como invitado, volvés a la app; si no, primero lo confirmás.
+  function handleGuest() {
+    setFormError(null);
+    if (isGuest) {
+      navigate(location.state?.from ?? '/', { replace: true });
+      return;
+    }
+    setGuestConfirmOpen(true);
+  }
+
+  // Confirmado: entra como invitado y va siempre al inicio.
+  async function confirmGuest() {
+    try {
+      await guestAction.run();
+      setGuestConfirmOpen(false);
+      navigate('/', { replace: true });
+    } catch (error) {
+      setGuestConfirmOpen(false);
+      setFormError(authErrorMessage(error));
+    }
+  }
+
   let submitLabel = isRegister ? 'Crear cuenta' : 'Entrar';
   if (emailAction.pending) submitLabel = isRegister ? 'Creando cuenta…' : 'Entrando…';
+  // Si llegó un invitado que quiso guardar algo o entrar a un perfil, se lo explicamos.
+  const guestNotice = isGuest && location.state?.from;
 
   return (
     <div className="login-page">
       <LoginIllustration />
 
       <main className="login-page__panel">
+        <LanguageSwitcher />
         <div className="login-page__brand">
           <h1 className="login-page__logo">ALBOOM</h1>
-          <p className="login-page__tagline">Tu diario de discos.</p>
+          <p className="login-page__tagline">{t('Tu diario de discos.')}</p>
         </div>
 
-        <div className="login-page__modes" role="group" aria-label="Elegí qué querés hacer">
+        {guestNotice && (
+          <p className="login-page__guest-notice" role="status">
+            {t('Para guardar discos, seguir gente y tener tu perfil, creá tu cuenta. Es gratis.')}
+          </p>
+        )}
+
+        <div className="login-page__modes" role="group" aria-label={t('Elegí qué querés hacer')}>
           <button
             type="button"
             className="login-page__mode"
             aria-pressed={!isRegister}
             onClick={() => changeMode('login')}
           >
-            Entrar
+            {t('Entrar')}
           </button>
           <button
             type="button"
@@ -135,7 +180,7 @@ export default function LoginPage() {
             aria-pressed={isRegister}
             onClick={() => changeMode('register')}
           >
-            Crear cuenta
+            {t('Crear cuenta')}
           </button>
         </div>
 
@@ -150,10 +195,10 @@ export default function LoginPage() {
           <span className="login-page__google-mark" aria-hidden="true">
             G
           </span>
-          {googleAction.pending ? 'Conectando con Google…' : 'Continuar con Google'}
+          {t(googleAction.pending ? 'Conectando con Google…' : 'Continuar con Google')}
         </Button>
 
-        <div className="login-page__divider">o con tu email</div>
+        <div className="login-page__divider">{t('o con tu email')}</div>
 
         <form className="login-page__form" onSubmit={handleSubmit} noValidate>
           {isRegister && (
@@ -199,7 +244,7 @@ export default function LoginPage() {
             <button
               type="button"
               className="login-page__toggle-password"
-              aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              aria-label={t(showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña')}
               onClick={() => setShowPassword((current) => !current)}
             >
               <EyeIcon crossed={showPassword} />
@@ -208,7 +253,7 @@ export default function LoginPage() {
 
           {formError && (
             <p className="login-page__form-error" role="alert">
-              {formError}
+              {t(formError)}
             </p>
           )}
 
@@ -216,6 +261,22 @@ export default function LoginPage() {
             {submitLabel}
           </Button>
         </form>
+
+        <button type="button" className="text-link login-page__guest" disabled={busy} onClick={handleGuest}>
+          {t(isGuest ? 'Seguir mirando como invitado' : guestAction.pending ? 'Entrando…' : 'Entrar como invitado')}
+        </button>
+
+        <ConfirmDialog
+          open={guestConfirmOpen}
+          title="¿Seguro que querés continuar como invitado?"
+          text="No vas a poder hacer reseñas, modificar tu perfil ni guardar tus discos."
+          confirmLabel="Continuar como invitado"
+          pendingLabel="Entrando…"
+          confirmVariant="primary"
+          pending={guestAction.pending}
+          onConfirm={confirmGuest}
+          onCancel={() => setGuestConfirmOpen(false)}
+        />
       </main>
     </div>
   );

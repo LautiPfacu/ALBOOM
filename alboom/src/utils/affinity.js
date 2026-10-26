@@ -3,6 +3,7 @@
 
 import { genreName } from '../data/genres';
 import { joinList } from './text';
+import { translate } from '../i18n/language';
 
 // → { score, sharedGenres: [ids], sharedTop5: [albums] }
 export function affinityBetween(me, other) {
@@ -17,11 +18,13 @@ export function affinityBetween(me, other) {
 // Motivo en palabras: "Tiene 3 discos de tu Top 5", "Le gustan el indie y el R&B".
 export function affinityReason({ sharedGenres, sharedTop5 }) {
   if (sharedTop5.length > 0) {
-    return sharedTop5.length === 1 ? 'Tiene 1 disco de tu Top 5' : `Tiene ${sharedTop5.length} discos de tu Top 5`;
+    return sharedTop5.length === 1
+      ? translate('Tiene 1 disco de tu Top 5')
+      : translate('Tiene {n} discos de tu Top 5', { n: sharedTop5.length });
   }
   if (sharedGenres.length > 0) {
-    const names = sharedGenres.slice(0, 2).map((id) => `el ${genreName(id).toLowerCase()}`);
-    return `Le ${sharedGenres.length === 1 ? 'gusta' : 'gustan'} ${joinList(names)}`;
+    const names = sharedGenres.slice(0, 2).map((id) => translate('el {genre}', { genre: genreName(id).toLowerCase() }));
+    return translate(sharedGenres.length === 1 ? 'Le gusta {list}' : 'Le gustan {list}', { list: joinList(names) });
   }
   return null;
 }
@@ -31,5 +34,6 @@ export function followedByReason(names) {
   if (names.length === 0) return null;
   const first = names.slice(0, 2);
   const rest = names.length - first.length;
-  return rest > 0 ? `Lo siguen ${first.join(', ')} y ${rest} más` : `Lo ${names.length === 1 ? 'sigue' : 'siguen'} ${joinList(first)}`;
+  if (rest > 0) return translate('Lo siguen {names} y {n} más', { names: first.join(', '), n: rest });
+  return translate(names.length === 1 ? 'Lo sigue {names}' : 'Lo siguen {names}', { names: joinList(first) });
 }

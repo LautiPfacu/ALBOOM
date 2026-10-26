@@ -3,12 +3,14 @@
 
 import { useMemo, useState } from 'react';
 import { formatAlbumDuration, formatTrackDuration } from '../services/spotify';
+import { useT } from '../i18n/LanguageContext';
 import './TrackList.css';
 
 const MOBILE_PREVIEW = 5;
 
 export default function TrackList({ tracks, durationMs }) {
   const [expanded, setExpanded] = useState(false);
+  const t = useT();
 
   // Agrupamos por número de disco: [[1, [...]], [2, [...]]]
   const discs = useMemo(() => {
@@ -31,7 +33,7 @@ export default function TrackList({ tracks, durationMs }) {
     >
       <div className="track-list__header">
         <h2 id="tracks-title" className="track-list__title">
-          Canciones
+          {t('Canciones')}
         </h2>
         <span className="track-list__summary">
           {tracks.length} · {formatAlbumDuration(durationMs)}
@@ -39,7 +41,7 @@ export default function TrackList({ tracks, durationMs }) {
       </div>
       {discs.map(([disc, discTracks]) => (
         <div key={disc} className="track-list__disc">
-          {discs.length > 1 && <h3 className="track-list__disc-title">Disco {disc}</h3>}
+          {discs.length > 1 && <h3 className="track-list__disc-title">{t('Disco {n}', { n: disc })}</h3>}
           <ol className="track-list__items">
             {discTracks.map((track) => (
               <li
@@ -56,7 +58,7 @@ export default function TrackList({ tracks, durationMs }) {
       ))}
       {tracks.length > MOBILE_PREVIEW && (
         <button type="button" className="text-link track-list__toggle" onClick={() => setExpanded((v) => !v)}>
-          {expanded ? 'Ver menos' : `Ver las ${tracks.length} canciones`}
+          {expanded ? t('Ver menos') : t('Ver las {n} canciones', { n: tracks.length })}
         </button>
       )}
     </section>

@@ -16,6 +16,8 @@ import EmptyState from '../components/EmptyState';
 import PeopleSuggestionsCard from '../components/PeopleSuggestionsCard';
 import PersonRow from '../components/PersonRow';
 import PostFeed from '../components/PostFeed';
+import { useRequireAccount } from '../hooks/useRequireAccount';
+import { useT } from '../i18n/LanguageContext';
 import './CommunityPage.css';
 
 const TAB_KEY = 'alboom:communityTab';
@@ -29,12 +31,19 @@ function readSavedTab() {
 }
 
 export default function CommunityPage() {
+  const requireAccount = useRequireAccount();
+  const t = useT();
   const { user } = useAuth();
   const { author } = useAuthor();
   const { followingIds, loading: followLoading } = useFollow();
   const { profile: me } = usePublicProfile(user.uid);
   const [tab, setTab] = useState(readSavedTab);
   const [pickerOpen, setPickerOpen] = useState(false);
+
+  function openComposer() {
+    if (requireAccount()) return;
+    setPickerOpen(true);
+  }
 
   // "Siguiendo": tus posteos y los de quienes seguís. "Para vos": de gente que no seguís.
   const following = usePostsBy(followLoading || tab !== 'siguiendo' ? [] : [user.uid, ...followingIds]);
@@ -68,29 +77,29 @@ export default function CommunityPage() {
         <div className="community__main">
           <header className="community__header">
             <div className="page-header community__heading">
-              <h1 className="page-header__title">Comunidad</h1>
+              <h1 className="page-header__title">{t('Comunidad')}</h1>
               <p className="page-header__subtitle">
                 {tab === 'siguiendo'
-                  ? 'Lo que reseñan y escuchan las personas que seguís.'
-                  : 'Posteos de gente con tus gustos que todavía no seguís.'}
+                  ? t('Lo que reseñan y escuchan las personas que seguís.')
+                  : t('Posteos de gente con tus gustos que todavía no seguís.')}
               </p>
             </div>
-            <div className="segmented community__tabs" role="group" aria-label="Qué ver">
+            <div className="segmented community__tabs" role="group" aria-label={t('Qué ver')}>
               <button type="button" className="segmented__option" aria-pressed={tab === 'siguiendo'} onClick={() => changeTab('siguiendo')}>
-                Siguiendo
+                {t('Siguiendo')}
               </button>
               <button type="button" className="segmented__option" aria-pressed={tab === 'para-vos'} onClick={() => changeTab('para-vos')}>
-                Para vos
+                {t('Para vos')}
               </button>
             </div>
           </header>
 
           <div className="community__composer">
             <Avatar name={author.displayName} photoURL={author.photoURL} size={40} />
-            <button type="button" className="community__composer-input" onClick={() => setPickerOpen(true)}>
-              ¿Qué escuchaste? Reseñá un disco y aparece acá.
+            <button type="button" className="community__composer-input" onClick={openComposer}>
+              {t('¿Qué escuchaste? Reseñá un disco y aparece acá.')}
             </button>
-            <Button size="sm" onClick={() => setPickerOpen(true)}>
+            <Button size="sm" onClick={openComposer}>
               Escribir reseña
             </Button>
           </div>

@@ -11,6 +11,7 @@
 import { getGenre, ONBOARDING_GENRES } from '../data/genres';
 import { getCommunityPicks } from './reviews';
 import { discoverAlbums, getAlbum, getArtist, searchGenreAlbums } from './spotify';
+import { translate } from '../i18n/language';
 
 const QUOTAS = { affinity: 0.4, community: 0.2, discovery: 0.4 };
 const GOOD_RATING = 4;
@@ -50,7 +51,7 @@ async function affinityPicks(liked, genres, spotifyArtists, signal) {
       const { albums } = await getArtist(artist.id, { signal });
       return shuffle(albums)
         .slice(0, PER_ARTIST)
-        .map((album) => ({ album, reason: `Porque escuchás ${artist.name}` }));
+        .map((album) => ({ album, reason: translate('Porque escuchás {name}', { name: artist.name }) }));
     }),
   );
 
@@ -63,7 +64,7 @@ async function affinityPicks(liked, genres, spotifyArtists, signal) {
         const spotify = getGenre(id)?.spotify;
         if (!spotify) return [];
         const { albums } = await searchGenreAlbums(spotify, { signal });
-        return albums.map((album) => ({ album, reason: `Por tu gusto por el ${genreLabel(id).toLowerCase()}` }));
+        return albums.map((album) => ({ album, reason: translate('Por tu gusto por el {genre}', { genre: genreLabel(id).toLowerCase() }) }));
       }),
     );
     return shuffle(pages.flat());
@@ -88,7 +89,7 @@ async function affinityPicks(liked, genres, spotifyArtists, signal) {
       const { albums } = await getArtist(artistId, { signal });
       return shuffle(albums)
         .slice(0, PER_ARTIST)
-        .map((album) => ({ album, reason: `Porque te gustó ${seed.name}` }));
+        .map((album) => ({ album, reason: translate('Porque te gustó {name}', { name: seed.name }) }));
     }),
   );
   return interleave([...groups, ...(await fromSpotify)]);
@@ -111,7 +112,7 @@ async function discoveryPicks(genres, signal) {
       const offset = [0, 20, 40][Math.floor(Math.random() * 3)];
       // Para buscar usamos el nombre completo del género ("Indie rock"), que da resultados más precisos.
       const albums = await discoverAlbums(getGenre(id)?.nombre ?? genreLabel(id), { offset, signal });
-      return albums.map((album) => ({ album, reason: `Joya escondida · ${genreLabel(id)}` }));
+      return albums.map((album) => ({ album, reason: translate('Joya escondida · {genre}', { genre: genreLabel(id) }) }));
     }),
   );
   // Primero los lanzamientos de los últimos 3 años (artistas emergentes); dentro de cada grupo, al azar.

@@ -81,6 +81,8 @@ export async function completeOnboarding(uid, { genres, theme, displayName }) {
         theme,
         username,
         onboardingDone: true,
+        // Pop-up de primera tarea: 'pending' → 'started' → 'done', o 'skipped' si la omite.
+        firstTask: profileSnapshot.data()?.firstTask ?? 'pending',
         settings: profileSnapshot.data()?.settings ?? DEFAULT_SETTINGS,
         photoURL: auth.currentUser?.photoURL ?? null,
       },
@@ -97,6 +99,10 @@ export function updateTheme(uid, theme) {
 
 export function updateGenres(uid, genres) {
   return withTimeout(updateDoc(profileRef(uid), { genres }));
+}
+
+export function updateFirstTask(uid, firstTask) {
+  return withTimeout(updateDoc(profileRef(uid), { firstTask }));
 }
 
 export function updateSettings(uid, settings) {

@@ -17,6 +17,7 @@ import ErrorState from '../components/ErrorState';
 import GenreDialog from '../components/GenreDialog';
 import Loader from '../components/Loader';
 import './ExplorePage.css';
+import { useT } from '../i18n/LanguageContext';
 
 const DECADES = [
   { id: 'todas', label: 'Todas' },
@@ -41,6 +42,7 @@ const ORDERS = {
 const isHiddenGem = (stat) => stat && stat.count <= 5 && stat.average >= 4;
 
 export default function ExplorePage() {
+  const t = useT();
   const { profile } = useAuth();
   const { getItem } = useLibrary();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -92,7 +94,8 @@ export default function ExplorePage() {
     setDialogOpen(false);
   }
 
-  const decadeLabel = decade === 'todas' ? 'todas las décadas' : `los ${DECADES.find((d) => d.id === decade).label}`;
+  const decadeLabel =
+    decade === 'todas' ? t('todas las décadas') : t('los {decade}', { decade: DECADES.find((d) => d.id === decade).label });
   const otherPopular = POPULAR_GENRE_IDS.filter((id) => !myGenres.includes(id));
   // Si el género elegido no está en los chips, lo mostramos igual al principio.
   const extraGenre = ![...myGenres, ...otherPopular].includes(genreId) ? genreId : null;
@@ -106,31 +109,31 @@ export default function ExplorePage() {
   return (
     <div className="explore page">
       <header className="page-header">
-        <h1 className="page-header__title">Explorar</h1>
-        <p className="page-header__subtitle">Discos por género y década. Los puntajes son de la comunidad de ALBOOM.</p>
+        <h1 className="page-header__title">{t('Explorar')}</h1>
+        <p className="page-header__subtitle">{t('Discos por género y década. Los puntajes son de la comunidad de ALBOOM.')}</p>
       </header>
 
       <div className="explore__genres">
         <button type="button" className="pill pill--dark explore__all-mobile" onClick={() => setDialogOpen(true)}>
-          Todos <span aria-hidden="true">▾</span>
+          {t('Todos')} <span aria-hidden="true">▾</span>
         </button>
         {extraGenre && genreChip(extraGenre)}
         {myGenres.length > 0 && (
           <>
-            <span className="label-caps explore__group-label">Tus géneros</span>
+            <span className="label-caps explore__group-label">{t('Tus géneros')}</span>
             {myGenres.map(genreChip)}
             <span className="explore__divider" aria-hidden="true" />
           </>
         )}
-        <span className="label-caps explore__group-label">Populares</span>
+        <span className="label-caps explore__group-label">{t('Populares')}</span>
         {otherPopular.map(genreChip)}
         <button type="button" className="pill pill--dark explore__all" onClick={() => setDialogOpen(true)}>
-          Todos los géneros · {TOTAL_GENRES} <span aria-hidden="true">▾</span>
+          {t('Todos los géneros')} · {TOTAL_GENRES} <span aria-hidden="true">▾</span>
         </button>
       </div>
 
       <div className="explore__controls">
-        <div className="segmented explore__decades" role="group" aria-label="Década">
+        <div className="segmented explore__decades" role="group" aria-label={t('Década')}>
           {DECADES.map((d) => (
             <button
               key={d.id}
@@ -139,12 +142,12 @@ export default function ExplorePage() {
               aria-pressed={d.id === decade}
               onClick={() => updateParam('decada', d.id)}
             >
-              {d.label}
+              {t(d.label)}
             </button>
           ))}
         </div>
         <label className="select-field explore__decade-select">
-          <span className="visually-hidden">Década</span>
+          <span className="visually-hidden">{t('Década')}</span>
           <select
             className="select-field__select"
             value={decade}
@@ -152,17 +155,17 @@ export default function ExplorePage() {
           >
             {DECADES.map((d) => (
               <option key={d.id} value={d.id}>
-                {d.id === 'todas' ? 'Todas las décadas' : `Década del ${d.label}`}
+                {d.id === 'todas' ? t('Todas las décadas') : t('Década del {decade}', { decade: d.label })}
               </option>
             ))}
           </select>
         </label>
         <label className="select-field">
-          <span className="select-field__label">Ordenar por</span>
+          <span className="select-field__label">{t('Ordenar por')}</span>
           <select className="select-field__select" value={order} onChange={(event) => updateParam('orden', event.target.value)}>
             {Object.entries(ORDERS).map(([id, label]) => (
               <option key={id} value={id}>
-                {label}
+                {t(label)}
               </option>
             ))}
           </select>
@@ -178,7 +181,7 @@ export default function ExplorePage() {
             <span className="explore__legend-mark" aria-hidden="true">
               ✓
             </span>
-            Ya lo escuchaste
+            {t('Ya lo escuchaste')}
           </span>
         </div>
 
@@ -190,9 +193,11 @@ export default function ExplorePage() {
           <EmptyState
             variant="dashed"
             title="Nada por acá"
-            text={`No encontramos discos de ${genreName(genreId)}${decade === 'todas' ? '' : ` de ${decadeLabel}`}. ${
-              decade === 'todas' ? 'Probá con otro género.' : 'Probá con otra década.'
-            }`}
+            text={`${
+              decade === 'todas'
+                ? t('No encontramos discos de {genre}.', { genre: genreName(genreId) })
+                : t('No encontramos discos de {genre} de {decade}.', { genre: genreName(genreId), decade: decadeLabel })
+            } ${decade === 'todas' ? t('Probá con otro género.') : t('Probá con otra década.')}`}
           >
             {decade !== 'todas' && (
               <Button variant="secondary" size="sm" onClick={() => updateParam('decada', 'todas')}>

@@ -34,7 +34,9 @@
   flex-wrap: wrap;
 }
 
-.explore__decade-select {
+/* El desplegable de décadas es solo para celular. Doble clase para ganarle a .select-field
+   (global.css), que se carga después y también define display. */
+.select-field.explore__decade-select {
   display: none;
 }
 
@@ -139,7 +141,7 @@
     display: none;
   }
 
-  .explore__decade-select {
+  .select-field.explore__decade-select {
     display: flex;
   }
 

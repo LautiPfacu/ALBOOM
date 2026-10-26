@@ -4,7 +4,7 @@ import data from './generos.json';
 import { normalizeText } from '../utils/text';
 
 export const FAMILIES = data.familias;
-export const MIN_GENRES = 3; // mínimo para la primera vez y para editar géneros
+export const MIN_GENRES = 1; // mínimo para la primera vez y para editar géneros
 export const TOTAL_GENRES = data.total;
 
 // Lista plana con la familia de cada género: { id, nombre, spotify, familyId }

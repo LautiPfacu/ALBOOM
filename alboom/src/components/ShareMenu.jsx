@@ -3,10 +3,12 @@
 import { useCallback, useId, useRef, useState } from 'react';
 import { useToast } from '../context/ToastContext';
 import { useDismiss } from '../hooks/useDismiss';
+import { useT } from '../i18n/LanguageContext';
 import './ShareMenu.css';
 
 export default function ShareMenu({ count, reposted, pending, onRepost, url, title }) {
   const { showToast } = useToast();
+  const t = useT();
   const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
   const menuId = useId();
@@ -49,7 +51,7 @@ export default function ShareMenu({ count, reposted, pending, onRepost, url, tit
           <path d="M7 22l-4-4 4-4" />
           <path d="M21 13v2a3 3 0 0 1-3 3H3" />
         </svg>
-        Compartir · {count}
+        {t('Compartir')} · {count}
       </button>
       {open && (
         <div className="share-menu__panel" id={menuId}>
@@ -61,14 +63,14 @@ export default function ShareMenu({ count, reposted, pending, onRepost, url, tit
               onRepost();
             }}
           >
-            {reposted ? 'Dejar de compartir' : 'Compartir en tu muro'}
+            {reposted ? t('Dejar de compartir') : t('Compartir en tu muro')}
           </button>
           <button type="button" className="share-menu__item" onClick={copyLink}>
-            Copiar link
+            {t('Copiar link')}
           </button>
           {canShareNative && (
             <button type="button" className="share-menu__item" onClick={shareNative}>
-              Compartir en otra app
+              {t('Compartir en otra app')}
             </button>
           )}
         </div>

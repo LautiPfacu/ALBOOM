@@ -9,22 +9,27 @@ import { dismissAlbum } from '../services/profile';
 import AlbumCover from './AlbumCover';
 import Button from './Button';
 import Dialog from './Dialog';
+import { useRequireAccount } from '../hooks/useRequireAccount';
+import { useT } from '../i18n/LanguageContext';
 import './SpotifyDialogs.css';
 
 export default function SpotifySuggestionsDialog({ open, onClose, suggestions }) {
+  const requireAccount = useRequireAccount('albums');
+  const t = useT();
   const { author, postListened, publicReviewsDefault } = useAuthor();
   const { showToast } = useToast();
   // Qué fila está guardando y cómo ('escuchado' | 'pendiente' | 'descartar')
   const [pending, setPending] = useState({ id: null, action: null });
 
   async function handle(album, action) {
+    if (requireAccount()) return;
     setPending({ id: album.albumId, action });
     try {
       if (action === 'descartar') {
         await dismissAlbum(author.uid, album.albumId);
       } else {
         await addToLibrary(author.uid, album, action, { isPublic: publicReviewsDefault, postListened, author });
-        showToast({ type: 'success', message: `${album.name} se guardó en tu biblioteca.` });
+        showToast({ type: 'success', message: t('{name} se guardó en tu biblioteca.', { name: album.name }) });
       }
     } catch (error) {
       showToast({ type: 'error', message: libraryErrorMessage(error) });
@@ -38,18 +43,18 @@ export default function SpotifySuggestionsDialog({ open, onClose, suggestions })
       <div className="dialog__header">
         <div className="dialog__heading">
           <h2 id="spotify-suggestions-title" className="dialog__title">
-            Escuchaste esto en Spotify
+            {t('Escuchaste esto en Spotify')}
           </h2>
           <p className="dialog__text">
-            Discos que pusiste esta semana y no están en tu biblioteca. Elegí cómo sumarlos.
+            {t('Discos que pusiste esta semana y no están en tu biblioteca. Elegí cómo sumarlos.')}
           </p>
         </div>
-        <button type="button" className="dialog__close" aria-label="Cerrar" onClick={onClose}>
+        <button type="button" className="dialog__close" aria-label={t('Cerrar')} onClick={onClose}>
           ×
         </button>
       </div>
 
-      {suggestions.length === 0 && <p className="dialog__text">Ya sumaste todo lo que escuchaste esta semana.</p>}
+      {suggestions.length === 0 && <p className="dialog__text">{t('Ya sumaste todo lo que escuchaste esta semana.')}</p>}
       <ul className="spotify-suggestions">
         {suggestions.map((album) => {
           const busy = pending.id === album.albumId;
@@ -59,7 +64,7 @@ export default function SpotifySuggestionsDialog({ open, onClose, suggestions })
               <span className="spotify-suggestions__info">
                 <span className="spotify-suggestions__name">{album.name}</span>
                 <span className="dialog__text">
-                  {album.artist} · {album.tracksThisWeek} {album.tracksThisWeek === 1 ? 'canción' : 'canciones'} esta semana
+                  {album.artist} · {album.tracksThisWeek === 1 ? t('1 canción esta semana') : t('{n} canciones esta semana', { n: album.tracksThisWeek })}
                 </span>
               </span>
               <span className="spotify-suggestions__actions">
@@ -84,7 +89,7 @@ export default function SpotifySuggestionsDialog({ open, onClose, suggestions })
                 <button
                   type="button"
                   className="spotify-suggestions__dismiss"
-                  aria-label={`No sugerir más ${album.name}`}
+                  aria-label={t('No sugerir más {name}', { name: album.name })}
                   disabled={busy}
                   onClick={() => handle(album, 'descartar')}
                 >
@@ -96,7 +101,7 @@ export default function SpotifySuggestionsDialog({ open, onClose, suggestions })
         })}
       </ul>
       <div className="spotify-suggestions__footer">
-        <span className="dialog__text">«Escuchado» los suma con la fecha de hoy.</span>
+        <span className="dialog__text">{t('«Escuchado» los suma con la fecha de hoy.')}</span>
         <Button onClick={onClose}>Listo</Button>
       </div>
     </Dialog>

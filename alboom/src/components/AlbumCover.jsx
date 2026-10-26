@@ -4,11 +4,13 @@
 
 import { useState } from 'react';
 import './AlbumCover.css';
+import { useT } from '../i18n/LanguageContext';
 
 export default function AlbumCover({ src, name, artist, className = '' }) {
+  const t = useT();
   // Guardamos qué URL falló (no un booleano): si cambia src, se vuelve a intentar sola.
   const [failedSrc, setFailedSrc] = useState(null);
-  const alt = `Portada de ${name} de ${artist}`;
+  const alt = t('Portada de {name} de {artist}', { name, artist });
   const showImage = Boolean(src) && src !== failedSrc;
 
   return (

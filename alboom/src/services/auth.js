@@ -3,6 +3,7 @@
 
 import {
   createUserWithEmailAndPassword,
+  signInAnonymously,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -30,6 +31,18 @@ export async function loginWithGoogle() {
   return user;
 }
 
+// Invitado: inicio de sesión anónimo de Firebase. Puede mirar la app, pero no guardar ni publicar
+// (lo bloquean la interfaz y las reglas de Firestore). No se crea perfil en Firestore.
+export async function loginAsGuest() {
+  const { user } = await signInAnonymously(auth);
+  return user;
+}
+
+// ¿Es una sesión de invitado?
+export function isGuest(user) {
+  return Boolean(user?.isAnonymous);
+}
+
 export function logout() {
   return signOut(auth);
 }
@@ -50,6 +63,10 @@ const AUTH_ERRORS = {
   'auth/unauthorized-domain':
     'Este dominio no está autorizado en Firebase (Authentication → Configuración → Dominios autorizados).',
   'auth/network-request-failed': 'Sin conexión. Revisá internet y probá de nuevo.',
+  'auth/operation-not-allowed':
+    'El modo invitado no está activado (Firebase → Authentication → Métodos de acceso → Anónimo).',
+  'auth/admin-restricted-operation':
+    'El modo invitado no está activado (Firebase → Authentication → Métodos de acceso → Anónimo).',
 };
 
 export function authErrorMessage(error) {

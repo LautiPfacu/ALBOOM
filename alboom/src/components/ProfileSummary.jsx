@@ -8,10 +8,12 @@ import { formatMonthYear } from '../utils/text';
 import { photoFor } from '../services/profile';
 import { formatRating } from './VinylRating';
 import Avatar from './Avatar';
+import { useT } from '../i18n/LanguageContext';
 import './ProfileSummary.css';
 
 export default function ProfileSummary({ compact = false }) {
   const { user, profile, displayName } = useAuth();
+  const t = useT();
   const { items } = useLibrary();
 
   // Los números se calculan a partir de la biblioteca: no se guardan aparte.
@@ -36,7 +38,7 @@ export default function ProfileSummary({ compact = false }) {
           <span className="profile-summary__name">{displayName}</span>
           {profile?.username && <span className="profile-summary__handle">@{profile.username}</span>}
           <span className="profile-summary__inline-stats">
-            {stats.albums} discos · {stats.reviews} reseñas · {stats.average}
+            {stats.albums} {t('discos')} · {stats.reviews} {t('reseñas')} · {stats.average}
           </span>
         </div>
       </div>
@@ -50,19 +52,19 @@ export default function ProfileSummary({ compact = false }) {
       <span className="profile-summary__handle">
         {profile?.username && `@${profile.username}`}
         {profile?.username && since && ' · '}
-        {since && `desde ${since}`}
+        {since && t('desde {date}', { date: since })}
       </span>
       <dl className="profile-summary__stats">
         <div>
-          <dt>discos</dt>
+          <dt>{t('discos')}</dt>
           <dd>{stats.albums}</dd>
         </div>
         <div>
-          <dt>reseñas</dt>
+          <dt>{t('reseñas')}</dt>
           <dd>{stats.reviews}</dd>
         </div>
         <div>
-          <dt>promedio</dt>
+          <dt>{t('promedio')}</dt>
           <dd>{stats.average}</dd>
         </div>
       </dl>

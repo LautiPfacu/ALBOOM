@@ -11,6 +11,7 @@ import { getFollowedByMyFollowing } from '../services/follows';
 import { getRecentPosts } from '../services/posts';
 import { getProfiles } from '../services/publicProfile';
 import { affinityBetween, affinityReason, followedByReason } from '../utils/affinity';
+import { translate } from '../i18n/language';
 
 const PAGE_SIZE = 20;
 
@@ -44,7 +45,7 @@ export function useForYouFeed(me) {
           const names = (followedBy.get(post.uid) ?? [])
             .map((id) => followingProfiles.get(id)?.displayName?.split(' ')[0])
             .filter(Boolean);
-          const reason = followedByReason(names) ?? affinityReason(affinity) ?? 'Nuevo en la comunidad';
+          const reason = followedByReason(names) ?? affinityReason(affinity) ?? translate('Nuevo en la comunidad');
           // Que te lo recomiende gente que seguís suma más que la afinidad sola.
           return { ...post, reason, score: affinity.score + names.length * 2 };
         })

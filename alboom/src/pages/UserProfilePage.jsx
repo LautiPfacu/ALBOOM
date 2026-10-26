@@ -22,10 +22,12 @@ import ProfileHeader from '../components/ProfileHeader';
 import ProfileTabs from '../components/ProfileTabs';
 import RecentlyPlayed from '../components/RecentlyPlayed';
 import TopFiveShelf from '../components/TopFiveShelf';
+import { useT } from '../i18n/LanguageContext';
 import './ProfilePage.css';
 
 export default function UserProfilePage() {
   const { username } = useParams();
+  const t = useT();
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,7 +56,7 @@ export default function UserProfilePage() {
   if (notFound || !profile) {
     return (
       <div className="page profile-page__missing">
-        <EmptyState title="No encontramos este perfil" text={`No hay nadie con el usuario @${username}.`}>
+        <EmptyState title="No encontramos este perfil" text={t('No hay nadie con el usuario @{username}.', { username })}>
           <Button to="/comunidad" size="sm">
             Ir a Comunidad
           </Button>
@@ -66,7 +68,7 @@ export default function UserProfilePage() {
   return (
     <div className="profile-page page">
       <button type="button" className="profile-page__back" onClick={goBack}>
-        <span aria-hidden="true">←</span> Volver
+        <span aria-hidden="true">←</span> {t('Volver')}
       </button>
       <ProfileHeader
         profile={profile}
@@ -80,7 +82,7 @@ export default function UserProfilePage() {
 
       <div className="profile-page__layout">
         <div className="profile-page__main">
-          {profile.top5?.length > 0 && <TopFiveShelf title="Su Top 5" albums={profile.top5} listenedIds={myListened} />}
+          {profile.top5?.length > 0 && <TopFiveShelf title={t('Su Top 5')} albums={profile.top5} listenedIds={myListened} />}
           <RecentlyPlayed albums={profile.recent} />
           <ProfileTabs
             uid={uid}

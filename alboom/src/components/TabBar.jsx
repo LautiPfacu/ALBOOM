@@ -2,23 +2,25 @@
 
 import { NavLink } from 'react-router-dom';
 import './TabBar.css';
+import { useT } from '../i18n/LanguageContext';
 
 const tabClass = ({ isActive }) => `tab-bar__link${isActive ? ' tab-bar__link--active' : ''}`;
 
 export default function TabBar() {
+  const t = useT();
   return (
-    <nav className="tab-bar" aria-label="Principal (celular)">
+    <nav className="tab-bar" aria-label={t('Principal (celular)')}>
       <NavLink to="/" end className={tabClass}>
-        Inicio
+        {t('Inicio')}
       </NavLink>
       <NavLink to="/explorar" className={tabClass}>
-        Explorar
+        {t('Explorar')}
       </NavLink>
       <NavLink to="/comunidad" className={tabClass}>
-        Comunidad
+        {t('Comunidad')}
       </NavLink>
       <NavLink to="/biblioteca" className={tabClass}>
-        Biblioteca
+        {t('Biblioteca')}
       </NavLink>
     </nav>
   );

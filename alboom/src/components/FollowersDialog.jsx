@@ -7,6 +7,7 @@ import { normalizeText } from '../utils/text';
 import Dialog from './Dialog';
 import Loader from './Loader';
 import PersonRow from './PersonRow';
+import { useT } from '../i18n/LanguageContext';
 import './PeopleSearchDialog.css';
 
 export default function FollowersDialog({ open, onClose, uid, initialTab, counts }) {
@@ -18,6 +19,7 @@ export default function FollowersDialog({ open, onClose, uid, initialTab, counts
 }
 
 function FollowersContent({ onClose, uid, initialTab, counts }) {
+  const t = useT();
   const [tab, setTab] = useState(initialTab);
   const [filter, setFilter] = useState('');
   const [state, setState] = useState({ key: null, people: [], error: null });
@@ -47,41 +49,41 @@ function FollowersContent({ onClose, uid, initialTab, counts }) {
     <>
       <div className="dialog__header">
         <h2 id="followers-title" className="dialog__title">
-          {tab === 'followers' ? 'Seguidores' : 'Seguidos'}
+          {tab === 'followers' ? t('Seguidores') : t('Seguidos')}
         </h2>
-        <button type="button" className="dialog__close" aria-label="Cerrar" onClick={onClose}>
+        <button type="button" className="dialog__close" aria-label={t('Cerrar')} onClick={onClose}>
           ×
         </button>
       </div>
 
-      <div className="segmented followers__tabs" role="group" aria-label="Lista">
+      <div className="segmented followers__tabs" role="group" aria-label={t('Lista')}>
         <button type="button" className="segmented__option" aria-pressed={tab === 'followers'} onClick={() => setTab('followers')}>
-          Seguidores · {counts.followers}
+          {t('Seguidores')} · {counts.followers}
         </button>
         <button type="button" className="segmented__option" aria-pressed={tab === 'following'} onClick={() => setTab('following')}>
-          Seguidos · {counts.following}
+          {t('Seguidos')} · {counts.following}
         </button>
       </div>
 
       <div className="people-search__box">
         <label htmlFor={inputId} className="visually-hidden">
-          Buscar en la lista
+          {t('Buscar en la lista')}
         </label>
         <input
           id={inputId}
           type="search"
           value={filter}
           onChange={(event) => setFilter(event.target.value)}
-          placeholder="Buscar"
+          placeholder={t('Buscar')}
           autoComplete="off"
         />
       </div>
 
       {loading && <Loader size={40} label="Cargando…" />}
-      {!loading && state.error && <p className="dialog__error">{state.error}</p>}
+      {!loading && state.error && <p className="dialog__error">{t(state.error)}</p>}
       {!loading && !state.error && people.length === 0 && (
         <p className="people-search__empty">
-          {filter ? 'No hay nadie con ese nombre en la lista.' : 'Todavía no hay nadie acá.'}
+          {filter ? t('No hay nadie con ese nombre en la lista.') : t('Todavía no hay nadie acá.')}
         </p>
       )}
       <div>

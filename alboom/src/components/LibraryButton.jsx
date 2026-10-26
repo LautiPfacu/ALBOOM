@@ -5,12 +5,16 @@ import { useLibrary } from '../context/LibraryContext';
 import { useToast } from '../context/ToastContext';
 import { useAsyncAction } from '../hooks/useAsyncAction';
 import { useAuthor } from '../hooks/useAuthor';
+import { useT } from '../i18n/LanguageContext';
 import { addToLibrary, libraryErrorMessage, STATUS } from '../services/library';
 import Button from './Button';
+import { useRequireAccount } from '../hooks/useRequireAccount';
 
 export default function LibraryButton({ album }) {
+  const requireAccount = useRequireAccount('albums');
   const { getItem } = useLibrary();
   const { showToast } = useToast();
+  const t = useT();
   const { author, postListened, publicReviewsDefault } = useAuthor();
   const albumId = album.albumId ?? album.id;
   const status = getItem(albumId)?.status;
@@ -23,13 +27,14 @@ export default function LibraryButton({ album }) {
   );
 
   async function handleSave() {
+    if (requireAccount()) return;
     try {
       await run();
       showToast({
         type: 'success',
         message: (
           <>
-            <strong>{album.name}</strong> se guardó en tu biblioteca.
+            <strong>{album.name}</strong> {t('se guardó en tu biblioteca.')}
           </>
         ),
         action: { label: 'Puntuar', to: `/disco/${albumId}` },
@@ -61,7 +66,7 @@ export default function LibraryButton({ album }) {
     );
   }
   return (
-    <Button variant="secondary" size="sm" aria-label={`Guardar ${album.name} en tu biblioteca`} onClick={handleSave}>
+    <Button variant="secondary" size="sm" aria-label={t('Guardar {name} en tu biblioteca', { name: album.name })} onClick={handleSave}>
       + Guardar
     </Button>
   );

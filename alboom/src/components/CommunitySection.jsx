@@ -1,6 +1,7 @@
 // "Lo que dice la comunidad": distribución de puntajes y reseñas (3 + "Ver las N reseñas").
 
 import { useMemo, useState } from 'react';
+import { useT } from '../i18n/LanguageContext';
 import Button from './Button';
 import EmptyState from './EmptyState';
 import ErrorState from './ErrorState';
@@ -15,6 +16,7 @@ const millis = (value) => (typeof value?.toMillis === 'function' ? value.toMilli
 export default function CommunitySection({ reviews, summary, loading, error, myUid }) {
   const [order, setOrder] = useState('recientes');
   const [showAll, setShowAll] = useState(false);
+  const t = useT();
 
   const sorted = useMemo(() => {
     const list = [...reviews];
@@ -29,10 +31,10 @@ export default function CommunitySection({ reviews, summary, loading, error, myU
     <section className="community" aria-labelledby="community-title">
       <div className="community__header">
         <h2 id="community-title" className="community__title">
-          Lo que dice la comunidad
+          {t('Lo que dice la comunidad')}
         </h2>
         {reviews.length > 1 && (
-          <div className="community__order" role="group" aria-label="Ordenar reseñas">
+          <div className="community__order" role="group" aria-label={t('Ordenar reseñas')}>
             {[
               ['recientes', 'Recientes'],
               ['puntaje', 'Mejor puntaje'],
@@ -44,7 +46,7 @@ export default function CommunitySection({ reviews, summary, loading, error, myU
                 aria-pressed={order === id}
                 onClick={() => setOrder(id)}
               >
-                {label}
+                {t(label)}
               </button>
             ))}
           </div>
@@ -62,7 +64,7 @@ export default function CommunitySection({ reviews, summary, loading, error, myU
         >
           {/* Link al ancla de "Tu escucha": sin manipular el DOM */}
           <a href="#tu-escucha" className="btn btn--primary btn--sm">
-            Escribir reseña
+            {t('Escribir reseña')}
           </a>
         </EmptyState>
       )}
@@ -76,7 +78,7 @@ export default function CommunitySection({ reviews, summary, loading, error, myU
             ))}
             {reviews.length > FIRST_REVIEWS && (
               <Button variant="secondary" className="community__all" onClick={() => setShowAll((value) => !value)}>
-                {showAll ? 'Ver menos' : `Ver las ${reviews.length} reseñas`}
+                {showAll ? 'Ver menos' : t('Ver las {n} reseñas', { n: reviews.length })}
               </Button>
             )}
           </div>

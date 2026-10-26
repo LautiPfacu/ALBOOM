@@ -2,10 +2,12 @@
 
 import { Link } from 'react-router-dom';
 import { useArtist } from '../hooks/useArtist';
+import { useT } from '../i18n/LanguageContext';
 import AlbumCover from './AlbumCover';
 import './ArtistSection.css';
 
 export default function ArtistSection({ artistId, currentAlbumId, artistName }) {
+  const t = useT();
   const { artist, albums, loading } = useArtist(artistId);
   // Sin repetir el disco que se está viendo, y como mucho 3.
   const moreAlbums = albums.filter((album) => album.id !== currentAlbumId).slice(0, 3);
@@ -18,24 +20,24 @@ export default function ArtistSection({ artistId, currentAlbumId, artistName }) 
     <section className="artist-section" aria-labelledby="artist-title">
       <div className="artist-section__who">
         {artist?.image ? (
-          <img className="artist-section__photo" src={artist.image} alt={`Foto de ${name}`} loading="lazy" />
+          <img className="artist-section__photo" src={artist.image} alt={t('Foto de {name}', { name })} loading="lazy" />
         ) : (
           <div className="artist-section__photo artist-section__photo--empty" aria-hidden="true">
-            Foto de Spotify
+            {t('Foto de Spotify')}
           </div>
         )}
         <div className="artist-section__info">
-          <span className="artist-section__label">Sobre el artista</span>
+          <span className="artist-section__label">{t('Sobre el artista')}</span>
           <h2 id="artist-title" className="artist-section__name">
             {name}
           </h2>
-          <span className="artist-section__sub">Más discos en Spotify</span>
+          <span className="artist-section__sub">{t('Más discos en Spotify')}</span>
         </div>
       </div>
 
       {moreAlbums.length > 0 && (
         <div className="artist-section__albums">
-          <h3 className="artist-section__albums-title">Más de {name}</h3>
+          <h3 className="artist-section__albums-title">{t('Más de {name}', { name })}</h3>
           <div className="artist-section__grid">
             {moreAlbums.map((album) => (
               <Link key={album.id} to={`/disco/${album.id}`} className="artist-section__album">

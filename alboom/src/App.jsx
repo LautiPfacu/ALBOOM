@@ -1,6 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 import { FollowProvider } from './context/FollowContext';
+import { GuestGateProvider } from './context/GuestGateContext';
 import { LibraryProvider } from './context/LibraryContext';
+import AccountRoute from './components/AccountRoute';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicOnlyRoute from './components/PublicOnlyRoute';
@@ -35,7 +37,9 @@ export default function App() {
           element={
             <LibraryProvider>
               <FollowProvider>
-                <Layout />
+                <GuestGateProvider>
+                  <Layout />
+                </GuestGateProvider>
               </FollowProvider>
             </LibraryProvider>
           }
@@ -45,11 +49,14 @@ export default function App() {
           <Route path="comunidad" element={<CommunityPage />} />
           <Route path="biblioteca" element={<LibraryPage />} />
           <Route path="disco/:albumId" element={<AlbumPage />} />
-          <Route path="perfil" element={<MyProfilePage />} />
-          <Route path="u/:username" element={<UserProfilePage />} />
           <Route path="post/:postId" element={<PostPage />} />
-          <Route path="ajustes" element={<SettingsPage />} />
-          <Route path="ajustes/:section" element={<SettingsSectionPage />} />
+          {/* Perfiles y ajustes necesitan una cuenta: un invitado va a crear cuenta */}
+          <Route element={<AccountRoute />}>
+            <Route path="perfil" element={<MyProfilePage />} />
+            <Route path="u/:username" element={<UserProfilePage />} />
+            <Route path="ajustes" element={<SettingsPage />} />
+            <Route path="ajustes/:section" element={<SettingsSectionPage />} />
+          </Route>
         </Route>
         {/* La primera vez y la vuelta de Spotify no tienen barra de navegación */}
         <Route path="bienvenida" element={<OnboardingPage />} />

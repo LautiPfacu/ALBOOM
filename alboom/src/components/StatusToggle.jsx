@@ -1,6 +1,7 @@
 // Segmentado "Escuchado / Pendiente" de la página de disco.
 
 import { STATUS } from '../services/library';
+import { useT } from '../i18n/LanguageContext';
 import './StatusToggle.css';
 
 const OPTIONS = [
@@ -9,8 +10,9 @@ const OPTIONS = [
 ];
 
 export default function StatusToggle({ value, onChange, disabled = false }) {
+  const t = useT();
   return (
-    <div className="status-toggle" role="group" aria-label="Estado del disco">
+    <div className="status-toggle" role="group" aria-label={t('Estado del disco')}>
       {OPTIONS.map((option) => (
         <button
           key={option.value}
@@ -20,7 +22,7 @@ export default function StatusToggle({ value, onChange, disabled = false }) {
           disabled={disabled}
           onClick={() => option.value !== value && onChange(option.value)}
         >
-          {option.label}
+          {t(option.label)}
         </button>
       ))}
     </div>

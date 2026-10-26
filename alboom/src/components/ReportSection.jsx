@@ -1,27 +1,34 @@
 // "Reportar un problema": guarda el reporte en reports/{id} (las reglas solo dejan crear).
 
-import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useToast } from '../context/ToastContext';
-import { useAsyncAction } from '../hooks/useAsyncAction';
-import { profileErrorMessage, sendReport } from '../services/profile';
-import Button from './Button';
-import ProfileSection from './ProfileSection';
-import TextField from './TextField';
-import './ReportSection.css';
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
+import { useT } from "../i18n/LanguageContext";
+import { useAsyncAction } from "../hooks/useAsyncAction";
+import { profileErrorMessage, sendReport } from "../services/profile";
+import Button from "./Button";
+import ProfileSection from "./ProfileSection";
+import TextField from "./TextField";
+import "./ReportSection.css";
 
 const MAX_MESSAGE = 2000;
 
 export default function ReportSection() {
+  const t = useT();
   const { user } = useAuth();
   const { showToast } = useToast();
-  const [screen, setScreen] = useState('');
-  const [message, setMessage] = useState('');
+  const [screen, setScreen] = useState("");
+  const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [sent, setSent] = useState(false);
-  const { run, pending } = useAsyncAction(() => sendReport(user.uid, { email: user.email, screen, message }));
+  const { run, pending } = useAsyncAction(() =>
+    sendReport(user.uid, { email: user.email, screen, message }),
+  );
 
-  const messageError = message.trim().length < 10 ? 'Contanos un poco más (al menos 10 caracteres).' : undefined;
+  const messageError =
+    message.trim().length < 10
+      ? "Contanos un poco más (al menos 10 caracteres)."
+      : undefined;
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -30,22 +37,29 @@ export default function ReportSection() {
     try {
       await run();
       setSent(true);
-      showToast({ type: 'success', message: '¡Gracias! Recibimos tu reporte.' });
+      showToast({
+        type: "success",
+        message: "¡Gracias! Recibimos tu reporte.",
+      });
     } catch (error) {
-      showToast({ type: 'error', message: profileErrorMessage(error) });
+      showToast({ type: "error", message: profileErrorMessage(error) });
     }
   }
 
   if (sent) {
     return (
-      <ProfileSection id="reportar" title="¡Gracias!" subtitle="Recibimos tu reporte. Te respondemos por mail.">
+      <ProfileSection
+        id="reportar"
+        title={t("¡Gracias!")}
+        subtitle={t("Recibimos tu reporte. Te respondemos por mail.")}
+      >
         <Button
           variant="secondary"
           onClick={() => {
             setSent(false);
             setSubmitted(false);
-            setScreen('');
-            setMessage('');
+            setScreen("");
+            setMessage("");
           }}
         >
           Reportar otro problema
@@ -57,8 +71,10 @@ export default function ReportSection() {
   return (
     <ProfileSection
       id="reportar"
-      title="Reportar un problema"
-      subtitle="Contanos qué pasó y en qué pantalla. Te respondemos por mail."
+      title={t("Reportar un problema")}
+      subtitle={t(
+        "Contanos qué pasó y en qué pantalla. Te respondemos por mail.",
+      )}
     >
       <form className="report-section" onSubmit={handleSubmit} noValidate>
         <TextField
@@ -71,26 +87,28 @@ export default function ReportSection() {
         />
         <div className="report-section__field">
           <label htmlFor="report-message" className="text-field__label">
-            ¿Qué pasó?
+            {t("¿Qué pasó?")}
           </label>
           <textarea
             id="report-message"
-            className={`report-section__textarea${submitted && messageError ? ' report-section__textarea--error' : ''}`}
+            className={`report-section__textarea${submitted && messageError ? " report-section__textarea--error" : ""}`}
             value={message}
             maxLength={MAX_MESSAGE}
             onChange={(event) => setMessage(event.target.value)}
             aria-invalid={submitted && messageError ? true : undefined}
-            aria-describedby={submitted && messageError ? 'report-message-error' : undefined}
+            aria-describedby={
+              submitted && messageError ? "report-message-error" : undefined
+            }
           />
           {submitted && messageError && (
             <p id="report-message-error" className="text-field__error">
-              {messageError}
+              {t(messageError)}
             </p>
           )}
         </div>
         <div className="report-section__actions">
           <Button type="submit" pending={pending}>
-            {pending ? 'Enviando…' : 'Enviar reporte'}
+            {pending ? "Enviando…" : "Enviar reporte"}
           </Button>
         </div>
       </form>

@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { useFollow } from '../context/FollowContext';
 import { getRecentProfiles } from '../services/publicProfile';
 import { affinityBetween, affinityReason } from '../utils/affinity';
+import { translate } from '../i18n/language';
 
 export function usePeopleSuggestions(me, max = 3) {
   const { user } = useAuth();
@@ -24,7 +25,7 @@ export function usePeopleSuggestions(me, max = 3) {
           .filter((p) => p.uid !== user.uid && p.username)
           .map((p) => {
             const affinity = affinityBetween(me, p);
-            return { ...p, score: affinity.score, reason: affinityReason(affinity) ?? 'Nuevo en ALBOOM' };
+            return { ...p, score: affinity.score, reason: affinityReason(affinity) ?? translate('Nuevo en ALBOOM') };
           })
           .sort((a, b) => b.score - a.score || (b.followersCount ?? 0) - (a.followersCount ?? 0));
         if (!cancelled) setState({ key, people: scored });

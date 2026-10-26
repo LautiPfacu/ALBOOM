@@ -1,11 +1,12 @@
 // Cambiar contraseña: pide la actual (reautenticación) y la nueva.
 
-import { useState } from 'react';
-import { useAsyncAction } from '../hooks/useAsyncAction';
-import { changePassword, profileErrorMessage } from '../services/profile';
-import Button from './Button';
-import Dialog from './Dialog';
-import TextField from './TextField';
+import { useState } from "react";
+import { useT } from "../i18n/LanguageContext";
+import { useAsyncAction } from "../hooks/useAsyncAction";
+import { changePassword, profileErrorMessage } from "../services/profile";
+import Button from "./Button";
+import Dialog from "./Dialog";
+import TextField from "./TextField";
 
 export default function PasswordDialog({ open, onClose, onDone }) {
   return (
@@ -16,15 +17,17 @@ export default function PasswordDialog({ open, onClose, onDone }) {
 }
 
 function PasswordForm({ onClose, onDone }) {
-  const [current, setCurrent] = useState('');
-  const [next, setNext] = useState('');
+  const t = useT();
+  const [current, setCurrent] = useState("");
+  const [next, setNext] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
   const { run, pending } = useAsyncAction(() => changePassword(current, next));
 
   const errors = {
-    current: current ? undefined : 'Escribí tu contraseña actual.',
-    next: next.length >= 6 ? undefined : 'Tiene que tener al menos 6 caracteres.',
+    current: current ? undefined : "Escribí tu contraseña actual.",
+    next:
+      next.length >= 6 ? undefined : "Tiene que tener al menos 6 caracteres.",
   };
 
   async function handleSubmit(event) {
@@ -43,9 +46,11 @@ function PasswordForm({ onClose, onDone }) {
   return (
     <form className="dialog__form" onSubmit={handleSubmit} noValidate>
       <h2 id="password-dialog-title" className="dialog__title">
-        Cambiar contraseña
+        {t("Cambiar contraseña")}
       </h2>
-      <p className="dialog__text">Por seguridad, primero confirmá tu contraseña actual.</p>
+      <p className="dialog__text">
+        {t("Por seguridad, primero confirmá tu contraseña actual.")}
+      </p>
       <TextField
         id="password-current"
         type="password"
@@ -67,15 +72,20 @@ function PasswordForm({ onClose, onDone }) {
       />
       {error && (
         <p className="dialog__error" role="alert">
-          {error}
+          {t(error)}
         </p>
       )}
       <div className="dialog__actions">
-        <Button variant="secondary" size="sm" disabled={pending} onClick={onClose}>
+        <Button
+          variant="secondary"
+          size="sm"
+          disabled={pending}
+          onClick={onClose}
+        >
           Cancelar
         </Button>
         <Button type="submit" size="sm" pending={pending}>
-          {pending ? 'Guardando…' : 'Cambiar contraseña'}
+          {pending ? "Guardando…" : "Cambiar contraseña"}
         </Button>
       </div>
     </form>

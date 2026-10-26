@@ -10,6 +10,8 @@
 
 import { Link } from 'react-router-dom';
 import AlbumCover from './AlbumCover';
+import { useT } from '../i18n/LanguageContext';
+import { plural } from '../utils/text';
 import MiniRating from './MiniRating';
 import './AlbumTile.css';
 
@@ -24,6 +26,7 @@ export default function AlbumTile({
   onDismiss,
   compact = false,
 }) {
+  const t = useT();
   const albumUrl = `/disco/${album.id}`;
   const sub = subtitle ?? [album.artist, album.year].filter(Boolean).join(' · ');
 
@@ -34,9 +37,9 @@ export default function AlbumTile({
           <AlbumCover src={album.cover} name={album.name} artist={album.artist} className="album-tile__cover" />
         </Link>
         {listened && (
-          <span className="album-tile__listened" title="Ya lo escuchaste">
+          <span className="album-tile__listened" title={t('Ya lo escuchaste')}>
             <span aria-hidden="true">✓</span>
-            <span className="visually-hidden">Ya lo escuchaste</span>
+            <span className="visually-hidden">{t('Ya lo escuchaste')}</span>
           </span>
         )}
         {rank && (
@@ -48,8 +51,8 @@ export default function AlbumTile({
           <button
             type="button"
             className="album-tile__dismiss"
-            title="No me interesa"
-            aria-label={`No me interesa ${album.name}`}
+            title={t('No me interesa')}
+            aria-label={t('No me interesa {name}', { name: album.name })}
             onClick={() => onDismiss(album)}
           >
             <span aria-hidden="true">×</span>
@@ -60,7 +63,7 @@ export default function AlbumTile({
         {reason && <span className="album-tile__reason">{reason}</span>}
         <h3 className="album-tile__title">
           <Link to={albumUrl}>
-            {rank && <span className="visually-hidden">Puesto {rank}: </span>}
+            {rank && <span className="visually-hidden">{t('Puesto {rank}: ', { rank })}</span>}
             {album.name}
           </Link>
         </h3>
@@ -69,10 +72,10 @@ export default function AlbumTile({
       {(stats?.count > 0 || meta) && (
         <div className="album-tile__stats">
           {stats?.count > 0 && (
-            <MiniRating value={Math.round(stats.average * 10) / 10} size={16} label="Promedio de la comunidad" />
+            <MiniRating value={Math.round(stats.average * 10) / 10} size={16} label={t('Promedio de la comunidad')} />
           )}
           <span className="album-tile__count">
-            {meta ?? `· ${stats.count === 1 ? '1 reseña' : `${stats.count} reseñas`}`}
+            {meta ?? `· ${plural(stats.count, 'reseña')}`}
           </span>
         </div>
       )}

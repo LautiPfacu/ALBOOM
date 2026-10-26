@@ -9,6 +9,7 @@
 // size: 'sm' (40 px) | 'md' (46 px) | 'lg' (54 px)
 
 import { Link } from 'react-router-dom';
+import { useT } from '../i18n/LanguageContext';
 import './Button.css';
 
 export default function Button({
@@ -23,6 +24,9 @@ export default function Button({
   className = '',
   ...rest
 }) {
+  const t = useT();
+  // Si el texto del botón es un string, lo traducimos acá (así cada botón no tiene que hacerlo).
+  const content = typeof children === 'string' ? t(children) : children;
   const classes = [
     'btn',
     `btn--${variant}`,
@@ -37,7 +41,7 @@ export default function Button({
   if (to) {
     return (
       <Link to={to} className={classes} {...rest}>
-        {children}
+        {content}
       </Link>
     );
   }
@@ -48,7 +52,7 @@ export default function Button({
       {pending && (
         <alboom-loader size={20} shadow="var(--card)" hole="var(--pink-pressed)" aria-hidden="true" />
       )}
-      {children}
+      {content}
     </button>
   );
 }

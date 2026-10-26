@@ -12,11 +12,15 @@ import { timeAgo } from '../utils/text';
 import Avatar from './Avatar';
 import Button from './Button';
 import Loader from './Loader';
+import { useRequireAccount } from '../hooks/useRequireAccount';
+import { useT } from '../i18n/LanguageContext';
 import './PostReplies.css';
 
 const FIRST_REPLIES = 2;
 
 export default function PostReplies({ postId, authorFirstName }) {
+  const requireAccount = useRequireAccount();
+  const t = useT();
   const { author } = useAuthor();
   const { showToast } = useToast();
   const { replies, loading, error } = useReplies(postId, true);
@@ -30,6 +34,7 @@ export default function PostReplies({ postId, authorFirstName }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    if (requireAccount()) return;
     if (!text.trim()) return;
     try {
       // RESPONDER: se limpia el campo recién cuando Firestore confirma.
@@ -43,7 +48,7 @@ export default function PostReplies({ postId, authorFirstName }) {
   return (
     <div className="post-replies">
       {loading && <Loader size={32} />}
-      {error && <p className="dialog__error">{error}</p>}
+      {error && <p className="dialog__error">{t(error)}</p>}
       {visible.map((reply) => (
         <div key={reply.id} className="post-replies__item">
           <Avatar name={reply.displayName} photoURL={reply.photoURL} size={30} colorful />
@@ -60,13 +65,13 @@ export default function PostReplies({ postId, authorFirstName }) {
       ))}
       {hidden > 0 && (
         <button type="button" className="text-link post-replies__more" onClick={() => setShowAll(true)}>
-          Ver {hidden === 1 ? '1 respuesta más' : `${hidden} respuestas más`}
+          {hidden === 1 ? t('Ver 1 respuesta más') : t('Ver {n} respuestas más', { n: hidden })}
         </button>
       )}
       <form className="post-replies__form" onSubmit={handleSubmit}>
         <Avatar name={author.displayName} photoURL={author.photoURL} size={30} />
         <label htmlFor={inputId} className="visually-hidden">
-          Responder
+          {t('Responder')}
         </label>
         <input
           id={inputId}
@@ -74,7 +79,7 @@ export default function PostReplies({ postId, authorFirstName }) {
           value={text}
           maxLength={REPLY_MAX_LENGTH}
           onChange={(event) => setText(event.target.value)}
-          placeholder={`Respondé a ${authorFirstName}…`}
+          placeholder={t('Respondé a {name}…', { name: authorFirstName })}
           autoComplete="off"
         />
         <Button type="submit" size="sm" pending={pending} disabled={!text.trim()}>

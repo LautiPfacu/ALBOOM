@@ -11,22 +11,24 @@ import LibraryCardSmall from './LibraryCardSmall';
 import Loader from './Loader';
 import PostCard from './PostCard';
 import PostFeed from './PostFeed';
+import { useT } from '../i18n/LanguageContext';
 import './ProfileTabs.css';
 
 export default function ProfileTabs({ uid, isMe, reviews, reviewsLoading, library, libraryLoading, libraryError }) {
   const [tab, setTab] = useState('actividad');
+  const t = useT();
   const activity = usePostsBy(tab === 'actividad' ? [uid] : []);
   const { getItem } = useLibrary();
 
   const tabs = [
-    { id: 'actividad', label: 'Actividad' },
-    { id: 'resenas', label: `Reseñas · ${reviews.length}` },
-    { id: 'biblioteca', label: `Biblioteca · ${library.length}` },
+    { id: 'actividad', label: t('Actividad') },
+    { id: 'resenas', label: `${t('Reseñas')} · ${reviews.length}` },
+    { id: 'biblioteca', label: `${t('Biblioteca')} · ${library.length}` },
   ];
 
   return (
     <section className="profile-tabs">
-      <div className="segmented profile-tabs__switch" role="tablist" aria-label="Contenido del perfil">
+      <div className="segmented profile-tabs__switch" role="tablist" aria-label={t('Contenido del perfil')}>
         {tabs.map((item) => (
           <button
             key={item.id}
@@ -89,9 +91,9 @@ export default function ProfileTabs({ uid, isMe, reviews, reviewsLoading, librar
                   <LibraryCardSmall item={item} />
                   {/* Si no es tu perfil, marcamos en verde los que vos ya escuchaste */}
                   {!isMe && getItem(item.id)?.status === STATUS.LISTENED && (
-                    <span className="profile-tabs__listened" title="Ya lo escuchaste">
+                    <span className="profile-tabs__listened" title={t('Ya lo escuchaste')}>
                       <span aria-hidden="true">✓</span>
-                      <span className="visually-hidden">Ya lo escuchaste</span>
+                      <span className="visually-hidden">{t('Ya lo escuchaste')}</span>
                     </span>
                   )}
                 </div>

@@ -9,6 +9,7 @@ import { useAlbumReviews } from '../hooks/useAlbumReviews';
 import { useAsyncAction } from '../hooks/useAsyncAction';
 import { useLibraryItem } from '../hooks/useLibraryItem';
 import { useSpotifyAlbum } from '../hooks/useSpotifyAlbum';
+import { useT } from '../i18n/LanguageContext';
 import { libraryErrorMessage, removeFromLibrary } from '../services/library';
 import { formatAlbumDuration } from '../services/spotify';
 import { plural } from '../utils/text';
@@ -30,6 +31,7 @@ export default function AlbumPage() {
   const { showToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
+  const t = useT();
 
   const { album, loading, error, retry } = useSpotifyAlbum(albumId);
   const { item, loading: itemLoading } = useLibraryItem(albumId);
@@ -47,7 +49,7 @@ export default function AlbumPage() {
   async function confirmRemove() {
     try {
       await runRemove();
-      showToast({ type: 'success', message: `Quitaste ${album?.name ?? 'el disco'} de tu biblioteca.` });
+      showToast({ type: 'success', message: t('Quitaste {name} de tu biblioteca.', { name: album?.name ?? t('el disco') }) });
       setConfirmOpen(false); // te quedás en la página: "Tu escucha" vuelve a "no guardado"
     } catch (removeError) {
       showToast({ type: 'error', message: libraryErrorMessage(removeError) });
@@ -57,7 +59,7 @@ export default function AlbumPage() {
   const backButton = (
     <button type="button" className="album-page__back" onClick={goBack}>
       <span aria-hidden="true">←</span>
-      <span className="album-page__back-text">Volver</span>
+      <span className="album-page__back-text">{t('Volver')}</span>
     </button>
   );
 
@@ -87,7 +89,7 @@ export default function AlbumPage() {
   const spotifyLink = (className) =>
     album.spotifyUrl && (
       <a href={album.spotifyUrl} target="_blank" rel="noopener noreferrer" className={className}>
-        Abrir en Spotify <span aria-hidden="true">↗</span>
+        {t('Abrir en Spotify')} <span aria-hidden="true">↗</span>
       </a>
     );
 
@@ -113,7 +115,7 @@ export default function AlbumPage() {
         <div className="album-page__main">
           <div className="album-page__header">
             <div className="album-page__heading">
-              <span className="album-page__kicker">Disco{album.year && ` · ${album.year}`}</span>
+              <span className="album-page__kicker">{t('Disco')}{album.year && ` · ${album.year}`}</span>
               <h1 className={`album-page__title${longTitle ? ' album-page__title--long' : ''}`}>{album.name}</h1>
               <span className="album-page__artist">{album.artist}</span>
               <span className="album-page__duration">
@@ -154,7 +156,7 @@ export default function AlbumPage() {
 
       <ConfirmDialog
         open={confirmOpen}
-        title={`¿Quitar ${album.name} de tu biblioteca?`}
+        title={t('¿Quitar {name} de tu biblioteca?', { name: album.name })}
         text="Se borran tu puntaje y tu reseña. No se puede deshacer."
         confirmLabel="Quitar"
         pendingLabel="Quitando…"

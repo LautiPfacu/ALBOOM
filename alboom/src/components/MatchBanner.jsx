@@ -4,25 +4,27 @@
 
 import { affinityBetween } from '../utils/affinity';
 import { genreName } from '../data/genres';
+import { useT } from '../i18n/LanguageContext';
 import { joinList } from '../utils/text';
 import './MatchBanner.css';
 
 export default function MatchBanner({ me, them }) {
+  const t = useT();
   const { sharedTop5, sharedGenres } = affinityBetween(me, them);
   if (sharedTop5.length === 0) return null;
 
   const total = them.top5?.length ?? 0;
-  const genres = joinList(sharedGenres.slice(0, 2).map((id) => `el ${genreName(id).toLowerCase()}`));
+  const genres = joinList(sharedGenres.slice(0, 2).map((id) => t('el {genre}', { genre: genreName(id).toLowerCase() })));
   const albums = joinList(sharedTop5.map((album) => album.name));
 
   return (
-    <aside className="match-banner" aria-label="Coincidencia de gustos">
+    <aside className="match-banner" aria-label={t('Coincidencia de gustos')}>
       <span className="match-banner__number">
-        {sharedTop5.length} de {total}
+        {t('{n} de {total}', { n: sharedTop5.length, total })}
       </span>
       <p className="match-banner__text">
-        <strong>discos de su Top 5 también están en el tuyo</strong>
-        {genres && `, y coinciden en ${genres}`}. {albums}.
+        <strong>{t('discos de su Top 5 también están en el tuyo')}</strong>
+        {genres && t(', y coinciden en {genres}', { genres })}. {albums}.
       </p>
     </aside>
   );

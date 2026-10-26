@@ -1,0 +1,9 @@
+.language-switcher {
+  align-self: flex-start;
+}
+
+.language-switcher .segmented__option {
+  min-height: 32px;
+  padding: 4px 12px;
+  font-size: 13px;
+}

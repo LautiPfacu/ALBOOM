@@ -5,12 +5,14 @@
 
 import { MOBILE_QUERY, useMediaQuery } from '../hooks/useMediaQuery';
 import './LoginIllustration.css';
+import { useT } from '../i18n/LanguageContext';
 
 // En celular encuadramos el centro de la explosión en la franja de 250 px.
 const MOBILE_VIEWBOX = '68 140 624 400';
 const DESKTOP_VIEWBOX = '0 0 760 800';
 
 export default function LoginIllustration() {
+  const t = useT();
   const isMobile = useMediaQuery(MOBILE_QUERY);
 
   return (
@@ -20,9 +22,9 @@ export default function LoginIllustration() {
       </div>
       <div className="login-illustration__dots" />
       <div className="login-illustration__motto">
-        <span>Escuchá.</span>
-        <span className="login-illustration__motto-line--yellow">Puntuá.</span>
-        <span>Descubrí.</span>
+        <span>{t('Escuchá.')}</span>
+        <span className="login-illustration__motto-line--yellow">{t('Puntuá.')}</span>
+        <span>{t('Descubrí.')}</span>
       </div>
     </div>
   );

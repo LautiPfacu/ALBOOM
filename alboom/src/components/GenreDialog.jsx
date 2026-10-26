@@ -7,7 +7,8 @@
 
 import { useId, useMemo, useState } from 'react';
 import { FAMILIES, genreName, searchGenres, TOTAL_GENRES } from '../data/genres';
-import { normalizeText } from '../utils/text';
+import { useT } from '../i18n/LanguageContext';
+import { normalizeText, plural } from '../utils/text';
 import Button from './Button';
 import Dialog from './Dialog';
 import './GenreDialog.css';
@@ -28,6 +29,7 @@ export default function GenreDialog({ open, onClose, multiple = false, initialSe
 }
 
 function GenreDialogContent({ multiple, initialSelected, minimum, onClose, onConfirm }) {
+  const t = useT();
   const [selected, setSelected] = useState(initialSelected);
   const [familyId, setFamilyId] = useState(
     () => FAMILIES.find((family) => family.generos.some((g) => initialSelected.includes(g.id)))?.id ?? FAMILIES[0].id,
@@ -63,29 +65,33 @@ function GenreDialogContent({ multiple, initialSelected, minimum, onClose, onCon
   }
 
   const canConfirm = selected.length >= Math.max(1, minimum);
-  let confirmLabel = 'Listo';
-  if (!multiple) confirmLabel = selected[0] ? `Ver discos de ${genreName(selected[0]).toLowerCase()}` : 'Elegí un género';
+  let confirmLabel = t('Listo');
+  if (!multiple) {
+    confirmLabel = selected[0]
+      ? t('Ver discos de {genre}', { genre: genreName(selected[0]).toLowerCase() })
+      : t('Elegí un género');
+  }
 
   return (
     <>
       <div className="genre-dialog__header">
         <div className="genre-dialog__heading">
           <h2 id="genre-dialog-title" className="genre-dialog__title">
-            Todos los géneros
+            {t('Todos los géneros')}
           </h2>
           <p className="genre-dialog__subtitle">
-            {TOTAL_GENRES} géneros en {FAMILIES.length} familias.{' '}
-            {multiple ? 'Elegí los que te gustan.' : 'Elegí uno para ver sus discos.'}
+            {t('{n} géneros en {families} familias.', { n: TOTAL_GENRES, families: FAMILIES.length })}{' '}
+            {t(multiple ? 'Elegí los que te gustan.' : 'Elegí uno para ver sus discos.')}
           </p>
         </div>
-        <button type="button" className="genre-dialog__close" aria-label="Cerrar" onClick={onClose}>
+        <button type="button" className="genre-dialog__close" aria-label={t('Cerrar')} onClick={onClose}>
           ×
         </button>
       </div>
 
       <div className="genre-dialog__search">
         <label htmlFor={searchId} className="visually-hidden">
-          Buscá un género
+          {t('Buscá un género')}
         </label>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" aria-hidden="true">
           <circle cx="11" cy="11" r="7" />
@@ -96,13 +102,13 @@ function GenreDialogContent({ multiple, initialSelected, minimum, onClose, onCon
           type="search"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          placeholder="Buscá un género: chamamé, shoegaze, dembow…"
+          placeholder={t('Buscá un género: chamamé, shoegaze, dembow…')}
           autoComplete="off"
         />
       </div>
 
       <div className="genre-dialog__body">
-        <nav className="genre-dialog__families" aria-label="Familias de géneros">
+        <nav className="genre-dialog__families" aria-label={t('Familias de géneros')}>
           {FAMILIES.map((f) => {
             const count = matchesByFamily ? matchesByFamily.get(f.id) : f.generos.length;
             return (
@@ -123,13 +129,13 @@ function GenreDialogContent({ multiple, initialSelected, minimum, onClose, onCon
 
         <div className="genre-dialog__genres">
           <div className="genre-dialog__genres-heading">
-            <h3 className="genre-dialog__family-title">{searching ? `Resultados para «${search.trim()}»` : family.nombre}</h3>
+            <h3 className="genre-dialog__family-title">{searching ? t('Resultados para «{query}»', { query: search.trim() }) : family.nombre}</h3>
             <span className="genre-dialog__family-total">
-              {shownGenres.length === 1 ? '1 género' : `${shownGenres.length} géneros`}
+              {plural(shownGenres.length, 'género')}
             </span>
           </div>
           {shownGenres.length === 0 ? (
-            <p className="genre-dialog__empty">No encontramos ese género. Probá con otra palabra.</p>
+            <p className="genre-dialog__empty">{t('No encontramos ese género. Probá con otra palabra.')}</p>
           ) : (
             <div className="genre-dialog__chips">
               {shownGenres.map((genre) => {
@@ -155,12 +161,12 @@ function GenreDialogContent({ multiple, initialSelected, minimum, onClose, onCon
       <div className="genre-dialog__footer">
         <span className="genre-dialog__chosen">
           {selected.length === 0 ? (
-            'Todavía no elegiste ninguno'
+            t('Todavía no elegiste ninguno')
           ) : (
             <>
-              Elegiste:{' '}
+              {t('Elegiste:')}{' '}
               <span className="highlight">
-                {multiple ? `${selected.length} ${selected.length === 1 ? 'género' : 'géneros'}` : genreName(selected[0])}
+                {multiple ? plural(selected.length, 'género') : genreName(selected[0])}
               </span>
             </>
           )}
@@ -168,7 +174,7 @@ function GenreDialogContent({ multiple, initialSelected, minimum, onClose, onCon
         <div className="genre-dialog__footer-actions">
           {selected.length > 0 && (
             <button type="button" className="text-link" onClick={() => setSelected([])}>
-              Limpiar
+              {t('Limpiar')}
             </button>
           )}
           <Button disabled={!canConfirm} onClick={() => onConfirm(selected)}>

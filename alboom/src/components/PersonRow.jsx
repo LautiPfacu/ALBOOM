@@ -5,9 +5,11 @@ import { Link } from 'react-router-dom';
 import AlbumCover from './AlbumCover';
 import Avatar from './Avatar';
 import FollowButton from './FollowButton';
+import { useT } from '../i18n/LanguageContext';
 import './PersonRow.css';
 
 export default function PersonRow({ person, detail, showTop5 = false, onNavigate }) {
+  const t = useT();
   const profileUrl = `/u/${person.username}`;
 
   return (
@@ -22,7 +24,7 @@ export default function PersonRow({ person, detail, showTop5 = false, onNavigate
         </Link>
         {detail && <span className="person-row__detail">{detail}</span>}
         {showTop5 && person.top5?.length > 0 && (
-          <span className="person-row__covers" aria-label={`Su Top 5: ${person.top5.map((a) => a.name).join(', ')}`}>
+          <span className="person-row__covers" aria-label={t('Su Top 5: {list}', { list: person.top5.map((a) => a.name).join(', ') })}>
             {person.top5.map((album) => (
               <AlbumCover key={album.albumId} src={album.cover} name={album.name} artist={album.artist} className="person-row__cover" />
             ))}

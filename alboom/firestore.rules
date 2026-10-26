@@ -15,6 +15,15 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == uid;
     }
 
+    // Invitado = sesión anónima de Firebase: puede leer, pero no escribir nada.
+    function isRegistered() {
+      return isSignedIn() && request.auth.token.firebase.sign_in_provider != 'anonymous';
+    }
+
+    function isAccountOwner(uid) {
+      return isOwner(uid) && isRegistered();
+    }
+
     // Foto de perfil: link (Google) o imagen achicada en el navegador (data URL). Máx. ~100 KB.
     function isValidPhoto(data) {
       return !('photoURL' in data) || data.photoURL == null
@@ -52,25 +61,28 @@ service cloud.firestore {
 
     // Perfil privado (email, ajustes, Spotify): solo lo lee y lo escribe su dueño.
     match /users/{uid} {
-      allow read, delete: if isOwner(uid);
-      allow create, update: if isOwner(uid) && isValidPhoto(request.resource.data);
+      allow read: if isOwner(uid);
+      allow delete: if isAccountOwner(uid);
+      allow create, update: if isAccountOwner(uid) && isValidPhoto(request.resource.data);
 
       // Recomendaciones descartadas ("No me interesa"): users/{uid}/dismissed/{albumId}
       match /dismissed/{albumId} {
-        allow read, write: if isOwner(uid);
+        allow read: if isOwner(uid);
+        allow write: if isAccountOwner(uid);
       }
 
       // Datos privados de Spotify (refresh token, sugerencias): users/{uid}/private/spotify
       match /private/{docId} {
-        allow read, write: if isOwner(uid);
+        allow read: if isOwner(uid);
+        allow write: if isAccountOwner(uid);
       }
 
       // Biblioteca: users/{uid}/library/{albumId}
       // Todos los perfiles son públicos: la lee cualquiera con sesión; solo el dueño la cambia.
       match /library/{albumId} {
         allow read: if isSignedIn();
-        allow delete: if isOwner(uid);
-        allow create, update: if isOwner(uid) && isValidLibraryItem(request.resource.data);
+        allow delete: if isAccountOwner(uid);
+        allow create, update: if isAccountOwner(uid) && isValidLibraryItem(request.resource.data);
       }
     }
 
@@ -91,7 +103,7 @@ service cloud.firestore {
       let before = resource.data;
       let after = request.resource.data;
       let followPath = /databases/$(database)/documents/follows/$(request.auth.uid + '_' + uid);
-      return isSignedIn() && request.auth.uid != uid
+      return isRegistered() && request.auth.uid != uid
         && after.diff(before).affectedKeys().hasOnly(['followersCount'])
         && ((after.followersCount == before.get('followersCount', 0) + 1
               && existsAfter(followPath) && !exists(followPath))
@@ -102,14 +114,14 @@ service cloud.firestore {
     // profiles/{uid}: nombre, @usuario, foto, bio, géneros, Top 5, escuchado recientemente y contadores.
     match /profiles/{uid} {
       allow read: if isSignedIn();
-      allow create: if isOwner(uid) && isValidProfile(request.resource.data)
+      allow create: if isAccountOwner(uid) && isValidProfile(request.resource.data)
         && request.resource.data.followersCount == 0
         && request.resource.data.followingCount == 0;
       // El dueño cambia sus datos, pero no puede tocar su contador de seguidores.
-      allow update: if (isOwner(uid) && isValidProfile(request.resource.data)
+      allow update: if (isAccountOwner(uid) && isValidProfile(request.resource.data)
           && request.resource.data.get('followersCount', 0) == resource.data.get('followersCount', 0))
         || isFollowerCounterUpdate(uid);
-      allow delete: if isOwner(uid);
+      allow delete: if isAccountOwner(uid);
     }
 
     // ---------- Seguir ----------
@@ -117,13 +129,13 @@ service cloud.firestore {
     // follows/{seguidor}_{seguido}: lo crea solo quien sigue, a su nombre.
     match /follows/{followId} {
       allow read: if isSignedIn();
-      allow create: if isSignedIn()
+      allow create: if isRegistered()
         && request.resource.data.follower == request.auth.uid
         && request.resource.data.followed is string
         && request.resource.data.followed != request.auth.uid
         && followId == request.auth.uid + '_' + request.resource.data.followed;
       // Lo borra quien sigue (dejar de seguir) o el seguido (al eliminar su cuenta).
-      allow delete: if isSignedIn()
+      allow delete: if isRegistered()
         && (resource.data.follower == request.auth.uid || resource.data.followed == request.auth.uid);
     }
 
@@ -158,7 +170,7 @@ service cloud.firestore {
       let changed = after.diff(before).affectedKeys();
       let likePath = /databases/$(database)/documents/posts/$(postId)/likes/$(request.auth.uid);
       let repostPath = /databases/$(database)/documents/posts/$('repost_' + postId + '_' + request.auth.uid);
-      return isSignedIn() && (
+      return isRegistered() && (
         (changed.hasOnly(['likeCount'])
           && ((after.likeCount == before.get('likeCount', 0) + 1 && existsAfter(likePath) && !exists(likePath))
             || (after.likeCount == before.get('likeCount', 0) - 1 && !existsAfter(likePath) && exists(likePath))))
@@ -172,31 +184,31 @@ service cloud.firestore {
     // posts/{postId}: los lee cualquiera con sesión; solo el autor los crea, edita y borra.
     match /posts/{postId} {
       allow read: if isSignedIn();
-      allow create: if isSignedIn() && isValidPost(request.resource.data)
+      allow create: if isRegistered() && isValidPost(request.resource.data)
         && countersStartAtZero(request.resource.data);
-      allow update: if (isSignedIn() && resource.data.uid == request.auth.uid
+      allow update: if (isRegistered() && resource.data.uid == request.auth.uid
           && isValidPost(request.resource.data) && countersUnchanged())
         || isCounterUpdate(postId);
       // Los posteos de reseñas, "escuchó" y compartidos tienen un id que termina en _uid:
       // así se pueden borrar aunque todavía no existan (en el mismo lote que la biblioteca).
-      allow delete: if isSignedIn()
+      allow delete: if isRegistered()
         && (postId.matches('.+_' + request.auth.uid) || resource.data.uid == request.auth.uid);
 
       // Me gusta: posts/{postId}/likes/{uid} → solo el propio uid.
       match /likes/{uid} {
         allow read: if isSignedIn();
-        allow create, delete: if isOwner(uid);
+        allow create, delete: if isAccountOwner(uid);
       }
 
       // Respuestas: las crea cualquiera con sesión a su nombre; solo el autor las borra.
       match /replies/{replyId} {
         allow read: if isSignedIn();
-        allow create: if isSignedIn()
+        allow create: if isRegistered()
           && request.resource.data.uid == request.auth.uid
           && request.resource.data.text is string
           && request.resource.data.text.size() > 0
           && request.resource.data.text.size() <= 300;
-        allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+        allow delete: if isRegistered() && resource.data.uid == request.auth.uid;
       }
     }
 
@@ -206,23 +218,23 @@ service cloud.firestore {
     // Las lee cualquier persona con sesión; solo su autor las crea, edita o borra.
     match /reviews/{reviewId} {
       allow read: if isSignedIn();
-      allow create, update: if isSignedIn() && isValidReview(reviewId, request.resource.data);
+      allow create, update: if isRegistered() && isValidReview(reviewId, request.resource.data);
       // Se valida por el id (termina en _uid) para poder borrar aunque el documento no exista.
-      allow delete: if isSignedIn() && reviewId.matches('.+_' + request.auth.uid);
+      allow delete: if isRegistered() && reviewId.matches('.+_' + request.auth.uid);
     }
 
     // Reserva de nombres de usuario: usernames/{username} → { uid }
     match /usernames/{username} {
       allow read: if isSignedIn();
-      allow create: if isSignedIn()
+      allow create: if isRegistered()
         && request.resource.data.uid == request.auth.uid
         && username.matches('^[a-z0-9._]{3,20}$');
-      allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow delete: if isRegistered() && resource.data.uid == request.auth.uid;
     }
 
     // Reportes de problemas: solo se crean (nadie los lee desde la app).
     match /reports/{reportId} {
-      allow create: if isSignedIn()
+      allow create: if isRegistered()
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.message is string
         && request.resource.data.message.size() <= 2000;

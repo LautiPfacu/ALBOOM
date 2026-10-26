@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { useFollow } from '../context/FollowContext';
 import { getCommonFollowers } from '../services/follows';
 import Avatar from './Avatar';
+import { useT } from '../i18n/LanguageContext';
 import './SideCard.css';
 import './CommonFollowersCard.css';
 
 export default function CommonFollowersCard({ uid }) {
+  const t = useT();
   const { followingIds, loading: followLoading } = useFollow();
   const [state, setState] = useState({ key: null, people: [] });
   const key = followLoading ? null : `${uid}|${followingIds.join(',')}`;
@@ -34,7 +36,7 @@ export default function CommonFollowersCard({ uid }) {
   return (
     <aside className="side-card" aria-labelledby="common-followers-title">
       <h2 id="common-followers-title" className="side-card__title">
-        Seguidores en común
+        {t('Seguidores en común')}
       </h2>
       <div className="common-followers__avatars" aria-hidden="true">
         {people.slice(0, 5).map((person) => (
@@ -42,8 +44,8 @@ export default function CommonFollowersCard({ uid }) {
         ))}
       </div>
       <p className="side-card__text">
-        La {people.length === 1 ? 'sigue' : 'siguen'} {names.join(', ')}
-        {rest > 0 && ` y ${rest} ${rest === 1 ? 'persona' : 'personas'} más`} que seguís.
+        {people.length === 1 ? t('La sigue') : t('La siguen')} {names.join(', ')}
+        {rest > 0 && (rest === 1 ? t(' y 1 persona más') : t(' y {n} personas más', { n: rest }))} {t('que seguís.')}
       </p>
     </aside>
   );

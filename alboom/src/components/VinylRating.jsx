@@ -7,13 +7,15 @@
 // Teclado: flechas suben o bajan de a 0,5; Inicio = 0; Fin = 5.
 
 import { useState } from 'react';
+import { useT } from '../i18n/LanguageContext';
+import { getLanguage } from '../i18n/language';
 import './VinylRating.css';
 
 const POSITIONS = [1, 2, 3, 4, 5];
 
 // eslint-disable-next-line react-refresh/only-export-components
 export function formatRating(value) {
-  return value.toLocaleString('es-AR', { maximumFractionDigits: 1 });
+  return value.toLocaleString(getLanguage() === 'en' ? 'en-US' : 'es-AR', { maximumFractionDigits: 1 });
 }
 
 function fillFor(value, position) {
@@ -31,10 +33,11 @@ export default function VinylRating({
   label = 'Tu puntaje',
 }) {
   const [preview, setPreview] = useState(null);
+  const t = useT();
   const interactive = !readOnly && typeof onChange === 'function';
   const enabled = interactive && !disabled;
   const shown = enabled && preview !== null ? preview : value;
-  const valueText = value > 0 ? `${formatRating(value)} de 5` : 'Sin puntaje';
+  const valueText = value > 0 ? t('{n} de 5', { n: formatRating(value) }) : t('Sin puntaje');
 
   function choose(next) {
     if (!enabled) return;
@@ -62,7 +65,7 @@ export default function VinylRating({
       className={`vinyl-rating${interactive ? ' vinyl-rating--interactive' : ''}`}
       style={{ '--vinyl-size': `${size}px` }}
       role={interactive ? 'slider' : 'img'}
-      aria-label={interactive ? label : `${label}: ${valueText}`}
+      aria-label={interactive ? t(label) : `${t(label)}: ${valueText}`}
       aria-valuemin={interactive ? 0 : undefined}
       aria-valuemax={interactive ? 5 : undefined}
       aria-valuenow={interactive ? value : undefined}

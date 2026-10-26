@@ -2,23 +2,25 @@
 
 import Logo from './Logo';
 import './OnboardingHeader.css';
+import { useT } from '../i18n/LanguageContext';
 
 const STEPS = [1, 2, 3];
 
 export default function OnboardingHeader({ step }) {
+  const t = useT();
   return (
     <header className="onboarding-header">
       <div className="page onboarding-header__inner">
         <Logo />
         <div className="onboarding-header__progress">
           <span className="onboarding-header__label">
-            <span className="onboarding-header__word">Paso </span>
-            {step} de 3
+            <span className="onboarding-header__word">{t('Paso')} </span>
+            {t('{n} de {total}', { n: step, total: 3 })}
           </span>
           <div
             className="onboarding-header__bars"
             role="progressbar"
-            aria-label="Progreso de la primera vez"
+            aria-label={t('Progreso de la primera vez')}
             aria-valuemin={1}
             aria-valuemax={3}
             aria-valuenow={step}

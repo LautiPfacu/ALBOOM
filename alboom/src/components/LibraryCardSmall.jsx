@@ -2,16 +2,18 @@
 
 import { Link } from 'react-router-dom';
 import { STATUS } from '../services/library';
+import { useT } from '../i18n/LanguageContext';
 import AlbumCover from './AlbumCover';
 import MiniRating from './MiniRating';
 import './LibraryCardSmall.css';
 
 export default function LibraryCardSmall({ item }) {
+  const t = useT();
   const albumUrl = `/disco/${item.id}`;
 
   let info;
-  if (item.status === STATUS.PENDING) info = <span className="chip chip--pending library-card-small__chip">Pendiente</span>;
-  else if (item.rating === 0) info = <span className="library-card-small__muted">Sin puntaje</span>;
+  if (item.status === STATUS.PENDING) info = <span className="chip chip--pending library-card-small__chip">{t('Pendiente')}</span>;
+  else if (item.rating === 0) info = <span className="library-card-small__muted">{t('Sin puntaje')}</span>;
   else info = <MiniRating value={item.rating} size={14} />;
 
   return (

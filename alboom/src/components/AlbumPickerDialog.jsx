@@ -10,6 +10,7 @@ import EmptyState from './EmptyState';
 import ErrorState from './ErrorState';
 import Loader from './Loader';
 import SearchBar from './SearchBar';
+import { useT } from '../i18n/LanguageContext';
 import './AlbumPickerDialog.css';
 
 export default function AlbumPickerDialog({ open, onClose }) {
@@ -22,6 +23,7 @@ export default function AlbumPickerDialog({ open, onClose }) {
 
 function AlbumPicker({ onClose }) {
   const navigate = useNavigate();
+  const t = useT();
   const [text, setText] = useState('');
   const { query, results, status, error, search, reset } = useAlbumSearch();
 
@@ -35,11 +37,11 @@ function AlbumPicker({ onClose }) {
       <div className="dialog__header">
         <div className="dialog__heading">
           <h2 id="album-picker-title" className="dialog__title">
-            ¿Qué escuchaste?
+            {t('¿Qué escuchaste?')}
           </h2>
-          <p className="dialog__text">Buscá el disco y escribí tu reseña en su página.</p>
+          <p className="dialog__text">{t('Buscá el disco y escribí tu reseña en su página.')}</p>
         </div>
-        <button type="button" className="dialog__close" aria-label="Cerrar" onClick={onClose}>
+        <button type="button" className="dialog__close" aria-label={t('Cerrar')} onClick={onClose}>
           ×
         </button>
       </div>
@@ -55,7 +57,7 @@ function AlbumPicker({ onClose }) {
       {status === 'loading' && <Loader size={48} label="Buscando discos…" />}
       {status === 'error' && <ErrorState message={error} onRetry={() => search(query)} />}
       {status === 'success' && results.length === 0 && (
-        <EmptyState variant="dashed" title="Nada por acá" text={`No encontramos discos para «${query}».`} />
+        <EmptyState variant="dashed" title="Nada por acá" text={t('No encontramos discos para «{query}».', { query })} />
       )}
       <ul className="album-picker__list">
         {results.map((album) => (

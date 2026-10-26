@@ -1,5 +1,7 @@
 // Segmentado "Grande / Chica / Lista" con íconos (en celular, solo íconos).
 
+import { useT } from '../i18n/LanguageContext';
+
 const VIEWS = [
   {
     id: 'grande',
@@ -41,20 +43,21 @@ const VIEWS = [
 ];
 
 export default function ViewSwitcher({ value, onChange }) {
+  const t = useT();
   return (
-    <div className="segmented view-switcher" role="group" aria-label="Vista">
+    <div className="segmented view-switcher" role="group" aria-label={t('Vista')}>
       {VIEWS.map((view) => (
         <button
           key={view.id}
           type="button"
           className="segmented__option view-switcher__option"
           aria-pressed={value === view.id}
-          aria-label={view.label}
+          aria-label={t(view.label)}
           onClick={() => onChange(view.id)}
         >
           <span aria-hidden="true">{view.icon}</span>
           <span className="view-switcher__label" aria-hidden="true">
-            {view.label}
+            {t(view.label)}
           </span>
         </button>
       ))}

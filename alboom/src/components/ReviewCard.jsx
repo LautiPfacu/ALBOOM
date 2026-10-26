@@ -2,12 +2,14 @@
 
 import { Link } from 'react-router-dom';
 import { timeAgo } from '../utils/text';
+import { useT } from '../i18n/LanguageContext';
 import Avatar from './Avatar';
 import VinylRating from './VinylRating';
 import './ReviewCard.css';
 
 export default function ReviewCard({ review, isMine = false }) {
-  const name = review.displayName || review.username || 'Alguien';
+  const t = useT();
+  const name = review.displayName || review.username || t('Alguien');
 
   return (
     <article className="review-card">
@@ -29,16 +31,16 @@ export default function ReviewCard({ review, isMine = false }) {
             ) : (
               name
             )}
-            {isMine && <span className="review-card__mine"> · vos</span>}
+            {isMine && <span className="review-card__mine"> · {t('vos')}</span>}
           </span>
           <span className="review-card__time">{timeAgo(review.createdAt)}</span>
         </div>
-        <VinylRating value={review.rating} readOnly size={16} label={`Puntaje de ${name}`} />
+        <VinylRating value={review.rating} readOnly size={16} label={t('Puntaje de {name}', { name })} />
       </div>
       {review.text ? (
         <p className="review-card__text">{review.text}</p>
       ) : (
-        <p className="review-card__text review-card__text--empty">Solo puntaje, sin texto.</p>
+        <p className="review-card__text review-card__text--empty">{t('Solo puntaje, sin texto.')}</p>
       )}
     </article>
   );

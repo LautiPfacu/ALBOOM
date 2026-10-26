@@ -4,6 +4,7 @@
 import { useCallback, useId, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDismiss } from '../hooks/useDismiss';
+import { useT } from '../i18n/LanguageContext';
 import { STATUS } from '../services/library';
 import { formatDate } from '../utils/text';
 import AlbumCover from './AlbumCover';
@@ -12,6 +13,7 @@ import VinylRating from './VinylRating';
 import './LibraryRow.css';
 
 export default function LibraryRow({ item, onRemove }) {
+  const t = useT();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const menuId = useId();
@@ -24,7 +26,7 @@ export default function LibraryRow({ item, onRemove }) {
 
   let rating;
   if (isPending) rating = <span className="library-row__muted">—</span>;
-  else if (item.rating === 0) rating = <span className="library-row__muted">Sin puntaje</span>;
+  else if (item.rating === 0) rating = <span className="library-row__muted">{t('Sin puntaje')}</span>;
   else rating = <VinylRating value={item.rating} readOnly size={16} />;
 
   return (
@@ -48,13 +50,13 @@ export default function LibraryRow({ item, onRemove }) {
       </div>
       <div role="cell" className="library-row__date">
         {/* Si es pendiente o no tiene fecha (discos guardados antes de V2): "Todavía no" */}
-        {isPending || !listenedDate ? 'Todavía no' : listenedDate}
+        {isPending || !listenedDate ? t('Todavía no') : listenedDate}
       </div>
       <div role="cell" className="library-row__menu" ref={menuRef}>
         <button
           type="button"
           className="library-row__menu-button"
-          aria-label={`Más opciones para ${item.name}`}
+          aria-label={t('Más opciones para {name}', { name: item.name })}
           aria-expanded={menuOpen}
           aria-controls={menuOpen ? menuId : undefined}
           onClick={() => setMenuOpen((open) => !open)}
@@ -64,7 +66,7 @@ export default function LibraryRow({ item, onRemove }) {
         {menuOpen && (
           <div className="library-row__menu-panel" id={menuId}>
             <Link to={albumUrl} className="library-row__menu-item">
-              Ver disco
+              {t('Ver disco')}
             </Link>
             <button
               type="button"
@@ -74,7 +76,7 @@ export default function LibraryRow({ item, onRemove }) {
                 onRemove(item);
               }}
             >
-              Quitar de la biblioteca
+              {t('Quitar de la biblioteca')}
             </button>
           </div>
         )}

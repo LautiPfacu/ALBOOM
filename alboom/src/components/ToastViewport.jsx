@@ -2,10 +2,12 @@
 
 import { Link } from 'react-router-dom';
 import { useToast } from '../context/ToastContext';
+import { useT } from '../i18n/LanguageContext';
 import './ToastViewport.css';
 
 export default function ToastViewport() {
   const { toasts, dismissToast } = useToast();
+  const t = useT();
 
   return (
     <div className="toast-viewport">
@@ -22,10 +24,10 @@ export default function ToastViewport() {
             <span className="toast__icon" aria-hidden="true">
               {isError ? '!' : '✓'}
             </span>
-            <span className="toast__message">{toast.message}</span>
+            <span className="toast__message">{t(toast.message)}</span>
             {action?.to && (
               <Link to={action.to} className="toast__action" onClick={() => dismissToast(toast.id)}>
-                {action.label}
+                {t(action.label)}
               </Link>
             )}
             {action?.onClick && (
@@ -37,13 +39,13 @@ export default function ToastViewport() {
                   action.onClick();
                 }}
               >
-                {action.label}
+                {t(action.label)}
               </button>
             )}
             <button
               type="button"
               className="toast__close"
-              aria-label="Cerrar aviso"
+              aria-label={t('Cerrar aviso')}
               onClick={() => dismissToast(toast.id)}
             >
               ×

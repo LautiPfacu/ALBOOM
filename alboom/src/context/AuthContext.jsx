@@ -43,6 +43,8 @@ export function AuthProvider({ children }) {
       profile,
       loading,
       profileLoading,
+      // Invitado (sesión anónima): puede mirar, pero no guardar ni publicar.
+      isGuest: Boolean(user?.isAnonymous),
       displayName: profile?.displayName || user?.displayName || user?.email?.split('@')[0] || '',
     }),
     [user, profile, loading, profileLoading],

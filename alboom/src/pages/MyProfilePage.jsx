@@ -17,10 +17,12 @@ import RecentlyPlayed from '../components/RecentlyPlayed';
 import SpotifyCard from '../components/SpotifyCard';
 import TopFiveDialog from '../components/TopFiveDialog';
 import TopFiveShelf from '../components/TopFiveShelf';
+import { useT } from '../i18n/LanguageContext';
 import './ProfilePage.css';
 
 export default function MyProfilePage() {
   const { user } = useAuth();
+  const t = useT();
   const { profile, loading, error } = usePublicProfile(user.uid);
   const { items, loading: libraryLoading } = useLibrary();
   const { reviews, loading: reviewsLoading } = useUserReviews(user.uid);
@@ -38,7 +40,7 @@ export default function MyProfilePage() {
 
       <div className="profile-page__layout">
         <div className="profile-page__main">
-          <TopFiveShelf title="Mi Top 5" albums={profile.top5} onEdit={() => setEditingTop5(true)} />
+          <TopFiveShelf title={t('Mi Top 5')} albums={profile.top5} onEdit={() => setEditingTop5(true)} />
           {connected && settings.showRecent && <RecentlyPlayed albums={profile.recent} />}
           <ProfileTabs
             uid={user.uid}

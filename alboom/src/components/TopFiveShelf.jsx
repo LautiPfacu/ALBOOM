@@ -4,11 +4,13 @@
 import { Link } from 'react-router-dom';
 import { TOP5_SIZE } from '../services/publicProfile';
 import AlbumCover from './AlbumCover';
+import { useT } from '../i18n/LanguageContext';
 import './TopFiveShelf.css';
 
 const POSITIONS = [1, 2, 3, 4, 5];
 
 export default function TopFiveShelf({ title, albums = [], onEdit, listenedIds, compact = false }) {
+  const t = useT();
   return (
     <section className={`top-five${compact ? ' top-five--compact' : ''}`} aria-labelledby={title ? 'top-five-title' : undefined}>
       {title && (
@@ -18,7 +20,7 @@ export default function TopFiveShelf({ title, albums = [], onEdit, listenedIds, 
           </h2>
           {onEdit && (
             <button type="button" className="btn btn--secondary btn--sm top-five__edit" onClick={onEdit}>
-              Editar Top 5
+              {t('Editar Top 5')}
             </button>
           )}
         </div>
@@ -36,9 +38,9 @@ export default function TopFiveShelf({ title, albums = [], onEdit, listenedIds, 
                   <span className="top-five__cover-wrap">
                     <AlbumCover src={album.cover} name={album.name} artist={album.artist} className="top-five__cover" />
                     {listenedIds?.has(album.albumId) && (
-                      <span className="top-five__listened" title="Ya lo escuchaste">
+                      <span className="top-five__listened" title={t('Ya lo escuchaste')}>
                         <span aria-hidden="true">✓</span>
-                        <span className="visually-hidden">Ya lo escuchaste</span>
+                        <span className="visually-hidden">{t('Ya lo escuchaste')}</span>
                       </span>
                     )}
                   </span>
@@ -47,10 +49,10 @@ export default function TopFiveShelf({ title, albums = [], onEdit, listenedIds, 
                 </Link>
               ) : onEdit ? (
                 <button type="button" className="top-five__empty" onClick={onEdit}>
-                  Elegí un disco
+                  {t('Elegí un disco')}
                 </button>
               ) : (
-                <span className="top-five__empty top-five__empty--static">Lugar libre</span>
+                <span className="top-five__empty top-five__empty--static">{t('Lugar libre')}</span>
               )}
             </li>
           );

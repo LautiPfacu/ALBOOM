@@ -1,12 +1,15 @@
 // Barra de búsqueda. Es controlada: el texto vive en la página (así los chips pueden completarlo).
+// ref llega al <input> (el pop-up de primera tarea lo usa para darle el foco).
 // Busca al enviar (Enter o botón), no con cada tecla, para cuidar el límite de pedidos de Spotify.
 
 import { useState } from 'react';
 import './SearchBar.css';
+import { useT } from '../i18n/LanguageContext';
 
 const MIN_LENGTH = 2;
 
-export default function SearchBar({ value, onChange, onSearch, onClear }) {
+export default function SearchBar({ value, onChange, onSearch, onClear, ref }) {
+  const t = useT();
   const [error, setError] = useState(null);
 
   function handleSubmit(event) {
@@ -42,12 +45,13 @@ export default function SearchBar({ value, onChange, onSearch, onClear }) {
           <path d="M20 20l-4-4" />
         </svg>
         <input
+          ref={ref}
           className="search-bar__input"
           type="search"
           value={value}
           onChange={handleChange}
-          placeholder="Buscá un disco o un artista"
-          aria-label="Buscar discos"
+          placeholder={t('Buscá un disco o un artista')}
+          aria-label={t('Buscar discos')}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? 'search-bar-error' : undefined}
           enterKeyHint="search"
@@ -56,7 +60,7 @@ export default function SearchBar({ value, onChange, onSearch, onClear }) {
           <button
             type="button"
             className="search-bar__clear"
-            aria-label="Borrar búsqueda"
+            aria-label={t('Borrar búsqueda')}
             onClick={() => {
               setError(null);
               onClear();
@@ -66,12 +70,12 @@ export default function SearchBar({ value, onChange, onSearch, onClear }) {
           </button>
         )}
         <button type="submit" className="search-bar__submit">
-          Buscar
+          {t('Buscar')}
         </button>
       </div>
       {error && (
         <p className="search-bar__error" id="search-bar-error">
-          {error}
+          {t(error)}
         </p>
       )}
     </form>

@@ -10,11 +10,13 @@ import Button from './Button';
 import ConnectSpotifyDialog from './ConnectSpotifyDialog';
 import SpotifySettingsDialog from './SpotifySettingsDialog';
 import SpotifySuggestionsDialog from './SpotifySuggestionsDialog';
+import { useT } from '../i18n/LanguageContext';
 import './SideCard.css';
 import './SpotifyDialogs.css';
 
 export default function SpotifyCard() {
   const { connected, settings, suggestions, loading } = useSpotify();
+  const t = useT();
   const { savedIds } = useLibrary();
   const dismissed = useDismissed();
   const [open, setOpen] = useState(null); // 'connect' | 'settings' | 'suggestions'
@@ -29,15 +31,15 @@ export default function SpotifyCard() {
     <aside className="side-card" aria-labelledby="spotify-card-title">
       <div className="side-card__header">
         <h2 id="spotify-card-title" className="side-card__title">
-          Desde tu Spotify
+          {t('Desde tu Spotify')}
         </h2>
-        {connected && <span className="side-card__badge">Conectado</span>}
+        {connected && <span className="side-card__badge">{t('Conectado')}</span>}
       </div>
 
       {!connected && (
         <>
           <p className="side-card__text">
-            Conectalo para ver lo que escuchaste, sumarlo a tu biblioteca y recibir mejores recomendaciones.
+            {t('Conectalo para ver lo que escuchaste, sumarlo a tu biblioteca y recibir mejores recomendaciones.')}
           </p>
           <Button block onClick={() => setOpen('connect')}>
             Conectar Spotify
@@ -49,10 +51,12 @@ export default function SpotifyCard() {
         <>
           <p className="side-card__text">
             {pendingSuggestions.length > 0
-              ? `Esta semana escuchaste ${plural(pendingSuggestions.length, 'disco')} que no ${
-                  pendingSuggestions.length === 1 ? 'está' : 'están'
-                } en tu biblioteca.`
-              : 'Todo lo que escuchaste esta semana ya está en tu biblioteca.'}
+              ? pendingSuggestions.length === 1
+                ? t('Esta semana escuchaste {albums} que no está en tu biblioteca.', { albums: plural(1, 'disco') })
+                : t('Esta semana escuchaste {albums} que no están en tu biblioteca.', {
+                    albums: plural(pendingSuggestions.length, 'disco'),
+                  })
+              : t('Todo lo que escuchaste esta semana ya está en tu biblioteca.')}
           </p>
           {pendingSuggestions.length > 0 && (
             <>
@@ -71,7 +75,7 @@ export default function SpotifyCard() {
 
       {connected && (
         <button type="button" className="text-link spotify-card__settings" onClick={() => setOpen('settings')}>
-          Ajustes de Spotify
+          {t('Ajustes de Spotify')}
         </button>
       )}
 

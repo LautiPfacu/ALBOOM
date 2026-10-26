@@ -18,6 +18,7 @@ import AlbumCover from './AlbumCover';
 import Button from './Button';
 import Dialog from './Dialog';
 import Loader from './Loader';
+import { useT } from '../i18n/LanguageContext';
 import './TopFiveShelf.css';
 import './TopFiveDialog.css';
 
@@ -39,6 +40,7 @@ function move(list, from, to) {
 
 function TopFiveEditor({ initial, onClose }) {
   const { user } = useAuth();
+  const t = useT();
   const { items } = useLibrary();
   const { showToast } = useToast();
   const { author } = useAuthor();
@@ -69,11 +71,11 @@ function TopFiveEditor({ initial, onClose }) {
   function add(album) {
     if (full || chosenIds.has(album.albumId)) return;
     setSlots((current) => [...current, album]);
-    setAnnouncement(`${album.name} agregado en el puesto ${slots.length + 1}.`);
+    setAnnouncement(t('{name} agregado en el puesto {n}.', { name: album.name, n: slots.length + 1 }));
   }
 
   function remove(index) {
-    setAnnouncement(`${slots[index].name} salió de tu Top 5.`);
+    setAnnouncement(t('{name} salió de tu Top 5.', { name: slots[index].name }));
     setSlots((current) => current.filter((_, i) => i !== index));
     setGrabbed(null);
   }
@@ -84,10 +86,10 @@ function TopFiveEditor({ initial, onClose }) {
       event.preventDefault();
       if (grabbed === null) {
         setGrabbed(index);
-        setAnnouncement(`${slots[index].name} agarrado. Usá las flechas para moverlo y Enter para soltarlo.`);
+        setAnnouncement(t('{name} agarrado. Usá las flechas para moverlo y Enter para soltarlo.', { name: slots[index].name }));
       } else {
         setGrabbed(null);
-        setAnnouncement(`${slots[index].name} quedó en el puesto ${index + 1}.`);
+        setAnnouncement(t('{name} quedó en el puesto {n}.', { name: slots[index].name, n: index + 1 }));
       }
       return;
     }
@@ -104,7 +106,7 @@ function TopFiveEditor({ initial, onClose }) {
     if (target < 0 || target >= slots.length) return;
     setSlots((current) => move(current, index, target));
     setGrabbed(target);
-    setAnnouncement(`${slots[index].name}, ahora en el puesto ${target + 1}.`);
+    setAnnouncement(t('{name}, ahora en el puesto {n}.', { name: slots[index].name, n: target + 1 }));
     // El foco sigue solo al disco: como cada lugar tiene key estable (albumId),
     // React mueve el mismo botón en lugar de crear uno nuevo.
   }
@@ -133,14 +135,14 @@ function TopFiveEditor({ initial, onClose }) {
   }
 
   function handlePointerUp() {
-    if (dragging !== null) setAnnouncement(`${slots[dragging].name} quedó en el puesto ${dragging + 1}.`);
+    if (dragging !== null) setAnnouncement(t('{name} quedó en el puesto {n}.', { name: slots[dragging].name, n: dragging + 1 }));
     setDragging(null);
   }
 
   async function handleSave() {
     try {
       await saveAction.run();
-      showToast({ type: 'success', message: notify ? 'Guardaste tu Top 5 y avisamos a tus seguidores.' : 'Guardaste tu Top 5.' });
+      showToast({ type: 'success', message: notify ? t('Guardaste tu Top 5 y avisamos a tus seguidores.') : t('Guardaste tu Top 5.') });
       onClose();
     } catch (error) {
       showToast({ type: 'error', message: writeErrorMessage(error) });
@@ -152,11 +154,11 @@ function TopFiveEditor({ initial, onClose }) {
       <div className="dialog__header">
         <div className="dialog__heading">
           <h2 id="top-five-dialog-title" className="dialog__title">
-            Tu Top 5
+            {t('Tu Top 5')}
           </h2>
-          <p className="dialog__text">Los cinco discos que más te representan. Arrastrá para cambiar el orden.</p>
+          <p className="dialog__text">{t('Los cinco discos que más te representan. Arrastrá para cambiar el orden.')}</p>
         </div>
-        <button type="button" className="dialog__close" aria-label="Cerrar" onClick={onClose}>
+        <button type="button" className="dialog__close" aria-label={t('Cerrar')} onClick={onClose}>
           ×
         </button>
       </div>
@@ -166,7 +168,7 @@ function TopFiveEditor({ initial, onClose }) {
         {announcement}
       </p>
 
-      <ol className="top-five-editor__row" ref={rowRef} aria-label="Tu Top 5 (en orden)">
+      <ol className="top-five-editor__row" ref={rowRef} aria-label={t('Tu Top 5 (en orden)')}>
         {Array.from({ length: TOP5_SIZE }, (_, index) => {
           const album = slots[index];
           if (!album) {
@@ -177,7 +179,7 @@ function TopFiveEditor({ initial, onClose }) {
                 </span>
                 <span className="top-five-editor__free">
                   <span aria-hidden="true">+</span>
-                  Elegí un disco de abajo
+                  {t('Elegí un disco de abajo')}
                 </span>
               </li>
             );
@@ -198,7 +200,7 @@ function TopFiveEditor({ initial, onClose }) {
                 type="button"
                 className="top-five-editor__handle"
                 aria-pressed={grabbed === index}
-                aria-label={`${album.name}, puesto ${index + 1}. Enter para mover.`}
+                aria-label={t('{name}, puesto {n}. Enter para mover.', { name: album.name, n: index + 1 })}
                 onKeyDown={(event) => handleSlotKeyDown(event, index)}
                 onPointerDown={(event) => handlePointerDown(event, index)}
               >
@@ -210,7 +212,7 @@ function TopFiveEditor({ initial, onClose }) {
               <button
                 type="button"
                 className="top-five-editor__remove"
-                aria-label={`Sacar ${album.name} de tu Top 5`}
+                aria-label={t('Sacar {name} de tu Top 5', { name: album.name })}
                 onClick={() => remove(index)}
               >
                 ×
@@ -231,32 +233,32 @@ function TopFiveEditor({ initial, onClose }) {
           }}
         >
           <label htmlFor="top-five-search" className="visually-hidden">
-            Buscá un disco
+            {t('Buscá un disco')}
           </label>
           <input
             id="top-five-search"
             type="search"
             value={text}
             onChange={(event) => setText(event.target.value)}
-            placeholder={source === 'library' ? 'Buscá en tu biblioteca' : 'Buscá en Spotify y apretá Enter'}
+            placeholder={source === 'library' ? t('Buscá en tu biblioteca') : t('Buscá en Spotify y apretá Enter')}
             autoComplete="off"
           />
         </form>
-        <div className="segmented" role="group" aria-label="Dónde buscar">
+        <div className="segmented" role="group" aria-label={t('Dónde buscar')}>
           <button type="button" className="segmented__option" aria-pressed={source === 'library'} onClick={() => setSource('library')}>
-            De tu biblioteca
+            {t('De tu biblioteca')}
           </button>
           <button type="button" className="segmented__option" aria-pressed={source === 'spotify'} onClick={() => setSource('spotify')}>
-            Buscar en Spotify
+            {t('Buscar en Spotify')}
           </button>
         </div>
       </div>
 
       {source === 'spotify' && search.status === 'loading' && <Loader size={40} label="Buscando discos…" />}
-      {source === 'spotify' && search.status === 'error' && <p className="dialog__error">{search.error}</p>}
+      {source === 'spotify' && search.status === 'error' && <p className="dialog__error">{t(search.error)}</p>}
       {options.length === 0 && !(source === 'spotify' && search.status === 'loading') && (
         <p className="dialog__text">
-          {source === 'library' ? 'No hay discos de tu biblioteca con ese nombre.' : 'Escribí un disco o artista y apretá Enter.'}
+          {source === 'library' ? t('No hay discos de tu biblioteca con ese nombre.') : t('Escribí un disco o artista y apretá Enter.')}
         </p>
       )}
       <ul className="top-five-editor__options">
@@ -272,7 +274,7 @@ function TopFiveEditor({ initial, onClose }) {
                 disabled={chosen || full}
                 onClick={() => add(album)}
               >
-                {chosen ? 'En tu Top 5' : 'Agregar'}
+                {chosen ? t('En tu Top 5') : t('Agregar')}
                 <span className="visually-hidden"> {album.name}</span>
               </button>
             </li>
@@ -292,14 +294,14 @@ function TopFiveEditor({ initial, onClose }) {
           />
           <span>
             <span id="notify-label" className="top-five-editor__notify-title">
-              Avisar a mis seguidores
+              {t('Avisar a mis seguidores')}
             </span>
-            <span className="dialog__text">Publica «actualizó su Top 5» en la comunidad.</span>
+            <span className="dialog__text">{t('Publica «actualizó su Top 5» en la comunidad.')}</span>
           </span>
         </div>
         <div className="dialog__actions">
           <button type="button" className="text-link" onClick={onClose} disabled={saveAction.pending}>
-            Cancelar
+            {t('Cancelar')}
           </button>
           <Button pending={saveAction.pending} onClick={handleSave}>
             {saveAction.pending ? 'Guardando…' : 'Guardar Top 5'}

@@ -8,9 +8,13 @@ import { useAuthor } from '../hooks/useAuthor';
 import { libraryErrorMessage, saveListening, STATUS } from '../services/library';
 import AlbumCover from './AlbumCover';
 import Button from './Button';
+import { useRequireAccount } from '../hooks/useRequireAccount';
 import './PendingCard.css';
+import { useT } from '../i18n/LanguageContext';
 
 export default function PendingCard({ item }) {
+  const t = useT();
+  const requireAccount = useRequireAccount('albums');
   const { showToast } = useToast();
   const { author, postListened } = useAuthor();
   const { run, pending } = useAsyncAction(() =>
@@ -18,13 +22,14 @@ export default function PendingCard({ item }) {
   );
 
   async function handleListened() {
+    if (requireAccount()) return;
     try {
       await run();
       showToast({
         type: 'success',
         message: (
           <>
-            Marcaste <strong>{item.name}</strong> como escuchado.
+            {t('Marcaste')} <strong>{item.name}</strong> {t('como escuchado.')}
           </>
         ),
         action: { label: 'Puntuar', to: `/disco/${item.id}` },
@@ -35,13 +40,13 @@ export default function PendingCard({ item }) {
   }
 
   return (
-    <aside className="pending-card" aria-label="Te quedó pendiente">
+    <aside className="pending-card" aria-label={t('Te quedó pendiente')}>
       <div className="pending-card__tape" aria-hidden="true" />
       <Link to={`/disco/${item.id}`} className="pending-card__cover-link" tabIndex={-1} aria-hidden="true">
         <AlbumCover src={item.cover} name={item.name} artist={item.artist} className="pending-card__cover" />
       </Link>
       <div className="pending-card__info">
-        <span className="label-caps pending-card__label">Te quedó pendiente</span>
+        <span className="label-caps pending-card__label">{t('Te quedó pendiente')}</span>
         <Link to={`/disco/${item.id}`} className="pending-card__title">
           {item.name}
         </Link>

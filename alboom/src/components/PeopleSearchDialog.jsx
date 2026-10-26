@@ -7,6 +7,7 @@ import { plural } from '../utils/text';
 import Dialog from './Dialog';
 import Loader from './Loader';
 import PersonRow from './PersonRow';
+import { useT } from '../i18n/LanguageContext';
 import './PeopleSearchDialog.css';
 
 export default function PeopleSearchDialog({ open, onClose, me }) {
@@ -18,6 +19,7 @@ export default function PeopleSearchDialog({ open, onClose, me }) {
 }
 
 function PeopleSearchContent({ onClose, me }) {
+  const t = useT();
   const inputId = useId();
   const [text, setText] = useState('');
   const [results, setResults] = useState({ term: '', people: [], error: null });
@@ -58,9 +60,9 @@ function PeopleSearchContent({ onClose, me }) {
     <>
       <div className="dialog__header">
         <h2 id="people-search-title" className="dialog__title">
-          Buscar personas
+          {t('Buscar personas')}
         </h2>
-        <button type="button" className="dialog__close" aria-label="Cerrar" onClick={onClose}>
+        <button type="button" className="dialog__close" aria-label={t('Cerrar')} onClick={onClose}>
           ×
         </button>
       </div>
@@ -71,14 +73,14 @@ function PeopleSearchContent({ onClose, me }) {
           <path d="M20 20l-4-4" />
         </svg>
         <label htmlFor={inputId} className="visually-hidden">
-          Buscá por nombre o @usuario
+          {t('Buscá por nombre o @usuario')}
         </label>
         <input
           id={inputId}
           type="search"
           value={text}
           onChange={(event) => setText(event.target.value)}
-          placeholder="Buscá por nombre o @usuario"
+          placeholder={t('Buscá por nombre o @usuario')}
           autoComplete="off"
           autoFocus
         />
@@ -87,9 +89,9 @@ function PeopleSearchContent({ onClose, me }) {
       {searching ? (
         <section aria-live="polite">
           {waiting && <Loader size={40} label="Buscando…" />}
-          {!waiting && results.error && <p className="dialog__error">{results.error}</p>}
+          {!waiting && results.error && <p className="dialog__error">{t(results.error)}</p>}
           {!waiting && !results.error && results.people.length === 0 && (
-            <p className="people-search__empty">No encontramos a nadie con «{term}».</p>
+            <p className="people-search__empty">{t('No encontramos a nadie con «{term}».', { term })}</p>
           )}
           {!waiting &&
             results.people.map((person) => (
@@ -100,7 +102,7 @@ function PeopleSearchContent({ onClose, me }) {
         <>
           {similar.length > 0 && (
             <section>
-              <h3 className="label-caps people-search__group">Con tus mismos gustos</h3>
+              <h3 className="label-caps people-search__group">{t('Con tus mismos gustos')}</h3>
               {similar.map((person) => (
                 <PersonRow key={person.uid} person={person} detail={person.reason} showTop5 onNavigate={onClose} />
               ))}
@@ -108,7 +110,7 @@ function PeopleSearchContent({ onClose, me }) {
           )}
           {referents.length > 0 && (
             <section>
-              <h3 className="label-caps people-search__group">Referentes</h3>
+              <h3 className="label-caps people-search__group">{t('Referentes')}</h3>
               {referents.map((person) => (
                 <PersonRow
                   key={person.uid}
