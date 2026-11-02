@@ -12,7 +12,7 @@ Guía rápida para ubicarse en el código y poder explicar el proyecto: dónde e
 |---|---|---|
 | Interfaz | **React + Vite** (JavaScript) | Pantallas y componentes |
 | Navegación | **React Router** | Rutas (`/`, `/biblioteca`, `/disco/:id`…) |
-| Cuentas | **Firebase Authentication** | Registro e inicio de sesión (email o Google) |
+| Cuentas | **Firebase Authentication** | Registro e inicio de sesión (email, Google o invitado) |
 | Base de datos | **Cloud Firestore** | Perfiles, biblioteca, reseñas, posteos, seguidores |
 | Música | **Spotify Web API** | Buscar discos, tapas, canciones; y (opcional) lo que escucha cada persona |
 | Código | **GitHub** | Repositorio y versiones |
@@ -60,18 +60,21 @@ alboom/
 index.html
    └─ src/main.jsx          → carga estilos, animaciones y "envuelve" la app con:
         BrowserRouter         (navegación)
-        AuthProvider          (¿quién está conectado?)
+        LanguageProvider      (idioma: español o inglés)
+        AuthProvider          (¿quién está conectado? ¿es invitado?)
         ThemeProvider         (tema de colores)
         ToastProvider         (avisos de éxito / error)
            └─ src/App.jsx   → define las RUTAS: qué página se muestra en cada dirección
-                ├─ /login                → LoginPage (solo sin sesión)
+                ├─ /login                → LoginPage (sin sesión o invitado)
                 ├─ /bienvenida           → OnboardingPage (primera vez)
-                └─ resto (con sesión)    → LibraryProvider + FollowProvider + Layout
+                └─ resto (con sesión)    → LibraryProvider + FollowProvider
+                                           + GuestGateProvider + Layout
                                               Layout = barra + página + TabBar + avisos
 ```
 
 - `ProtectedRoute` deja pasar solo con sesión (si no, manda a `/login`) y manda a `/bienvenida` si la persona no terminó la primera vez.
-- `PublicOnlyRoute` hace lo contrario: con sesión, `/login` te lleva al inicio.
+- `PublicOnlyRoute` hace lo contrario: con sesión, `/login` te lleva al inicio (un invitado sí puede entrar, para crear su cuenta).
+- `AccountRoute` envuelve Perfil y Ajustes: un invitado va directo a `/login`.
 
 ---
 
@@ -105,6 +108,7 @@ Firebase (Auth + Firestore)   ·   /api/spotify → Spotify
 | `services/` | Conexión con Firebase y Spotify | `library.js`, `auth.js`, `spotify.js` |
 | `utils/` | Funciones auxiliares sin React | `text.js` (fechas, tildes), `image.js` (foto) |
 | `data/` | Datos fijos | `generos.json` (393 géneros), `themes.js`, `faq.js` |
+| `i18n/` | Idioma (español / inglés) | `LanguageContext.jsx`, `language.js`, `en.js` + `en-parts/` |
 | `styles/` | Estilos globales | `tokens.css` (colores, tamaños), `themes.css` (4 temas), `global.css` |
 | `firebase.js` | **Conexión con Firebase** | ver sección 5 |
 
@@ -118,20 +122,20 @@ Firebase (Auth + Firestore)   ·   /api/spotify → Spotify
 |---|---|
 | **Se conecta Firebase** | `alboom/src/firebase.js` — lee las claves de `.env` e inicializa Authentication y Firestore |
 | Claves | `alboom/.env` (variables `VITE_FIREBASE_…`). No se suben a GitHub |
-| Registro / login / Google / cerrar sesión | `src/services/auth.js` |
+| Registro / login / Google / invitado / cerrar sesión | `src/services/auth.js` |
 | **CRUD de la biblioteca** (agregar, consultar, modificar, eliminar) | `src/services/library.js` |
 | Perfil privado, ajustes, foto, eliminar cuenta | `src/services/profile.js` y `users.js` |
 | Perfil público, Top 5, buscar personas | `src/services/publicProfile.js` |
 | Seguir / seguidores | `src/services/follows.js` |
 | Posteos, me gusta, respuestas, compartir | `src/services/posts.js` |
 | Reseñas públicas y puntaje de la comunidad | `src/services/reviews.js` |
-| Reglas de seguridad | `alboom/firestore.rules` → se pegan en Firebase Console → Firestore → Reglas |
+| Reglas de seguridad | `alboom/firestore.rules` → se pegan en Firebase Console → Firestore → Reglas. Un invitado (sesión anónima) puede leer pero no escribir: función `isRegistered()` |
 
 **Colecciones de Firestore** (cómo están guardados los datos):
 
 | Colección | Qué guarda | ¿Quién la ve? |
 |---|---|---|
-| `users/{uid}` | Perfil privado: email, ajustes, tema, géneros, Spotify | Solo su dueño |
+| `users/{uid}` | Perfil privado: email, ajustes, tema, géneros, Spotify, estado de la primera tarea (`firstTask`) | Solo su dueño |
 | `users/{uid}/library/{albumId}` | Biblioteca: estado, puntaje, reseña, fecha de escucha | Cualquiera con sesión (solo el dueño la cambia) |
 | `users/{uid}/dismissed/{albumId}` | Recomendaciones descartadas ("No me interesa") | Solo su dueño |
 | `users/{uid}/private/spotify` | Token de Spotify y sugerencias | Solo su dueño |
@@ -159,7 +163,7 @@ Firebase (Auth + Firestore)   ·   /api/spotify → Spotify
 
 - Repositorio: **github.com/LautiPfacu/ALBOOM**.
 - El repo es la carpeta `ALBOOM/` (la de arriba de `alboom/`).
-- Cada versión es un commit: `PRIMERA VERSION`, `VERSION 2` (animaciones), `VERSION 3` (foto y recomendaciones), `VERSION 4` (comunidad, perfiles y Spotify). En GitHub → **Commits** se ve qué cambió en cada una.
+- Cada versión es un commit: `PRIMERA VERSION`, `VERSION 2` (animaciones), `VERSION 3` (foto y recomendaciones), `VERSION 4` (comunidad, perfiles y Spotify), `VERSION 5` (invitado, inglés y primera tarea). En GitHub → **Commits** se ve qué cambió en cada una (resumen en la sección 12).
 - `.gitignore` evita subir `.env`, `node_modules`, `dist` y archivos del sistema.
 
 ### Vercel (publicación, pendiente)
@@ -204,10 +208,37 @@ Datos que muchas pantallas necesitan a la vez. Están en `src/context/`:
 | `FollowContext` | A quién seguís, y la acción de seguir / dejar de seguir |
 | `ThemeContext` | El tema elegido (Historieta, Garage, Psicodelia, Medianoche) |
 | `ToastContext` | Los avisos de éxito y error que aparecen abajo a la derecha |
+| `GuestGateContext` | El pop-up "tenés que iniciar sesión" que ve un invitado al intentar guardar, reseñar, seguir… |
+| `LanguageContext` (en `src/i18n/`) | El idioma elegido y la función `t()` que traduce |
 
 ---
 
-## 8. Estilos y temas
+## 8. Modo invitado, idioma y primera tarea
+
+### Modo invitado
+- **Entrar:** botón "Entrar como invitado" en `LoginPage` → pop-up de confirmación → `loginAsGuest()` en `services/auth.js` (Firebase Authentication anónimo) → va al inicio.
+- **Saber si es invitado:** `isGuest` en `AuthContext`.
+- **Frenar acciones:** `hooks/useRequireAccount.js`. Cada botón que guarda algo empieza con `if (requireAccount()) return;`: si es invitado abre el pop-up de `GuestGateContext` ("Para guardar y reseñar discos tenés que iniciar sesión").
+- **Frenar pantallas:** `components/AccountRoute.jsx` (Perfil y Ajustes).
+- **Seguridad real:** `firestore.rules` (`isRegistered()`). Aunque alguien saltee la interfaz, Firestore rechaza la escritura.
+- En Firebase Console hay que tener habilitado Authentication → Métodos de acceso → **Anónimo**.
+
+### Idioma (español / inglés)
+- `src/i18n/language.js`: idioma actual (predeterminado **español**; se guarda en el navegador) y `translate()`.
+- `src/i18n/LanguageContext.jsx`: `useT()` devuelve `t()`. Uso: `t('Guardar')` → "Save" en inglés.
+- `src/i18n/en.js` + `en-parts/`: diccionario. **La clave es el texto en español**, así el código se sigue leyendo en español.
+- Los componentes compartidos (`Button`, `TextField`, `EmptyState`, `ErrorState`, `Loader`, avisos, `ConfirmDialog`) traducen solos lo que reciben.
+- `utils/text.js`: fechas, "hace 2 días" y plurales según el idioma.
+- Selector: `components/LanguageSwitcher.jsx` (en el menú del avatar y en Ajustes > Tema).
+
+### Primera tarea
+- Al terminar la primera vez, `completeOnboarding()` guarda `firstTask: 'pending'`.
+- `HomePage` muestra `FirstTaskDialog` (buscar, guardar, puntuar, reseñar). "Omitir" → `skipped`; "Empezar" → `started` y foco en el buscador.
+- `hooks/useFirstTaskWatcher.js` (en `Layout`) marca `done` cuando hay un disco con puntaje y reseña, y muestra "¡Primera tarea hecha!".
+
+---
+
+## 9. Estilos y temas
 
 - `src/styles/tokens.css`: colores, tamaños, bordes y sombras base.
 - `src/styles/themes.css`: los 4 temas; cada uno cambia las variables de color.
@@ -218,7 +249,7 @@ Datos que muchas pantallas necesitan a la vez. Están en `src/context/`:
 
 ---
 
-## 9. Comandos útiles
+## 10. Comandos útiles
 
 Desde la carpeta `alboom/`:
 
@@ -231,7 +262,7 @@ Desde la carpeta `alboom/`:
 
 ---
 
-## 10. Preguntas típicas y dónde mostrar la respuesta
+## 11. Preguntas típicas y dónde mostrar la respuesta
 
 | Pregunta | Archivo |
 |---|---|
@@ -243,3 +274,57 @@ Desde la carpeta `alboom/`:
 | ¿Cómo se sabe si hay sesión? | `alboom/src/context/AuthContext.jsx` + `components/ProtectedRoute.jsx` |
 | ¿Dónde se ve la biblioteca en tiempo real? | `alboom/src/context/LibraryContext.jsx` (`onSnapshot`) |
 | ¿Cómo se muestran los errores? | `useAsyncAction` (carga), `ToastContext` (avisos), `ErrorState` (pantallas) |
+| ¿Cómo funciona el modo invitado? | `services/auth.js` (`loginAsGuest`), `hooks/useRequireAccount.js`, `context/GuestGateContext.jsx`, `firestore.rules` (`isRegistered`) |
+| ¿Cómo se traduce la app? | `src/i18n/` (`useT`, `en.js`) |
+
+---
+
+## 12. Cambios por versión
+
+Qué cambió desde la primera versión hasta la última: funciones nuevas, mejoras y decisiones pensadas en quien usa la app.
+
+### Versión 1 · Primera versión (19/10/2026)
+**Base de la app.**
+- Cuentas con email y contraseña o con Google (Firebase Authentication). Ojito para ver la contraseña.
+- Primera vez guiada: géneros, primeros discos y tema de colores.
+- Inicio con búsqueda de discos en Spotify, recomendaciones y lo último de tu biblioteca.
+- Biblioteca con CRUD completo en Firestore: agregar, consultar, modificar (estado, puntaje con vinilos, reseña) y eliminar.
+- Página de cada disco: canciones, tu puntaje y reseña, y el puntaje de la comunidad.
+- Explorar por género y década.
+- Perfil y ajustes: cuenta, tema, géneros, privacidad, ayuda (FAQ), descargar datos y eliminar cuenta.
+- 4 temas (Historieta, Garage, Psicodelia, Medianoche) y diseño adaptado a celular.
+- Logo animado como pantalla de carga, en lugar de un texto "Cargando…".
+- Clave de Spotify protegida en una función de servidor (`api/spotify.js`).
+
+### Versión 2 · Animaciones (19/10/2026)
+**Identidad de marca.**
+- Explosión de marca en el login y logo animado en la barra.
+- Las animaciones respetan "reducir movimiento" del sistema y se pausan fuera de pantalla (accesibilidad y rendimiento).
+
+### Versión 3 · Foto de perfil y recomendaciones (20/10/2026)
+**Personalización y descubrimiento.**
+- Foto de perfil: se recorta y achica en el navegador (máx. 100 KB) y se actualiza también en tus reseñas.
+- "Para vos" con algoritmo propio: 40 % artistas que te gustaron, 20 % lo que puntuó alto gente con tu gusto, 40 % discos poco conocidos de tus géneros. Cada recomendación dice por qué.
+- "No me interesa" con opción de deshacer.
+- Explorar: orden "Joyas escondidas".
+- *Pensado en el usuario:* se sacaron los cartelitos "Probá con" del inicio porque estorbaban; las recomendaciones no repiten siempre lo más famoso.
+
+### Versión 4 · Comunidad, perfiles, seguir y Spotify (26/10/2026)
+**La parte social.**
+- Perfil propio y de otras personas (`/perfil`, `/u/:usuario`) con Top 5, seguidores y coincidencia de gustos.
+- Seguir / dejar de seguir, seguidores en común y buscador de personas.
+- Comunidad: "Siguiendo" en tiempo real y "Para vos" por afinidad; me gusta, respuestas y compartir.
+- Conectar tu cuenta de Spotify (opcional): lo que escuchaste hace poco y sugerencias para sumar a la biblioteca.
+- *Pensado en el usuario (privacidad):* el perfil público no muestra datos personales. Lo público vive en `profiles/` y lo privado (email, ajustes, Spotify) en `users/`. Interruptor para decidir si se publica cuando marcás un disco como escuchado.
+
+### Versión 5 · Invitado, inglés y primera tarea (26/10/2026)
+**Más fácil de empezar, para más gente.**
+- Modo invitado: mirar la app sin crear cuenta. Confirmación al entrar y pop-up para iniciar sesión al querer guardar o reseñar. Firestore no deja escribir a un invitado.
+- App completa en español e inglés (español predeterminado).
+- *Pensado en el usuario:*
+  - El login arranca en "Crear cuenta" (lo más común la primera vez).
+  - Géneros: mínimo 1 en lugar de 3, con buscador y "Ver todos" en vez de una lista precargada.
+  - Pop-up opcional "Tu primera tarea" para aprender a usar la app; se puede omitir.
+  - Mensaje claro cuando la red bloquea Spotify, en vez de un error técnico.
+- Arreglo: el selector de década de Explorar ya no aparece en escritorio.
+- Documento `INFORMACION.md` (esta guía).

@@ -71,6 +71,19 @@ const en = {
   '¿Querés iniciar sesión?': 'Do you want to log in?',
   'Ahora no': 'Not now',
   'Ir a iniciar sesión': 'Go to log in',
+  'Sumá los discos que quieras. Van a tu biblioteca como escuchados y nos ayudan a recomendarte.':
+    'Add as many albums as you like. They go to your library as listened and help us recommend you music.',
+  '1 elegido': '1 picked',
+  'Los discos que sumes aparecen acá.': 'The albums you add show up here.',
+  Perfil: 'Profile',
+  Quitar: 'Remove',
+  'Los cinco discos que más te representan. Arrastrá para cambiar el orden y tocá «Quitar» para sacar uno.':
+    'The five albums that represent you best. Drag to reorder and tap “Remove” to take one out.',
+  'Primera tarea': 'First task',
+  'Mostrar pasos': 'Show steps',
+  'Ocultar pasos': 'Hide steps',
+  'Cerrar la primera tarea': 'Close the first task',
+  hecho: 'done',
 };
 
 export default en;

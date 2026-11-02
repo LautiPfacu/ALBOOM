@@ -10,7 +10,7 @@
     bottom: calc(16px + env(safe-area-inset-bottom));
     z-index: 10;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 6px;
     padding: 6px;
     background: var(--card);
@@ -25,7 +25,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 9px;
-    font-size: 14px;
+    font-size: 13px; /* 5 pestañas: un poco más chico para que entre "Biblioteca" */
     font-weight: 700;
     text-decoration: none;
   }

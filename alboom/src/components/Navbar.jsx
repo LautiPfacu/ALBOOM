@@ -28,6 +28,9 @@ export default function Navbar() {
           <NavLink to="/biblioteca" className={linkClass}>
             {t('Biblioteca')}
           </NavLink>
+          <NavLink to="/perfil" className={linkClass}>
+            {t('Perfil')}
+          </NavLink>
         </nav>
         <UserMenu />
       </div>

@@ -101,8 +101,15 @@ export function updateGenres(uid, genres) {
   return withTimeout(updateDoc(profileRef(uid), { genres }));
 }
 
+// Al empezar se guarda la fecha: así los discos del onboarding no cuentan como "Guardalo".
 export function updateFirstTask(uid, firstTask) {
-  return withTimeout(updateDoc(profileRef(uid), { firstTask }));
+  const changes = firstTask === 'started' ? { firstTask, firstTaskStartedAt: serverTimestamp() } : { firstTask };
+  return withTimeout(updateDoc(profileRef(uid), changes));
+}
+
+// Paso "Buscá un disco" de la primera tarea.
+export function markFirstTaskSearched(uid) {
+  return withTimeout(updateDoc(profileRef(uid), { firstTaskSearched: true }));
 }
 
 export function updateSettings(uid, settings) {

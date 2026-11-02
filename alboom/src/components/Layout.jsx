@@ -2,12 +2,12 @@
 // Además, mantiene al día dos cosas en segundo plano:
 //   - la copia pública de tu perfil (profiles/{uid})
 //   - lo que escuchaste en Spotify, si lo conectaste (cada 30 minutos como máximo)
-//   - si completaste la primera tarea (puntuar y reseñar un disco)
+// y muestra el progreso de la primera tarea (FirstTaskProgress), si la empezaste.
 
 import { Outlet } from 'react-router-dom';
-import { useFirstTaskWatcher } from '../hooks/useFirstTaskWatcher';
 import { usePublicProfileSync } from '../hooks/usePublicProfileSync';
 import { useSpotifySync } from '../hooks/useSpotifySync';
+import FirstTaskProgress from './FirstTaskProgress';
 import Navbar from './Navbar';
 import TabBar from './TabBar';
 import ToastViewport from './ToastViewport';
@@ -16,7 +16,6 @@ import './Layout.css';
 export default function Layout() {
   usePublicProfileSync();
   useSpotifySync();
-  useFirstTaskWatcher();
 
   return (
     <div className="layout">
@@ -25,6 +24,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <TabBar />
+      <FirstTaskProgress />
       <ToastViewport />
     </div>
   );

@@ -63,30 +63,10 @@
   transform: translateX(-50%);
 }
 
-.top-five-editor__remove {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: 0;
-  background: none;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.top-five-editor__remove::before {
-  content: '';
-  position: absolute;
-  inset: 6px;
-  z-index: -1;
-  border: var(--border);
-  border-radius: 50%;
-  background: var(--card);
+/* "Quitar" en texto debajo de cada disco: más fácil de encontrar y de tocar */
+.top-five-editor__remove-text {
+  align-self: flex-start;
+  font-size: 13px;
 }
 
 .top-five-editor__name {

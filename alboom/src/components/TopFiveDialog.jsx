@@ -156,7 +156,7 @@ function TopFiveEditor({ initial, onClose }) {
           <h2 id="top-five-dialog-title" className="dialog__title">
             {t('Tu Top 5')}
           </h2>
-          <p className="dialog__text">{t('Los cinco discos que más te representan. Arrastrá para cambiar el orden.')}</p>
+          <p className="dialog__text">{t('Los cinco discos que más te representan. Arrastrá para cambiar el orden y tocá «Quitar» para sacar uno.')}</p>
         </div>
         <button type="button" className="dialog__close" aria-label={t('Cerrar')} onClick={onClose}>
           ×
@@ -209,15 +209,11 @@ function TopFiveEditor({ initial, onClose }) {
                   ⠿
                 </span>
               </button>
-              <button
-                type="button"
-                className="top-five-editor__remove"
-                aria-label={t('Sacar {name} de tu Top 5', { name: album.name })}
-                onClick={() => remove(index)}
-              >
-                ×
-              </button>
               <span className="top-five-editor__name">{album.name}</span>
+              <button type="button" className="text-link top-five-editor__remove-text" onClick={() => remove(index)}>
+                {t('Quitar')}
+                <span className="visually-hidden"> {album.name}</span>
+              </button>
             </li>
           );
         })}

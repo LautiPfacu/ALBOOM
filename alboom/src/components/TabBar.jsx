@@ -22,6 +22,9 @@ export default function TabBar() {
       <NavLink to="/biblioteca" className={tabClass}>
         {t('Biblioteca')}
       </NavLink>
+      <NavLink to="/perfil" className={tabClass}>
+        {t('Perfil')}
+      </NavLink>
     </nav>
   );
 }

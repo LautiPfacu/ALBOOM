@@ -1,4 +1,4 @@
-// Primera vez, paso 2 (pantalla 3): "¿Qué escuchaste últimamente?" — hasta 5 discos.
+// Primera vez, paso 2 (pantalla 3): "¿Qué escuchaste últimamente?" — los discos que quieras.
 // Los discos elegidos se guardan en la biblioteca como escuchados al tocar "Siguiente".
 
 import { useState } from 'react';
@@ -14,8 +14,6 @@ import SearchBar from './SearchBar';
 import { useT } from '../i18n/LanguageContext';
 import './AlbumsStep.css';
 
-const MAX_PICKS = 5;
-
 export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, saving, error }) {
   const t = useT();
   const [text, setText] = useState('');
@@ -24,12 +22,11 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
 
   const searching = status !== 'idle';
   const albums = searching ? results : suggestions.albums;
-  const full = picks.length >= MAX_PICKS;
   const isPicked = (id) => picks.some((album) => album.id === id);
 
   function toggle(album) {
     if (isPicked(album.id)) onChange(picks.filter((a) => a.id !== album.id));
-    else if (!full) onChange([...picks, album]);
+    else onChange([...picks, album]);
   }
 
   return (
@@ -39,7 +36,7 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
           <div className="onboarding__intro">
             <h1 className="onboarding__title onboarding__title--md">{t('¿Qué escuchaste últimamente?')}</h1>
             <p className="onboarding__subtitle">
-              {t('Sumá hasta 5 discos. Van a tu biblioteca como escuchados y nos ayudan a recomendarte.')}
+              {t('Sumá los discos que quieras. Van a tu biblioteca como escuchados y nos ayudan a recomendarte.')}
             </p>
           </div>
 
@@ -79,7 +76,6 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
                         type="button"
                         className="albums-step__add"
                         aria-pressed={picked}
-                        disabled={!picked && full}
                         onClick={() => toggle(album)}
                       >
                         {t(picked ? '✓ Sumado' : '+ Sumar')}
@@ -99,7 +95,7 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
               {t('Tus discos')}
             </h2>
             <span className="albums-step__picks-count">
-              {t('{n} de {total}', { n: picks.length, total: MAX_PICKS })}
+              {t(picks.length === 1 ? '1 elegido' : '{n} elegidos', { n: picks.length })}
             </span>
           </div>
           {picks.map((album) => (
@@ -119,12 +115,8 @@ export default function AlbumsStep({ genres, picks, onChange, onBack, onNext, sa
               </button>
             </div>
           ))}
-          {!full && (
-            <div className="albums-step__slots">
-              {MAX_PICKS - picks.length === 1
-                ? t('Te queda 1 lugar')
-                : t('Te quedan {n} lugares', { n: MAX_PICKS - picks.length })}
-            </div>
+          {picks.length === 0 && (
+            <div className="albums-step__slots">{t('Los discos que sumes aparecen acá.')}</div>
           )}
         </aside>
       </main>

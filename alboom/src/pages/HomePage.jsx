@@ -12,7 +12,13 @@ import { useRequireAccount } from '../hooks/useRequireAccount';
 import { useRecommendations } from '../hooks/useRecommendations';
 import { useTrends } from '../hooks/useTrends';
 import { STATUS } from '../services/library';
-import { dismissAlbum, profileErrorMessage, undismissAlbum, updateFirstTask } from '../services/profile';
+import {
+  dismissAlbum,
+  markFirstTaskSearched,
+  profileErrorMessage,
+  undismissAlbum,
+  updateFirstTask,
+} from '../services/profile';
 import { plural } from '../utils/text';
 import AlbumTile from '../components/AlbumTile';
 import Button from '../components/Button';
@@ -66,6 +72,14 @@ export default function HomePage() {
     updateFirstTask(user.uid, firstTask).catch(() => {});
   }
 
+  // Primera tarea: la primera búsqueda tilda "Buscá un disco".
+  function handleSearch(value) {
+    if (profile?.firstTask === 'started' && !profile.firstTaskSearched) {
+      markFirstTaskSearched(user.uid).catch(() => {});
+    }
+    search(value);
+  }
+
   function startFirstTask() {
     answerFirstTask('started');
     // Después de que el diálogo se cierre, el foco va al buscador.
@@ -112,7 +126,7 @@ export default function HomePage() {
             )}
           </div>
 
-          <SearchBar ref={searchRef} value={text} onChange={setText} onSearch={search} onClear={handleClear} />
+          <SearchBar ref={searchRef} value={text} onChange={setText} onSearch={handleSearch} onClear={handleClear} />
         </div>
 
         {pendingItem && !searching && (

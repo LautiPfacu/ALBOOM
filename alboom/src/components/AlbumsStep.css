@@ -79,6 +79,9 @@
 .albums-step__picks {
   position: sticky;
   top: 24px;
+  /* Sin máximo de discos: si la lista crece, scrollea adentro */
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -182,6 +185,7 @@
   .albums-step__picks {
     position: static;
     order: -1;
+    max-height: 320px;
   }
 }
 
