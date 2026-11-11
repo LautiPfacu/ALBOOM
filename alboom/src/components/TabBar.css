@@ -9,9 +9,9 @@
     right: 16px;
     bottom: calc(16px + env(safe-area-inset-bottom));
     z-index: 10;
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 6px;
+    /* Cada pestaña mide lo que su palabra y el espacio que sobra se reparte igual entre todas:
+       así "Comunidad" y "Biblioteca" no se pisan en celulares angostos. */
+    display: flex;
     padding: 6px;
     background: var(--card);
     border: var(--border);
@@ -20,18 +20,47 @@
   }
 
   .tab-bar__link {
+    position: relative;
+    flex: 1 1 auto;
     min-height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 8px;
     border-radius: 9px;
-    font-size: 13px; /* 5 pestañas: un poco más chico para que entre "Biblioteca" */
+    font-size: 12px; /* 5 pestañas: más chico para que entren todas */
     font-weight: 700;
+    white-space: nowrap;
     text-decoration: none;
+  }
+
+  /* Separador visible entre pestañas */
+  .tab-bar__link + .tab-bar__link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+    width: 1.5px;
+    background: var(--line-strong);
+  }
+
+  /* Junto a la pestaña activa (rosa) el separador sobra */
+  .tab-bar__link--active::before,
+  .tab-bar__link--active + .tab-bar__link::before {
+    display: none;
   }
 
   .tab-bar__link--active {
     background: var(--pink);
     color: var(--on-accent);
+  }
+}
+
+/* Celulares muy angostos (ej. 320 px): menos aire y letra apenas más chica */
+@media (max-width: 359px) {
+  .tab-bar__link {
+    padding: 0 5px;
+    font-size: 11px;
   }
 }
